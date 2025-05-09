@@ -102,3 +102,6 @@ $RECYCLE.BIN/
 # Database configuration
 resources/
 .gitignore
+/build/
+
+/build/
