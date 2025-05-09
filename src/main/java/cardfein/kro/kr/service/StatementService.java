@@ -1,5 +1,5 @@
 package cardfein.kro.kr.service;
 
-public class TestService {
+public interface StatementService {
 
 }
