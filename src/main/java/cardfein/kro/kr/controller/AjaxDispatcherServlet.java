@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *  사용자의 모든 요청을 처리할 진입점 Controller이다(FrontController의 역할한다)
  */
 @WebServlet(urlPatterns = "/ajax" , loadOnStartup = 1)
+@MultipartConfig
 public class AjaxDispatcherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -25,11 +27,10 @@ public class AjaxDispatcherServlet extends HttpServlet {
     Map<String, Class<?>> clzMap;
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		
 		ServletContext application = config.getServletContext();
 		Object obj = application.getAttribute("ajaxMap");
 		map = (Map<String, RestController>)obj;
-		
+		System.out.println(map);
 		clzMap = (Map<String, Class<?>>)config.getServletContext().getAttribute("ajaxClzMap");
 		
 	}

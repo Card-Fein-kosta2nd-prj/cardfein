@@ -16,13 +16,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import jakarta.servlet.annotation.MultipartConfig;
 
 /**
  * 비회원 명세서 ocr 분석 Controller
  */
+
 public class OcrController implements RestController {
 	public OcrController() {
 	}
@@ -32,6 +36,8 @@ public class OcrController implements RestController {
 	 * @throws IOException 
 	 */
    public Object recognize(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	   System.out.println("여기오나?");
+	   
 	   String apiUrl = "https://wpowaclttw.apigw.ntruss.com/custom/v1/41289/3d95171c4ef12bef25ccd28b47c4be4e3ceaf6a913911f0959fdc24765c790ed/general";
        String secretKey = "aGNyVGRzVkxLSndmVkpNUHNybkh0YUdScGhmbEVaQWs="; // Naver Cloud에서 발급받은 Secret Key
 

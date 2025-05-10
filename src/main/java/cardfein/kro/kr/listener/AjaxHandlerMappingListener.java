@@ -8,7 +8,8 @@ import cardfein.kro.kr.controller.RestController;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
-
+import jakarta.servlet.annotation.WebListener;
+@WebListener
 public class AjaxHandlerMappingListener implements ServletContextListener{
 	public void contextInitialized(ServletContextEvent e)  { 
         Map<String, RestController> map = new HashMap<String, RestController>();
