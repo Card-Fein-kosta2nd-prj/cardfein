@@ -8,9 +8,15 @@ public class CardCoverDto {
 	private String baseCardUrl;
 	private String finalCardUrl;
 //	private DateTime created_at;
+	private int userId;
 	
 	public CardCoverDto() {
 		
+	}
+	
+	public CardCoverDto(int userId, String finalCardUrl) {
+		this.userId = userId;
+		this.finalCardUrl = finalCardUrl;
 	}
 	
 	public CardCoverDto(int cover_no, String title, String baseCardUrl, String finalCardUrl) {
@@ -34,6 +40,14 @@ public class CardCoverDto {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getBaseCardUrl() {

@@ -10,10 +10,18 @@ import cardfein.kro.kr.util.DbUtil;
 
 public class CardDesignDAOImpl implements CardDesignDAO {
 	
+	private static final CardDesignDAOImpl instance = new CardDesignDAOImpl();
+	
+	private CardDesignDAOImpl() {} // 생성자 private
+
+    public static CardDesignDAOImpl getInstance() {
+        return instance;
+    }
+	
 	@Override
 	public String getDefaultCardDesign() {
 		
-		String sql = "select base_card_url from card_cover where is_default = 1";
+		String sql = "select base_card_url from card_cover where is_default = TRUE LIMIT 1";
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -28,6 +36,8 @@ public class CardDesignDAOImpl implements CardDesignDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.dbClose(rs, ps, con);
 		}
 				
 		return null;
@@ -50,6 +60,8 @@ public class CardDesignDAOImpl implements CardDesignDAO {
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.dbClose(ps, con);
 		}
 
 	}

@@ -43,9 +43,9 @@
           auth="Container"
           type="javax.sql.DataSource" 
           driverClassName="com.mysql.cj.jdbc.Driver"
-          url="jdbc:mysql://my_sql:3306/web_basic"
+          url="jdbc:mysql://my_sql:3306/card_fein"
           username="root" 
-          password="admin" 
+          password="1234" 
           maxTotal="20" 
           maxIdle="10"
           maxWaitMillis="-1"/>
