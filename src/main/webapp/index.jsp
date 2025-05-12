@@ -8,9 +8,6 @@
     
     <!-- 공통 스타일 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/common.css">
-    <!-- 페이지 전용 스타일 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/index.css">
-
 
     <!-- 공통 스크립트 -->
     <script src="${pageContext.request.contextPath}/static/js/common.js" defer></script>
