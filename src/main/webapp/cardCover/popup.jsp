@@ -1,75 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Insert title here</title>
-  </head>
-  <body>
+<head>
+<meta charset="UTF-8" />
+<title>나만의 카드 만들기</title>
+</head>
+<body>
     <div id="popupOverlay" class="popup-overlay">
-      <div class="popup-content">
-        <div class="popup-header">
-          <h2 class="popup-title">나만의 카드 미리보기</h2>
-          <button id="closePopupBtn" class="close-button">×</button>
-        </div>
-        <div class="popup-body">
-          <div class="popup-menu">
-            <div class="menu-item">
-              <img
-                src="${pageContext.request.contextPath}/static/images/icons/user-img.png"
-                alt="Image"
-              />
-              <span>IMAGE</span>
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2 class="popup-title">나만의 카드 미리보기</h2>
+                <button id="closePopupBtn" class="close-button">×</button>
             </div>
-          </div>
-          <div class="card-preview">
-            <div class="image-wrapper">
-              <canvas id="cardCanvas" width="300" height="460"></canvas>
-              <!-- <img class="base-image" src="" alt="카드 미리보기 이미지" />
-            	
-            	<div class="overlay-container">
-          			<img class="overlay-image" alt="사용자 이미지" src="">            	
-            	</div> -->
+            <div class="popup-body">
+                <div class="popup-menu">
+                    <div class="menu-item" id="uploadImageMenu">
+                        <img
+                            src="${pageContext.request.contextPath}/static/images/icons/user-img.png"
+                            alt="Image" />
+                        <span>IMAGE</span>
+                    </div>
+                </div>
+                <div class="card-preview">
+                    <div class="image-wrapper">
+                        <canvas id="cardCanvas" width="300" height="460"></canvas>
+                    </div>
+                    <p>십자(+) 영역 안쪽으로 이미지를 충분히 채워주세요.</p>
+                </div>
+                <div class="cover-title">
+                    <p>생성 커버 이름 :</p>
+                    <input type="text" />
+                </div>
+                <div class="BtnContainer">
+                    <button type="button" class="saveBtn">저장하기</button> <%-- onclick 제거, type="button" 권장 --%>
+                </div>
             </div>
-            <p>십자(+) 영역까지 이미지를 충분히 채워주세요.</p>
-          </div>
-          <div class="cover-title">
-            <p>생성 커버 이름 :</p>
-            <input type="text" />
-          </div>
-          <div class="BtnContainer">
-            <button type="submit" class="saveBtn" onclick="saveBtn">
-              저장하기
-            </button>
-          </div>
         </div>
-      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 
     <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
-        // Fabric.js 캔버스 초기화
-        const canvas = new fabric.Canvas('cardCanvas');
+        const canvas = new fabric.Canvas('cardCanvas', {
+            backgroundColor: '#f0f0f0' // 캔버스 배경색 (필요시)
+        });
 
-        const menuImage = document.querySelector('.menu-item img');
+        const uploadImageMenu = document.getElementById('uploadImageMenu');
         const coverNameInput = document.querySelector('.cover-title input[type="text"]');
         const saveButton = document.querySelector('.saveBtn');
 
-        let baseImageObj = null;    // Fabric.js Image 객체를 저장할 변수 (기본 커버)
-        let overlayImageObj = null; // Fabric.js Image 객체를 저장할 변수 (사용자 이미지)
+        let baseRectObj = null;         // 흰색 배경 사각형 객체
+        let overlayImageObj = null;     // 사용자 업로드 이미지 객체
+        let templateOverlayObj = null;  // 서버에서 가져온 카드 템플릿 객체
+        let clipZone = null;            // 사용자 이미지 클리핑 영역
+
+        const cardAreaWidth = 300;
+        const cardAreaHeight = 460;
 
         // 파일 업로드 input 생성
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = 'image/*';
-        fileInput.style.display = 'none'; // 화면에 보이지 않도록 숨김
+        fileInput.style.display = 'none';
         document.body.appendChild(fileInput);
 
         // 'IMAGE' 메뉴 아이템 클릭 시 파일 업로드 다이얼로그 열기
-        menuImage.addEventListener('click', () => fileInput.click());
+        uploadImageMenu.addEventListener('click', () => fileInput.click());
 
         // 파일 선택 후 업로드 이미지 처리
         fileInput.addEventListener('change', function (e) {
@@ -78,289 +76,287 @@ pageEncoding="UTF-8"%>
 
             if (!file.type.startsWith('image/')) {
                 alert('이미지 파일만 업로드 가능합니다.');
+                fileInput.value = ''; // 입력값 초기화
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function (event) {
                 fabric.Image.fromURL(event.target.result, function (img) {
-                    // 기존 오버레이 이미지가 있으면 제거
                     if (overlayImageObj && canvas.contains(overlayImageObj)) {
                         canvas.remove(overlayImageObj);
                     }
-                    overlayImageObj = img; // 전역 변수에 현재 이미지 객체 저장
+                    overlayImageObj = img;
 
-                    // 이미지 크기 조절: 캔버스 크기에 맞게 'cover' 형태로 조절
-                    // 이 로직은 사용자가 처음에 이미지를 업로드했을 때 캔버스 영역을 대략적으로 채우도록 합니다.
-                    // 이후 사용자가 직접 드래그 및 크기 조절로 세부 조정할 수 있습니다.
                     const canvasWidth = canvas.width;
                     const canvasHeight = canvas.height;
                     const imgAspectRatio = img.width / img.height;
-                    const canvasAspectRatio = canvasWidth / canvasHeight;
-
+                    
+                    // 이미지가 클립 영역(cardArea)을 충분히 덮도록 크기 조절
                     let newWidth, newHeight;
+                    const clipZoneAspectRatio = cardAreaWidth / cardAreaHeight;
 
-                    if (imgAspectRatio > canvasAspectRatio) {
-                        // 이미지가 캔버스보다 가로로 길 때 (높이를 캔버스에 맞춤)
-                        newHeight = canvasHeight;
+                    if (imgAspectRatio > clipZoneAspectRatio) {
+                        newHeight = cardAreaHeight * 1.1; // 약간 더 크게 해서 사용자가 조절할 여지
                         newWidth = newHeight * imgAspectRatio;
                     } else {
-                        // 이미지가 캔버스보다 세로로 길거나 비율이 비슷할 때 (너비를 캔버스에 맞춤)
-                        newWidth = canvasWidth;
+                        newWidth = cardAreaWidth * 1.1; // 약간 더 크게
                         newHeight = newWidth / imgAspectRatio;
                     }
-
+                    
                     overlayImageObj.set({
-                        left: (canvasWidth - newWidth) / 2,  // 캔버스 중앙에 위치
-                        top: (canvasHeight - newHeight) / 2, // 캔버스 중앙에 위치
+                        left: baseRectObj ? baseRectObj.left + (cardAreaWidth - newWidth) / 2 : (canvasWidth - newWidth) / 2,
+                        top: baseRectObj ? baseRectObj.top + (cardAreaHeight - newHeight) / 2 : (canvasHeight - newHeight) / 2,
                         width: newWidth,
                         height: newHeight,
-                        hasControls: true,  // 크기 조절 핸들 활성화
-                        hasBorders: true,   // 경계선 활성화
-                        selectable: true,   // 선택 가능
-                        evented: true,      // 이벤트 처리 가능
-                        lockScalingFlip: true // 뒤집기 스케일링 방지 (선택 사항)
+                        hasControls: true,
+                        hasBorders: true,
+                        selectable: true,
+                        evented: true,
+                        lockScalingFlip: true,
+                        clipPath: clipZone ? clipZone : null // 클립존이 준비되었으면 적용
                     });
 
-                    canvas.add(overlayImageObj); // 캔버스에 오버레이 이미지 추가
-                    canvas.setActiveObject(overlayImageObj); // 새로 추가된 이미지를 활성 객체로 설정
-                    canvas.renderAll(); // 캔버스 다시 그리기
-                }, { crossOrigin: 'anonymous' }); // 외부 이미지 로드 시 CORS 문제 방지
+                    canvas.add(overlayImageObj);
+                    // overlayImageObj는 baseRectObj 위, templateOverlayObj 아래에 위치해야 함.
+                    // baseRectObj는 sendToBack으로 항상 맨 뒤에 있음.
+                    // templateOverlayObj가 있다면 그것을 맨 앞으로 가져와서 순서를 보장.
+                    if (templateOverlayObj) {
+                        canvas.bringToFront(templateOverlayObj);
+                    }
+                    canvas.setActiveObject(overlayImageObj);
+                    canvas.renderAll();
+                }, { crossOrigin: 'anonymous' });
             };
             reader.readAsDataURL(file);
+            fileInput.value = ''; // 다음 파일 선택을 위해 입력값 초기화
         });
 
-        // 기본 이미지 불러오기 함수 (서버에서 미리 정의된 커버 이미지 로드)
-        function fetchBaseImage() {
+        // 서버에서 카드 템플릿 이미지 불러오기 (async/await 사용)
+        async function fetchTemplateOverlayImage() {
             const baseUrl = "${pageContext.request.contextPath}";
-            fetch(baseUrl + "/ajax?action=getBaseImage", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            })
-            .then((res) => res.json())
-            .then((data) => {
-                const imgUrl = data.baseImageUrl;
-                console.log("받은 기본 이미지 URL:", imgUrl);
+            // 실제 서버 요청 URL로 변경해야 합니다. 예시: "/ajax?action=getCardTemplateImage"
+            const actionUrl = "/ajax?action=getBaseImage"; // 사용자의 기존 URL 유지, 필요시 변경
+
+            try {
+                const response = await fetch(baseUrl + actionUrl, {
+                    method: "POST", // 또는 "GET" 등 서버 설정에 맞게
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded", // 필요시 변경
+                    },
+                    // body: new URLSearchParams({ /* 필요한 파라미터 */ }) // POST 요청 시
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const imgUrl = data.baseImageUrl; // 서버 응답에 따라 키 이름 확인 필요
+                console.log("받은 카드 템플릿 이미지 URL:", imgUrl);
+
                 if (imgUrl) {
                     fabric.Image.fromURL(baseUrl + imgUrl, function (img) {
-                        // 기존 기본 이미지가 있으면 제거
-                        if (baseImageObj && canvas.contains(baseImageObj)) {
-                            canvas.remove(baseImageObj);
+                        if (templateOverlayObj && canvas.contains(templateOverlayObj)) {
+                            canvas.remove(templateOverlayObj);
                         }
-                        baseImageObj = img; // 전역 변수에 현재 기본 이미지 객체 저장
+                        templateOverlayObj = img;
+                        console.log("카드 템플릿 이미지", img);
 
-                        // 캔버스 크기에 맞게 이미지 조절 (cover 형태로)
-                        const canvasWidth = canvas.width;
-                        const canvasHeight = canvas.height;
-                        const imgAspectRatio = img.width / img.height;
-                        const canvasAspectRatio = canvasWidth / canvasHeight;
+                        // 템플릿 이미지는 캔버스 전체에 맞추거나, 카드 영역에 맞출 수 있습니다.
+                        // 여기서는 캔버스 전체에 맞추는 것으로 가정 (기존 로직 유사)
+                        // 또는 카드 영역 (215x337)에 정확히 맞추려면 해당 크기로 설정
+                        const targetWidth = canvas.width; // 또는 cardAreaWidth
+                        const targetHeight = canvas.height; // 또는 cardAreaHeight
 
-                        let newWidth, newHeight;
-                        if (imgAspectRatio > canvasAspectRatio) {
-                            newHeight = canvasHeight;
-                            newWidth = newHeight * imgAspectRatio;
-                        } else {
-                            newWidth = canvasWidth;
-                            newHeight = newWidth / imgAspectRatio;
-                        }
-
-                        baseImageObj.set({
-                            left: (canvasWidth - newWidth) / 2,
-                            top: (canvasHeight - newHeight) / 2,
-                            width: newWidth,
-                            height: newHeight,
-                            selectable: false,  // 기본 이미지는 선택 불가능하게
-                            evented: false,     // 이벤트 발생하지 않도록
-                            hasControls: false, // 핸들 숨기기
-                            hasBorders: false   // 테두리 숨기기
+                        templateOverlayObj.set({
+                            left: (canvas.width - targetWidth) / 2,
+                            top: (canvas.height - targetHeight) / 2,
+                            width: targetWidth,
+                            height: targetHeight,
+                            selectable: false,
+                            evented: false,
+                            hasControls: false,
+                            hasBorders: false
                         });
 
-                        canvas.add(baseImageObj); // 캔버스에 기본 이미지 추가
-                        canvas.sendToBack(baseImageObj); // 기본 이미지를 가장 뒤로 보냄
-                        
-                        // 마그네틱 부분 마스크 / 클리핑 패스 생성 부분
-                        const magneticStripeLeft = 8; // 이미지 왼쪽 끝에서 시작 (캔버스 너비 300px 기준)
-                        const magneticStripeTop = 25; // 이미지 상단에서 약 50px 아래 (캔버스 높이 460px 기준)
-                        const magneticStripeWidth = 197; // 캔버스 전체 너비 사용
-                        const magneticStripeHeight = 52; // 마그네틱 스트라이프의 높이 (추정)
-
-                        // 카드 칩 영역 (예시 값, 실제 카드 디자인과 새로운 캔버스 크기에 맞게 조정 필요)
-                        const chipLeft = 35; // 왼쪽에서 30px (캔버스 너비 300px 기준)
-                        const chipTop = 110; // 위에서 110px (캔버스 높이 460px 기준)
-                        const chipWidth = 40; // 너비 40px (추정)
-                        const chipHeight = 30; // 높이 30px (추정)
-
-                        // 마그네틱 스트라이프 클리핑 영역
-                        const clipRect1 = new fabric.Rect({
-                            left: magneticStripeLeft,
-                            top: magneticStripeTop,
-                            width: magneticStripeWidth,
-                            height: magneticStripeHeight,
-                            absolutePositioned: true
-                        });
-
-                        // 카드 칩 클리핑 영역
-                        const clipRect2 = new fabric.Rect({
-                            left: chipLeft,
-                            top: chipTop,
-                            width: chipWidth,
-                            height: chipHeight,
-                            absolutePositioned: true
-                        });
-
-                        // 두 개의 클리핑 영역을 그룹으로 만듭니다.
-                        const clipGroup = new fabric.Group([clipRect1, clipRect2], {
-                            left: 0,
-                            top: 0,
-                            width: canvasWidth,
-                            height: canvasHeight,
-                            absolutePositioned: true
-                        });
-
-                        window.cardClipPath = clipGroup; // 전역 변수로 저장
-                        
-                        canvas.renderAll(); // 캔버스 다시 그리기
-                    }, { crossOrigin: 'anonymous' }); // 외부 이미지 로드 시 CORS 문제 방지
+                        canvas.add(templateOverlayObj);
+                        canvas.bringToFront(templateOverlayObj); // 항상 가장 위에 위치
+                        canvas.renderAll();
+                    }, { crossOrigin: 'anonymous' });
+                } else {
+                    console.error("카드 템플릿 이미지 URL을 받지 못했습니다.");
                 }
-            })
-            .catch((err) => {
-                console.error("기본 이미지 불러오기 실패", err);
-            });
+            } catch (err) {
+                console.error("카드 템플릿 이미지 불러오기 실패:", err);
+                // 사용자에게 오류 메시지 표시 등의 후속 처리
+            }
         }
 
         // 팝업 열기/닫기 기능
-        const openPopupBtn = document.getElementById("openPopupBtn"); // 이 ID를 가진 요소가 있는지 확인
+        const openPopupBtn = document.getElementById("openPopupBtn");
         const popupOverlay = document.getElementById("popupOverlay");
         const closePopupBtn = document.getElementById("closePopupBtn");
 
         if (openPopupBtn) {
             openPopupBtn.addEventListener("click", () => {
-                fetchBaseImage(); // 팝업 열릴 때 기본 이미지 로드
+                // 1. 캔버스 초기화 (기존 객체들 제거)
+                canvas.clear();
+                baseRectObj = null;
+                overlayImageObj = null;
+                templateOverlayObj = null;
+                clipZone = null;
+
+                // 2. 흰색 배경 사각형 (baseRectObj) 생성 및 추가
+                const baseRectLeft = (canvas.width - cardAreaWidth) / 2;
+                const baseRectTop = (canvas.height - cardAreaHeight) / 2;
+
+                baseRectObj = new fabric.Rect({
+                    left: baseRectLeft,
+                    top: baseRectTop,
+                    width: cardAreaWidth,
+                    height: cardAreaHeight,
+                    fill: 'white',
+                    selectable: false,
+                    evented: false,
+                    stroke: '#ccc', // 구분선 (선택 사항)
+                    strokeWidth: 1   // 구분선 두께 (선택 사항)
+                });
+                canvas.add(baseRectObj);
+                canvas.sendToBack(baseRectObj); // 가장 아래로 보냄
+
+                // 3. 클리핑 영역 (clipZone) 생성 (baseRectObj와 동일한 위치 및 크기)
+                // 이 객체는 캔버스에 직접 추가되지 않고, overlayImageObj의 clipPath로 사용됩니다.
+                clipZone = new fabric.Rect({
+                    left: baseRectLeft,
+                    top: baseRectTop,
+                    width: cardAreaWidth,
+                    height: cardAreaHeight,
+                    absolutePositioned: true // clipPath는 캔버스 기준 절대 위치
+                });
+
+                // 4. 서버에서 카드 템플릿 이미지 로드
+                fetchTemplateOverlayImage();
+
                 popupOverlay.style.display = "flex";
+                canvas.renderAll(); // 초기 상태 렌더링
             });
         }
 
         closePopupBtn.addEventListener("click", () => {
             popupOverlay.style.display = "none";
-            // 팝업 닫을 때 캔버스 초기화 (선택 사항: 매번 새로 시작하고 싶을 때)
             canvas.clear();
-            baseImageObj = null;
+            baseRectObj = null;
             overlayImageObj = null;
-            window.cardClipPath = null;
+            templateOverlayObj = null;
+            clipZone = null;
+            coverNameInput.value = ''; // 커버 이름 입력 필드 초기화
         });
 
-        // 팝업 외부 클릭 시 팝업 닫기
         popupOverlay.addEventListener("click", (event) => {
             if (event.target === popupOverlay) {
-                popupOverlay.style.display = "none";
-                canvas.clear();
-                baseImageObj = null;
-                overlayImageObj = null;
-                window.cardClipPath = null;
+                closePopupBtn.click(); // 닫기 버튼 클릭과 동일한 동작
             }
         });
-
-        // Fabric.js 객체 이벤트 리스너
+        
+        // Fabric.js 객체 이벤트 리스너 (기존 코드에서 필요한 부분 유지 및 수정)
         canvas.on({
             'object:moving': function(e) {
-                // overlayImageObj는 캔버스 영역 밖으로도 자유롭게 이동 가능해야 합니다.
-                // 따라서 이 부분에서 강제로 경계를 제한하는 로직은 제거했습니다.
-                // 사용자가 십자(+) 영역까지 이미지를 충분히 채울 수 있도록 허용합니다.
+                // 사용자 이미지가 클립 영역 내에서 잘 보이도록 가이드라인을 줄 수 있지만,
+                // 자유롭게 움직여서 원하는 부분을 선택하도록 하는 것이 현재 컨셉인 듯 합니다.
             },
             'object:scaling': function(e) {
-                const obj = e.target; // 현재 크기 조절 중인 객체
-
+                const obj = e.target;
                 if (obj === overlayImageObj) {
-                    const minDim = 50; // 이미지의 최소 가로/세로 픽셀
-
-                    // 최소 크기 제한
-                    if (obj.width * obj.scaleX < minDim) {
-                        obj.scaleX = minDim / obj.width;
-                    }
-                    if (obj.height * obj.scaleY < minDim) {
-                        obj.scaleY = minDim / obj.height;
-                    }
-
-                    // 종횡비 유지 (기본: 유지. Shift 키 누르면 자유 조절)
-                    // 스케일링 시작 시점의 원본 스케일 비율을 기준으로 종횡비 계산
-                    if (e.transform.original.scaleX && e.transform.original.scaleY) {
-                        const originalAspectRatio = e.transform.original.scaleX / e.transform.original.scaleY;
-
-                        if (!e.shiftKey) { // Shift 키를 누르지 않았을 때만 종횡비 유지
-                            // 현재 변하고 있는 축을 기준으로 다른 축의 스케일 값 조정
-                            if (e.transform.corner.includes('ml') || e.transform.corner.includes('mr')) { // 가로 스케일 조절 중 (왼쪽, 오른쪽 중간 핸들)
-                                obj.scaleY = obj.scaleX / originalAspectRatio;
-                            } else if (e.transform.corner.includes('mt') || e.transform.corner.includes('mb')) { // 세로 스케일 조절 중 (위쪽, 아래쪽 중간 핸들)
-                                obj.scaleX = obj.scaleY * originalAspectRatio;
-                            } else { // 모서리 핸들 조절 시
-                                // 가로 또는 세로 중 더 많이 변한 축을 기준으로 다른 축 조정 (더 자연스러움)
-                                if (Math.abs(e.transform.original.width * (obj.scaleX - e.transform.original.scaleX)) > Math.abs(e.transform.original.height * (obj.scaleY - e.transform.original.scaleY))) {
-                                    obj.scaleY = obj.scaleX / originalAspectRatio;
-                                } else {
-                                    obj.scaleX = obj.scaleY * originalAspectRatio;
-                                }
-                            }
-                        }
-                    }
+                    // 최소 크기 제한 등은 유지해도 좋습니다.
+                    const minDim = 50; 
+                    if (obj.width * obj.scaleX < minDim) obj.scaleX = minDim / obj.width;
+                    if (obj.height * obj.scaleY < minDim) obj.scaleY = minDim / obj.height;
+                    
+                    // 종횡비 유지 로직은 Fabric.js 최신 버전에서 Shift 키 조합으로 기본 제공되는 경우가 많습니다.
+                    // 만약 특정 로직이 필요하다면 여기에 구현합니다.
+                    // 현재 코드의 종횡비 로직은 복잡하여 Fabric.js 기본 동작에 맡기거나 단순화하는 것을 고려할 수 있습니다.
                 }
-                canvas.renderAll(); // 변경사항 즉시 반영
             },
             'object:modified': function(e) {
-                // 객체의 드래그 또는 스케일링이 완료되었을 때 호출됩니다.
-                // 최종 위치/크기 저장 등 필요한 후처리 로직을 여기에 추가할 수 있습니다.
                 console.log("객체 수정 완료:", e.target.toJSON());
             }
         });
 
+
         // 저장 버튼 기능
         saveButton.addEventListener('click', function() {
-            const coverName = coverNameInput.value;
+            if (!overlayImageObj) {
+                alert("카드를 꾸밀 이미지를 먼저 업로드해주세요.");
+                return;
+            }
+            if (!baseRectObj) { // baseRectObj가 없으면 저장 기준 영역이 없음
+                alert("카드 영역이 설정되지 않았습니다. 팝업을 다시 열어주세요.");
+                return;
+            }
 
-            // 캔버스의 현재 상태를 이미지로 변환 (Base64 URL)
-            // 이 이미지를 서버로 전송하여 파일로 저장할 수 있습니다.
+            const coverName = coverNameInput.value.trim();
+            if (!coverName) {
+                alert("생성 커버 이름을 입력해주세요.");
+                coverNameInput.focus();
+                return;
+            }
+
+            // 최종 이미지는 baseRectObj(흰색 사각형) 영역만 추출
             const imageDataURL = canvas.toDataURL({
-                format: 'png', // 'png', 'jpeg', 'webp' 중 선택
-                quality: 0.9    // JPEG/WebP의 경우 품질 설정 (0.0 ~ 1.0)
+                format: 'png',
+                quality: 0.9,
+                left: baseRectObj.left,
+                top: baseRectObj.top,
+                width: baseRectObj.width,
+                height: baseRectObj.height
             });
 
-            // Fabric.js 캔버스에 있는 모든 객체의 상태를 JSON으로 직렬화
-            // 나중에 이 JSON을 사용하여 캔버스 상태를 정확히 복원할 수 있습니다.
-            const canvasState = canvas.toJSON();
+            // 캔버스 전체 상태 (편집 정보 저장용)
+            const canvasState = canvas.toJSON(['clipPath']); // clipPath 속성도 포함하여 저장
 
             console.log("저장할 카드 정보:");
             console.log("커버 이름:", coverName);
-            // console.log("전체 캔버스 이미지 데이터 URL (Base64):", imageDataURL.substring(0, 100) + "..."); // 너무 길어서 일부만 출력
-            console.log("전체 캔버스 상태 (JSON):", JSON.stringify(canvasState, null, 2)); // 가독성 좋게 출력
+            // console.log("추출된 카드 이미지 데이터 URL (Base64):", imageDataURL.substring(0,100) + "...");
+            // console.log("전체 캔버스 상태 (JSON):", JSON.stringify(canvasState, null, 2));
 
-            alert("카드 정보가 저장되었습니다! (실제 서버 저장 로직 필요)");
+            alert(`'${coverName}' 이름으로 카드 정보가 준비되었습니다. (콘솔 확인)\n실제 서버 저장 로직을 구현해야 합니다.`);
 
-            // --- 서버로 데이터 전송 예시 ---
-            /*
-            fetch('/saveCardData', {
+            // --- 실제 서버로 데이터 전송 로직 ---
+            
+            fetch('/saveFinalCard', { // 실제 저장 API 엔드포인트
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     coverName: coverName,
-                    imageData: imageDataURL, // Base64 이미지 데이터
-                    canvasState: canvasState // 캔버스 상태 JSON
+                    imageData: imageDataURL,    // 추출된 카드 영역 이미지
+                    canvasFullState: canvasState // 전체 캔버스 상태 (나중에 편집용)
                 }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('서버 응답:', data);
-                alert('저장 완료!');
+                if(data.success) { // 서버 응답에 따른 처리
+                    alert('카드가 성공적으로 저장되었습니다!');
+                    closePopupBtn.click(); // 저장 후 팝업 닫기
+                } else {
+                    alert('카드 저장에 실패했습니다: ' + (data.message || '알 수 없는 오류'));
+                }
             })
             .catch((error) => {
-                console.error('저장 실패:', error);
-                alert('저장 실패!');
+                console.error('카드 저장 실패:', error);
+                alert('카드 저장 중 오류가 발생했습니다.');
             });
-            */
+            
         });
     });
-</script>
-  </body>
+    </script>
+</body>
 </html>
