@@ -110,16 +110,19 @@ public class OcrController implements RestController {
 			throws IOException, ServletException {
 		String ocrText = (String)request.getSession().getAttribute("ocrText");
 		Map<String, Integer> categorySums = new HashMap<>(); // 카테고리별 합산
-		int totalAmount = 0;
 		// 총 사용금액 추출
-		Pattern totalPattern = Pattern.compile("총 사용금액:\\n([\\d,]+)원");
-		Matcher totalMatcher = totalPattern.matcher(ocrText);
-		if (totalMatcher.find()) {
-			totalAmount = Integer.parseInt(totalMatcher.group(1).replace(",", ""));
+		String[] lines = ocrText.split("\n");
+		int totalAmount = 0;
+
+		for (int i = 0; i < lines.length - 2; i++) {
+		    if (lines[i].contains("총") && lines[i + 1].contains("사용금액")) {
+		        String amountLine = lines[i + 2].replaceAll("[^\\d]", "");
+		        totalAmount = Integer.parseInt(amountLine);
+		        break;
+		    }
 		}
 
 		// 개별 항목 파싱
-		String[] lines = ocrText.split("\n");
 		List<Map<String, String>> entries = new ArrayList<>(); // 세부항목 모두 저장
 
 		for (int i = 0; i < lines.length - 3; i++) {
@@ -166,7 +169,6 @@ public class OcrController implements RestController {
 		Map<String, Double> spendingRate = new HashMap<>();
 		Map<String, Integer> categorySums = (Map<String, Integer>) request.getSession().getAttribute("categorySums");
 		Integer totalAmount = (Integer) request.getSession().getAttribute("totalAmount");
-		
 		// top2 소비 카테고리 추출
 		List<Map.Entry<String, Integer>> entries = new ArrayList<>(categorySums.entrySet());
 		entries.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));

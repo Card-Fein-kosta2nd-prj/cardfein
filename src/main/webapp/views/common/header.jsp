@@ -6,7 +6,7 @@
         <img src="${pageContext.request.contextPath}/static/images/icons/logo.png" alt="로고" class="main-logo">
     </div>
 </header>
-
+ 
 <!-- 네비게이션 헤더 (스크롤 시 보이는 헤더) -->
 <div class="card-nav" id="sticky-nav">
     <div class="container">
