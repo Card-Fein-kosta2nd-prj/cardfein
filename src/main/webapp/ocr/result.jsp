@@ -15,7 +15,7 @@
 </style>
 <body>
 	<main class="container">
-		<h2>분석 결과 (일회성 추천)</h2>
+		<h2>분석 결과</h2>
 
 		<section>
 			<canvas id="spendingChart" class="small-chart"></canvas>
@@ -30,7 +30,7 @@
 			<p class="font-medium">※ 비회원은 카드 추천 결과가 저장되지 않으며, 누적 분석은 제공되지
 				않습니다.</p>
 		</section>
-		<p>
+		<p id="memberCheck">
 			더 정확한 추천을 원하시나요? <a href="member-dashboard.html">회원 로그인 후 누적 분석
 				보기</a>
 		</p>
@@ -82,6 +82,9 @@
 	    }
 	  });
 	  await cardMatch();
+	  if(1===1) //회원이 로그인 한 상태라면!!
+	  document.getElementById('memberCheck')
+	  .innerHTML=`<button id="memberAnalysis" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="window.location.href = 'memberCardRecommend.jsp'"> 누적소비 기반 맞춤카드 확인하기 </button>`;
 	  
 	};
 	
@@ -97,7 +100,7 @@
 		  });
 
 		  let result = await response.json(); 
-		  console.log(result);
+		  
 		  const cardNames =  Object.keys(result); //또는   Map<String, Integer> spendingMap = (Map<String, Integer>) result; downcasting
 		  const matchingRate = Object.values(result);
 		  
@@ -116,7 +119,12 @@
 		        scales: { y: { beginAtZero: true, max: 100 } }
 		      }
 		    });
+		  
+		  
+		  
    }
+   
+   
    
    
    spendingData();

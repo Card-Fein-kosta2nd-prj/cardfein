@@ -46,13 +46,6 @@
         body: formData
       });
       const simulatedOCR = await response.text();
-      // 실제 OCR 처리 대신 샘플 텍스트 표시
-     /* const simulatedOCR = `
-        [2025.04.01] 스타벅스 - 4,500원
-        [2025.04.02] 이마트 - 23,000원
-        [2025.04.03] 넷플릭스 - 9,500원
-        [2025.04.05] GS25 - 3,200원
-      `;*/
 
       document.getElementById('resultText').textContent = simulatedOCR.trim();
       document.getElementById('resultBox').style.display = 'block';

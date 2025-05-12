@@ -17,4 +17,9 @@ public interface StatementService {
 	 */
 	List<CardBenefitDto> selectByCardNo(List<Integer> cardNoList) throws SQLException;
 	
+	/**
+	 * StatementDAOImpl의 명세서 분석 데이터 삽입하는 메소드 호출
+	 */
+	int insertStatementResult(List<Object> statementResult) throws SQLException;
+	
 }

@@ -14,5 +14,10 @@ public interface StatementDAO {
 	/**
 	 * 카드 번호에 해당하는 카테고리별 할인율 검색
 	 */
-	List<CardBenefitDto> selectByCardNo(List<Integer> cardNoList) throws SQLException; 
+	List<CardBenefitDto> selectByCardNo(List<Integer> cardNoList) throws SQLException;
+	
+	/**
+	 * 명세서 분석 결과 추가
+	 */
+	int insertStatementResult(List<Object> statementResult) throws SQLException;
 }
