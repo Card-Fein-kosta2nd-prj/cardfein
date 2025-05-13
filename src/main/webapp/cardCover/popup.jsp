@@ -18,7 +18,7 @@
                 <div class="popup-menu">
                     <div class="menu-item" id="uploadImageMenu">
                         <img
-                            src="${pageContext.request.contextPath}/static/images/icons/user-img.png"
+                            src="${path}/static/images/icons/user-img.png"
                             alt="Image" />
                         <span>IMAGE</span>
                     </div>
