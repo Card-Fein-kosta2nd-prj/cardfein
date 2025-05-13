@@ -43,10 +43,26 @@ public class CardDesignDAOImpl implements CardDesignDAO {
 		return null;
 	}
 
+	/*
+	 * @Override public void saveFinalCardImage(int userNo, String title, String
+	 * finalCoverUrl) {
+	 * 
+	 * String sql =
+	 * "insert into card_cover(user_no, title, final_cover_url) values (?, ?, ?)";
+	 * Connection con = null; PreparedStatement ps = null;
+	 * 
+	 * try { con = DbUtil.getConnection(); ps = con.prepareStatement(sql);
+	 * 
+	 * ps.setInt(1, userNo); ps.setString(2, title); ps.setString(3, finalCoverUrl);
+	 * ps.executeUpdate(); } catch (SQLException e) { e.printStackTrace(); } finally
+	 * { DbUtil.dbClose(ps, con); }
+	 * 
+	 * }
+	 */
 	@Override
 	public void saveFinalCardImage(int userNo, String title, String finalCoverUrl) {
 		
-		String sql = "insert into card_cover(user_no, title, final_cover_url) values (?, ?, ?)";
+		String sql = "insert into card_cover(user_no, title, final_cover_url) values (2, ?, ?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		
@@ -54,9 +70,8 @@ public class CardDesignDAOImpl implements CardDesignDAO {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
 			
-			ps.setInt(1, userNo);
-			ps.setString(2, title);
-			ps.setString(3, finalCoverUrl);
+			ps.setString(1, title);
+			ps.setString(2, finalCoverUrl);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

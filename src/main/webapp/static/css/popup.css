@@ -30,7 +30,6 @@
   background-color: #d149a3;
 }
 
-/* 팝업 스타일 */
 .popup-overlay {
   display: none; /* 처음에는 숨김 */
   position: fixed; /* 화면 전체를 덮도록 고정 */
@@ -48,7 +47,7 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  width: 80%; /* 팝업 창 너비 조절 */
+  width: 80%;
   max-width: 600px; /* 최대 너비 설정 */
   position: relative; /* 닫기 버튼 위치 설정 기준 */
 }
@@ -60,7 +59,7 @@
 }
 .popup-title {
   font-size: 1.5em;
-  color: #ff69b4; /* 이미지의 핑크색과 유사하게 */
+  color: #ff69b4; 
 }
 .close-button {
   background: none;
@@ -73,11 +72,11 @@
   color: #333;
 }
 .popup-body {
-  /* 이미지 내용을 담을 부분 */
-  text-align: center; /* 이미지 중앙 정렬 */
+  
+  text-align: center; 
 }
 .popup-body img {
-  max-width: 100%; /* 이미지 너비가 팝업 창을 넘치지 않도록 */
+  max-width: 100%; 
   height: auto;
 }
 .popup-menu {
@@ -93,7 +92,7 @@
   cursor: pointer;
 }
 .menu-item img {
-  width: 30px; /* 아이콘 크기 조절 */
+  width: 30px; 
   height: 30px;
   margin-bottom: 5px;
 }
@@ -108,7 +107,7 @@
   padding: 20px;
   margin-bottom: 15px;
   width: 100%;
-  min-height: 300px;
+  min-height: 448px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -122,14 +121,14 @@
 
 .image-wrapper {
   position: relative;
-  width: 300px; /* Fixed width for the wrapper */
-  height: 460px; /* Fixed height for the wrapper */
-  border-radius: 10px;
-  overflow: hidden; /* Crucial for containing the draggable image */
-  border: 1px solid #ccc; /* Just for visualization */
+  width: 320px;  
+  height: 448px;  
+  border-radius: 5%;
+  overflow: hidden; 
+  /* border: 1px solid #ccc; */ 
   display: flex;
   justify-content: center;
-  align-items:center;
+  align-items: center;
 }
 
 #cardCanvas {
@@ -137,27 +136,20 @@
 }
 
 .base-image {
-  position: absolute; /* Position it within the wrapper */
+  position: absolute; 
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensure it covers the wrapper */
+  object-fit: cover; 
   z-index: 1;
-}
-
-.overlay-container {
-  /* No longer needed as a separate container, overlay-image will be directly manipulated */
 }
 
 .overlay-image {
   position: absolute;
-  cursor: grab; /* Indicates it's draggable */
+  cursor: grab; 
   z-index: 2;
-  /* Initial size - will be set by JS to cover */
-  /* `object-fit` is not needed here as we will control the dimensions and position directly */
-  border: 2px dashed #ff69b4;
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+/*   border: 2px dashed #ff69b4; */
+  box-sizing: border-box; 
 }
 
 .cover-title {
