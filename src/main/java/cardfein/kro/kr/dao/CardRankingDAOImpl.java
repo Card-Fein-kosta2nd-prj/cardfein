@@ -47,5 +47,12 @@ public class CardRankingDAOImpl implements CardRankingDAO {
 		
 		return list;
 	}
+	
+	@Override
+	public List<CardCoverDto> findTopCovers() {
+		List<CardCoverDto> list = new ArrayList<CardCoverDto>();
+		
+		return null;
+	}
 
 }

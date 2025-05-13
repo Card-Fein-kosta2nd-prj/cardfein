@@ -50,6 +50,10 @@
   width: 80%;
   max-width: 600px; /* 최대 너비 설정 */
   position: relative; /* 닫기 버튼 위치 설정 기준 */
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; */
 }
 .popup-header {
   display: flex;

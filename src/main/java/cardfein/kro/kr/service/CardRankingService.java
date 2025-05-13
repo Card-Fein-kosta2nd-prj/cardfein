@@ -7,4 +7,6 @@ import cardfein.kro.kr.dto.CardCoverDto;
 public interface CardRankingService {
 
 	List<CardCoverDto> getAllCovers();
+	
+	List<CardCoverDto> getTopCovers();
 }

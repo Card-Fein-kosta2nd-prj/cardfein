@@ -8,9 +8,7 @@ pageEncoding="UTF-8"%>
     <title>Insert title here</title>
     
     <link rel="stylesheet" href="${path}/static/css/common.css">
-    <link rel="stylesheet" href="${path}/static/css/main.css">
     <link rel="stylesheet" href="${path}/static/css/popup.css">
-    <link rel="stylesheet" href="${path}/static/css/index.css">
   </head>
   <body>
   

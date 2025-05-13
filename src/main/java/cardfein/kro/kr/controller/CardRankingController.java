@@ -10,6 +10,10 @@ import cardfein.kro.kr.service.CardRankingServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * 카드 랭킹 관련 요청을 처리하는 controller 클래스
+ */
+
 public class CardRankingController {
 	
 	private static final CardRankingController instance = new CardRankingController();
@@ -38,6 +42,9 @@ public class CardRankingController {
 
 	 */
 	
+	/**
+     * 전체 카드 커버 목록을 조회하여 JSON 형태로 응답
+     */
 	public void getAllCardCover(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		List<CardCoverDto> list = service.getAllCovers();
@@ -49,4 +56,23 @@ public class CardRankingController {
 		response.setContentType("application/json");
 		response.getWriter().write(json);
 	}
+	
+	/**
+	 *  좋아요 수 기준 top 5 카드 커버를 조회하여 Json 형태로 응답
+	 */
+	
+	public void getTopCardCovers(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		List<CardCoverDto> list = service.getTopCovers();
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(list);
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
+		response.getWriter().write(json);
+		
+	}
+	
+	
 }

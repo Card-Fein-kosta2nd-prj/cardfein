@@ -18,18 +18,24 @@ public class CardCoverLikeServiceImpl implements CardCoverLikeService {
     }
 	
 	@Override
-	public boolean likeCover(int coverNo, int userNo) {
+	public void likeCover(int coverNo, int userNo) {
 		if (!likeDAO.hasUserLiked(coverNo, userNo)) {
 			likeDAO.addLike(coverNo, userNo);
-			return true;
+			
 		}
-		return false;
+		
 	}
 
 	@Override
 	public int getLikeCount(int coverNo) {
 		
 		return likeDAO.getLikeCount(coverNo);
+	}
+	
+	@Override
+	public boolean hasUserLiked(int coverNo, int userNo) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -43,7 +43,13 @@
                         <a href="#">공지사항</a>
                     </div>
                 </li>
-                <li><a href="${path}/cardCover/main.jsp">카드커버</a></li>
+                <li class="dropdown">
+                <a href="#" class="dropbtn">커버</a>
+                <div class="dropdown-content">
+                	<a href="${path}/cardCover/cardmain.jsp">카드커버</a>
+                	<a href="${path}/cardCover/cardranking.jsp">커버순위</a>
+                </div>
+                </li>
             </ul>
         </nav>
 

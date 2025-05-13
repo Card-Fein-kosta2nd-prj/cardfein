@@ -229,7 +229,7 @@
         });
 		
         // 카드커버 저장
-        saveButton.addEventListener('click', function() {
+        saveButton.addEventListener('click', async function() {
             if (!overlayImageObj) {
                 alert("카드를 꾸밀 이미지를 먼저 업로드해주세요.");
                 return;
@@ -262,24 +262,22 @@
             const newData = new URLSearchParams();
             newData.append("title", coverName);
             newData.append("finalImageUrl", imageDataURL);
+            console.log(coverName);
 
             try {
-                const response = fetch(baseUrl + '/ajax?action=saveFinalCard', {
+                const response = await fetch(baseUrl + '/ajax?action=saveFinalCard', {
                     method: 'POST',
                     // 서버가 application/x-www-form-urlencoded를 기대하므로 Content-Type을 설정하지 않거나,
                     // 'application/x-www-form-urlencoded'로 명시해야 합니다.
                     // URLSearchParams를 body로 사용하면 Content-Type이 자동으로 설정됩니다.
-                    body: newData.toString(), // URLSearchParams 객체를 문자열로 변환하여 보냅니다.
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded' // 명시적으로 설정
-                    }
+                    body: newData, // URLSearchParams 객체를 문자열로 변환하여 보냅니다.
                 });
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                const result = response.json(); // JSON 응답을 파싱
+                const result = await response.json(); // JSON 응답을 파싱
 
                 if (result.success) {
                     alert('카드가 성공적으로 저장되었습니다!');

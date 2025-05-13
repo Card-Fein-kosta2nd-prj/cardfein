@@ -25,5 +25,11 @@ public class CardRankingServiceImpl implements CardRankingService {
 		
 		return cardRankingDAO.findAllCovers();
 	}
+	
+	@Override
+	public List<CardCoverDto> getTopCovers() {
+		
+		return null;
+	}
 
 }
