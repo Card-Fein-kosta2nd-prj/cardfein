@@ -4,7 +4,9 @@
 <!-- 로고 헤더 (중앙 배치) -->
 <header class="logo-header">
     <div class="container">
-        <img src="${path}/static/images/icons/logo.png" alt="로고" class="main-logo">
+    	<a href="${path}/main.jsp">
+        	<img src="${path}/static/images/icons/logo.png" alt="로고" class="main-logo">
+    	</a>
     </div>
 </header>
 
@@ -13,7 +15,9 @@
     <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
         <!-- 로고 부분 -->
         <div class="card-nav-logo">
-            <img src="${path}/static/images/icons/logo.png" alt="로고" class="nav-logo-img">
+            <a href="${path}/main.jsp">
+            	<img src="${path}/static/images/icons/logo.png" alt="로고" class="nav-logo-img">
+            </a>
         </div>
 
         <!-- 메뉴 부분 -->
@@ -36,9 +40,9 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">커뮤니티</a>
+                    <a href="${path}/views/community/community.jsp" class="dropbtn">커뮤니티</a>
                     <div class="dropdown-content">
-                        <a href="#">카드리뷰</a>
+                        <a href="${path}/views/community/community.jsp">카드리뷰</a>
                         <a href="#">콘텐츠</a>
                         <a href="#">공지사항</a>
                     </div>
