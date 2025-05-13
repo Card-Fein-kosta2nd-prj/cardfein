@@ -1,5 +1,6 @@
 package cardfein.kro.kr.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardDto {
@@ -10,9 +11,10 @@ public class CardDto {
     private String fee;                 // 연회비
     private String cardImageUrl;        // 카드 이미지 URL
     private int view;                   // 조회수
+    private Double matchingRate; // 카드 추천시 사용할 매칭율
 
    private CardBenefitDto cardBenefit;
-    
+   private List<CardBenefitDto> cardBenefitList;
     // 기본 생성자
     public CardDto() {
     }
@@ -25,15 +27,14 @@ public class CardDto {
         this.fee = fee;
         this.cardImageUrl = cardImageUrl;
         this.view = view;
+        this.cardBenefitList = new ArrayList<>();
     }
-    public CardDto(int cardNo, String cardName, String provider, String fee, String cardImageUrl, int view,CardBenefitDto cardBenefit) {
-        this.cardNo = cardNo;
-        this.cardName = cardName;
-        this.provider = provider;
-        this.fee = fee;
-        this.cardImageUrl = cardImageUrl;
-        this.view = view;
+    
+
+	public CardDto(int cardNo, String cardName, String provider, String fee, String cardImageUrl, int view,CardBenefitDto cardBenefit) {
+        this(cardNo, cardName, provider, fee, cardImageUrl, view);
         this.cardBenefit = cardBenefit;
+        
     }
     
 
@@ -94,7 +95,21 @@ public class CardDto {
 	public void setCardBenefit(CardBenefitDto cardBenefit) {
 		this.cardBenefit = cardBenefit;
 	}
+	public Double getMatchingRate() {
+		return matchingRate;
+	}
 
+	public void setMatchingRate(Double matchingRate) {
+		this.matchingRate = matchingRate;
+	}
+
+	public List<CardBenefitDto> getCardBenefitList() {
+		return cardBenefitList;
+	}
+
+	public void setCardBenefitList(List<CardBenefitDto> cardBenefitList) {
+		this.cardBenefitList = cardBenefitList;
+	}
 	
     
 }

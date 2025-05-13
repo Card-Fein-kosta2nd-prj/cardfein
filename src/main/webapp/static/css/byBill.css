@@ -105,3 +105,29 @@ main {
     max-width: 100%;
     height: auto;
 }
+
+.ocr-result-section {
+  margin-top: 60px;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.ocr-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+}
+
+.ocr-table th, .ocr-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.ocr-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}

@@ -27,5 +27,9 @@ public class StatementServiceImpl implements StatementService {
 		if(result==0) new SQLException("명세서 결과 추가 불가합니다."); 
 		return result;
 	}
-
+	@Override
+	public List<CardDto> selectRecommendCardList() throws SQLException {
+		List<CardDto> cardList =dao.selectRecommendCardList();
+		return cardList;
+	}
 }

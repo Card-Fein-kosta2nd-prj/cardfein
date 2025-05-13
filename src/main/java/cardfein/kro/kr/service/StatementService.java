@@ -22,4 +22,8 @@ public interface StatementService {
 	 */
 	int insertStatementResult(List<Object> statementResult) throws SQLException;
 	
+	/**
+	 * StatementDAOImpl의 회원 맞춤 카드정보 검색하는 메소드 호출
+	 */
+	List<CardDto> selectRecommendCardList()throws SQLException;
 }

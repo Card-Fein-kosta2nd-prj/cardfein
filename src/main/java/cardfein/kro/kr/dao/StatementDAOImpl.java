@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -13,6 +14,7 @@ import java.util.Properties;
 import cardfein.kro.kr.dto.CardBenefitDto;
 import cardfein.kro.kr.dto.CardDto;
 import cardfein.kro.kr.util.DbUtil;
+import cardfein.kro.kr.util.OcrEncryptor;
 
 public class StatementDAOImpl implements StatementDAO {
 	private Properties proFile = new Properties();
@@ -100,6 +102,8 @@ public class StatementDAOImpl implements StatementDAO {
 	@Override
 	public int insertStatementResult(List<Object> statementResult) throws SQLException {
 		String ocrText = (String) statementResult.get(0); // db 저장할 ocr text
+		String encryptedOcrText = OcrEncryptor.encrypt(ocrText);
+		
 		List<Map<String, String>> statement = (List<Map<String, String>>) statementResult.get(1); // db 저장할 명세서 데이터
 		Map<String, Integer> categorySums = (Map<String, Integer>) statementResult.get(2); // db 저장할 category별 합계
 		Map<Integer, Double> matchingRateDb = (Map<Integer, Double>) statementResult.get(3); // db 저장할 Map<카드번호,매칭률>
@@ -115,9 +119,11 @@ public class StatementDAOImpl implements StatementDAO {
 			con.setAutoCommit(false);
 			ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			ps.setString(2, ocrText);
+//			ps.setString(2, encryptedOcrText);
+			ps.setString(2, "테스트 암호화 문자열");
 
 			result = ps.executeUpdate();
+			System.out.println("receipt insert 결과: " + result);
 			if (result == 0) {
 				con.rollback();
 				throw new SQLException("OCR데이터 저장이 불가합니다.");
@@ -146,6 +152,10 @@ public class StatementDAOImpl implements StatementDAO {
 	 */
 	public void insertStatementItems(Connection con, int statementId, List<Map<String, String>> statement)
 			throws SQLException {
+		String encryptedDate ="";
+		String encryptedMerchant ="";
+		String encryptedCategory="";
+		
 		PreparedStatement ps = null;
 		int[] result = null;
 		String sql = proFile.getProperty("query.insertStatementItem");// insert into
@@ -154,12 +164,17 @@ public class StatementDAOImpl implements StatementDAO {
 		try {
 			ps = con.prepareStatement(sql);
 			for (Map<String, String> item : statement) {
+				encryptedDate = OcrEncryptor.encrypt(item.get("date"));
+				encryptedMerchant = OcrEncryptor.encrypt(item.get("merchant"));
+			    encryptedCategory = OcrEncryptor.encrypt(item.get("category"));
+				
+			    
 				ps.setInt(1, statementId);
 				ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
-				ps.setString(3, item.get("date"));
-				ps.setString(4, item.get("merchant"));
+				ps.setString(3, encryptedDate); 
+				ps.setString(4, encryptedMerchant);
 				ps.setInt(5, Integer.parseInt(item.get("amount")));
-				ps.setString(6, item.get("category"));
+				ps.setString(6, encryptedCategory);
 				
 				ps.addBatch(); 
 				ps.clearParameters(); 
@@ -186,13 +201,16 @@ public class StatementDAOImpl implements StatementDAO {
 		String sql = proFile.getProperty("query.insertMonthlySummary");// insert into monthly_summary(user_no,expense_year,expense_month,category,total_amount,updated_at) values(?,?,?,?,?,now());
 		String year =dateArr[0];
 		String month =dateArr[1];
+		String encryptedCategory ="";
 		try {
 			ps = con.prepareStatement(sql);
 			for (String category : categorySums.keySet()) {
+				encryptedCategory = OcrEncryptor.encrypt(category);
+				
 				ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 				ps.setInt(2, Integer.parseInt(year));
 				ps.setInt(3, Integer.parseInt(month));
-				ps.setString(4, category);
+				ps.setString(4, encryptedCategory);
 				ps.setInt(5, categorySums.get(category));
 				
 				ps.addBatch(); 
@@ -243,4 +261,103 @@ public class StatementDAOImpl implements StatementDAO {
 	}
 	
 	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	/**
+	 * 회원 맞춤 카드정보 검색
+	 */
+	@Override
+	public List<CardDto> selectRecommendCardList() throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<Integer, CardDto> cardMap = new HashMap<>();
+		
+		List<String> category=  selectRecentCategory();
+		Map<Integer,Double> matchingRates=selectMatchRate();
+		Integer[] cardNos = matchingRates.keySet().toArray(new Integer[0]);
+
+		String sql = proFile.getProperty("query.selectRecommendCardDetails");// select card_no,card_name,card_image_url,category,discount_rate
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, cardNos[0]);
+			ps.setInt(2, cardNos[1]);
+			ps.setInt(3, cardNos[2]);
+			ps.setString(4, category.get(0));
+			ps.setString(5, category.get(1));
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				int cardNoMatch = rs.getInt(1);
+				CardDto card=cardMap.get(cardNoMatch);
+				
+				if(card==null) {
+					card = new CardDto(cardNoMatch, rs.getString(2), "", "", rs.getString(3),0);
+					card.setCardBenefit(new CardBenefitDto(0, rs.getString(4), "", 0, rs.getDouble(5)));
+					card.setMatchingRate(matchingRates.get(cardNoMatch));
+			        cardMap.put(cardNoMatch, card);
+				}
+				CardBenefitDto benefit = new CardBenefitDto(0, rs.getString(4), "", 0, rs.getDouble(5));
+				card.getCardBenefitList().add(benefit);
+				
+			}
+		} finally {
+			DbUtil.dbClose(con, ps, rs);
+		}
+		return new ArrayList<>(cardMap.values());
+	}
+	
+	/**
+	 * 회원 소비기반 매칭률,카드번호 검색(top3)
+	 */
+	public Map<Integer,Double> selectMatchRate() throws SQLException{
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<Integer,Double> avgMatchingRate = new HashMap<>();
+
+		String sql = proFile.getProperty("query.selectMatchedCardList");// select avg(match_score),card_no 
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				avgMatchingRate.put(rs.getInt(1),rs.getDouble(2)) ;
+			}
+		} finally {
+			DbUtil.dbClose(con, ps, rs);
+		}
+		return avgMatchingRate;
+	}
+	
+	
+	/**
+	 * 최근 소비가 많았던 카테고리 top2 검색
+	 */
+	public List<String> selectRecentCategory() throws SQLException{
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<String> categories = new ArrayList<>();
+
+		String sql = proFile.getProperty("query.selectRecentCategory");// SELECT ms.category, SUM(ms.total_amount)
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				String category = rs.getString(1);
+				categories.add(category);
+			}
+		} finally {
+			DbUtil.dbClose(con, ps, rs);
+		}
+		return categories;
+	}
 }

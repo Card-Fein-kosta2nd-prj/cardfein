@@ -17,17 +17,15 @@
 	</header>
 
 	<main class="container">
-		<h3 class="mt-8">🔥 추천 카드 목록</h3>
+    <h2 id="recentCategory"></h2>
+		<h2 class="mt-8">🔥 추천 카드 목록</h2>
 		<div id="personalizedCards" class="space-y-6 mt-4"></div>
-		<h2>📊 누적 소비 기반 카드 매칭율 변화</h2>
-
-		<canvas id="lineChart" height="100"></canvas>
 
 
 	</main>
 
 	<script>
-  const insertData = async () => {
+ 	const recommendCards = async () => {
 	  let response = await fetch("${path}/ajax", {
 	    method: "POST",
 	    credentials: "include",
@@ -38,72 +36,52 @@
 	  });
 
 	  let result = await response.json();
-  };
-  insertData();
-  
-  
-  
-  
-    const matchHistory = {
-      "신한 딥드림": [65, 70, 75, 80, 87],
-      "현대 ZERO": [60, 63, 67, 70, 74]
-    };
-    const labels = ["1월", "2월", "3월", "4월", "5월"];
-    const recommendations = [
-      {
-        card: "신한 딥드림 카드",
-        matchRate: 87,
-        reason: "☕ 카페, 🛒 마트 혜택 최적화",
-        color: "#3b82f6"
-      },
-      {
-        card: "현대 ZERO 카드",
-        matchRate: 74,
-        reason: "🧾 넷플릭스, 편의점 자주 이용 시 적합",
-        color: "#f59e0b"
-      }
-    ];
-
-    const lineCtx = document.getElementById('lineChart').getContext('2d');
-    new Chart(lineCtx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: Object.entries(matchHistory).map(([card, data]) => ({
-          label: card,
-          data: data,
-          borderWidth: 2,
-          tension: 0.3
-        }))
-      },
-      options: {
-        plugins: {
-          title: { display: true, text: '월별 카드 매칭률 변화' }
-        },
-        scales: {
-          y: { beginAtZero: true, max: 100 }
-        }
-      }
+	  console.log(result);
+    //result = null; //회원인데 명세서 업로드 안한 회원테스트용
+    if(!result || result.length === 0){
+      document.querySelector('.container').innerHTML =`명세서 업로드 이력이 없습니다. 명세서 업로드 후 누적 기반 맞춤 카드 추천이 가능합니다.<br>
+      <button onclick="location.href='byBill.jsp'"/>명세서 업로드 하러가기`;
+         return; //return 이 있어야 아닌경우 아래 구문들이 실행될 수 있다.
+    }
+    
+    let recentCategories = [];
+    result[0].cardBenefitList.forEach((benefit)=>{
+        recentCategories.push(benefit.category); 
     });
-
+    
+    document.getElementById('recentCategory').innerHTML=`지난 3개월 간 "\${recentCategories[0]}"와 "\${recentCategories[1]}"에 많이 사용하셨군요!<br>
+해당 분야에 혜택이 많은 카드를 모아봤어요. 😊 `;
+    
+    console.log(result);
     const container = document.getElementById('personalizedCards');
-    recommendations.forEach((rec, idx) => {
+    result.forEach((card, idx) => {
       const box = document.createElement('div');
       box.className = 'card-match-box';
       box.innerHTML = `
         <img src="삼성_2V4.png" alt="카드 이미지" style="width:10%" />
         <div class="card-info">
-          <h3>\${rec.card}</h3>
-          <div class="match-rate">매칭률: \${rec.matchRate}%</div>
+          <h3>\${card.cardName}</h3>
+          <div class="match-rate">매칭률: \${card.matchingRate}%</div>
           <div class="match-bar-container">
-            <div class="match-bar" style="width: \${rec.matchRate}%; background-color: \${rec.color};"></div>
+            <div class="match-bar" style="width: \${card.matchingRate}%; background-color: "#3b82f6";"></div>
           </div>
-          <div class="reason">${rec.reason}</div>
+          <div class="reason">할인혜택:\${card.cardBenefitList[0].category}-\${card.cardBenefitList[0].discountRate}%, \${card.cardBenefitList[1].category}-\${card.cardBenefitList[1].discountRate}%
+            </div>
           <a class="btn-sm" href="#">비교 바구니 담기</a>
         </div>
       `;
       container.appendChild(box);
     });
+  
+  };
+  recommendCards();
+  
+  
+  
+  
+   
+
+    
   </script>
 
 	<style>

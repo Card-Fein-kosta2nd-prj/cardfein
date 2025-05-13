@@ -2,6 +2,7 @@ package cardfein.kro.kr.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import cardfein.kro.kr.dto.CardBenefitDto;
 import cardfein.kro.kr.dto.CardDto;
@@ -20,4 +21,9 @@ public interface StatementDAO {
 	 * 명세서 분석 결과 추가
 	 */
 	int insertStatementResult(List<Object> statementResult) throws SQLException;
+	
+	/**
+	 * 회원 소비 기반 맞춤 카드 리스트 검색
+	 */
+	public List<CardDto> selectRecommendCardList() throws SQLException; //회원번호는 application영역에 저장되게끔 !!!!
 }
