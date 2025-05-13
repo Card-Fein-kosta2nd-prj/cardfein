@@ -5,8 +5,8 @@
     <div class="container">
         <!-- 아이콘 영역 -->
         <div class="footer-icons">
-            <a href="#" class="footer-icon youtube"><img src="${pageContext.request.contextPath}/static/images/icons/kosta.png" alt="kosta"></a>
-            <a href="#" class="footer-icon blog"><img src="${pageContext.request.contextPath}/static/images/icons/github.png" alt="github"></a>
+            <a href="#" class="footer-icon kosta"><img src="${path}/static/images/icons/kosta.png" alt="kosta"></a>
+            <a href="#" class="footer-icon github"><img src="${path}/static/images/icons/github.png" alt="github"></a>
         </div>
         
         <!-- 메인 메뉴 영역 - 단순 텍스트로 표시 -->
