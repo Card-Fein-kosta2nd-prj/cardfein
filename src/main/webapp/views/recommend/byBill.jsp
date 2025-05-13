@@ -64,23 +64,6 @@
 		</div>
 	</main>
 	<section class="ocr-result-section container">
-		<h3>📄 업로드한 명세서 인식 결과</h3>
-
-		<table class="ocr-table">
-			<thead>
-				<tr>
-					<th>이용일자</th>
-					<th>가맹점명</th>
-					<th>이용금액</th>
-					<th>카테고리</th>
-				</tr>
-			</thead>
-			<tbody id="ocrResultBody">
-				<!-- JavaScript로 행 추가 -->
-			</tbody>
-		</table>
-
-		<div id="startButton"></div>
 	</section>
 
 
@@ -90,59 +73,107 @@
 	<jsp:include page="../../views/common/footer.jsp" />
 
 	<script>
+	const ocrResultSection = document.querySelector(".ocr-result-section");
 
-	  function renderOcrResult(dataList) {
-	    const tbody = document.getElementById('ocrResultBody');
-	    tbody.innerHTML = '';
+	const renderOcrResult = (dataList) => {
+		const table = document.createElement('table');
+		table.classList.add('ocr-table');
+		table.innerHTML = `
+			<thead>
+				<tr>
+					<th>이용일자</th>
+					<th>가맹점명</th>
+					<th>이용금액</th>
+					<th>카테고리</th>
+				</tr>
+			</thead>
+			<tbody id="ocrResultBody">
+			</tbody>
+		`;
+		const tbody = table.querySelector('#ocrResultBody');
+		dataList.forEach(item => {
+			const row = document.createElement('tr');
+			row.innerHTML = `
+				<td>\${item.date}</td>
+				<td>\${item.merchant}</td>
+				<td>\${Number(item.amount).toLocaleString()}원</td>
+				<td>\${item.category}</td>
+			`;
+			tbody.appendChild(row);
+		});
 
-	    dataList.forEach(item => {
-	      const row = document.createElement('tr');
-	      row.innerHTML = `
-	        <td>\${item.date}</td>
-	        <td>\${item.merchant}</td>
-	        <td>\${Number(item.amount).toLocaleString()}원</td>
-	        <td>\${item.category}</td>
-	      `;
-	      tbody.appendChild(row);
-	    });
-	  }
+		ocrResultSection.innerHTML = ''; // 기존 내용을 비우고 새로 렌더링
+		ocrResultSection.appendChild(table);
 
-	  const ocrInput = document.getElementById("ocrInput");
-	  const uploadBtn = document.getElementById("uploadBtn");
-	  const ocrForm = document.getElementById("ocrForm");
-	 
-	  uploadBtn.addEventListener("click", () => {
-	    ocrInput.click();
-	  });
+		const startButton = document.createElement('button');
+		startButton.id = 'start';
+		startButton.innerText = '명세서 분석시작';
+		startButton.classList.add('start-button');
+		startButton.onclick = () => location.href = 'result.jsp';
+		ocrResultSection.appendChild(startButton);
+	}
 
-	  ocrInput.addEventListener("change", async () => {
-		    if (ocrInput.files.length === 0) return;
+	const ocrInput = document.getElementById("ocrInput");
+	const uploadBtn = document.getElementById("uploadBtn");
 
-		    const formData = new FormData();
-		    formData.append("image", ocrInput.files[0]); // 파일 파라미터명은 서버에 맞게!
-		    formData.append("key", "ocr");
-		    formData.append("methodName", "recognize");
+	uploadBtn.addEventListener("click", () => {
+		ocrInput.click();
+	});
 
-		    try {
-		      const response = await fetch("${path}/ajax", {
-		        method: "POST",
-		        body: formData
-		      });
+	ocrInput.addEventListener("change", async () => {
+		if (ocrInput.files.length === 0) return;
 
-		      const simulatedOCR = await response.json();
-		      console.log(simulatedOCR);
-		      renderOcrResult(simulatedOCR);
+		ocrResultSection.innerHTML = `<h3>📄 업로드한 명세서 인식 결과</h3>
+			<p class="ocr-progress-text">ocr 인식 진행 중...</p>`;
 
+		const formData = new FormData();
+		formData.append("image", ocrInput.files[0]);
+		formData.append("key", "ocr");
+		formData.append("methodName", "recognize");
 
-		      document.getElementById('startButton').innerHTML = `
-		        <button id="start" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-		                onclick="location.href = 'result.jsp'">명세서 분석시작</button>`;
-		    } catch (err) {
-		      alert("명세서 업로드 중 오류가 발생했습니다.");
-		      console.error(err);
-		    }
-	  });
+		try {
+			const response = await fetch("${pageContext.request.contextPath}/ajax", {
+				method: "POST",
+				body: formData
+			});
+
+			const simulatedOCR = await response.json();
+			renderOcrResult(simulatedOCR);
+		} catch (err) {
+			alert("명세서 업로드 중 오류가 발생했습니다.");
+			console.error(err);
+		}
+	});
    </script>
+   <style>
+		/* OCR 인식 진행 중 메시지 스타일 */
+		.ocr-progress-text {
+			font-size: 1.5rem;
+			font-weight: bold;
+			color: #3b82f6; /* 파란색 */
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		/* 명세서 분석 시작 버튼 스타일 */
+		.start-button {
+			display: block;
+			width: 200px;
+			margin: 30px auto;
+			padding: 12px 24px;
+			font-size: 1.1rem;
+			color: white;
+			background-color: #10b981; /* 초록색 */
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		.start-button:hover {
+			background-color: #059669; /* 어두운 초록색 */
+		}
+	</style>
 
 </body>
 </html>

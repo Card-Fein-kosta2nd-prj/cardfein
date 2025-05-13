@@ -5,24 +5,29 @@
 <head>
 <meta charset="UTF-8" />
 <title>회원 맞춤카드 추천</title>
-<link rel="stylesheet" href="home.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- 공통 스타일 -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/common.css">
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/cardRecommend.css">
+	<!-- 공통 스크립트 -->
+<script src="${pageContext.request.contextPath}/static/js/common.js"
+	defer></script>
 </head>
 <body>
-	<header>
-		<h1>회원 전용 추천</h1>
-		<nav>
-			<a href="index.html">홈</a>
-		</nav>
-	</header>
+	<!-- header -->
+	<jsp:include page="../../views/common/header.jsp" />
 
-	<main class="container">
+	<main class="recommend">
     <h2 id="recentCategory"></h2>
 		<h2 class="mt-8">🔥 추천 카드 목록</h2>
 		<div id="personalizedCards" class="space-y-6 mt-4"></div>
 
 
 	</main>
+	<!-- footer -->
+	<jsp:include page="../../views/common/footer.jsp" />
 
 	<script>
  	const recommendCards = async () => {
@@ -37,10 +42,16 @@
 
 	  let result = await response.json();
 	  console.log(result);
-    //result = null; //회원인데 명세서 업로드 안한 회원테스트용
+   // result = null; //회원인데 명세서 업로드 안한 회원테스트용
     if(!result || result.length === 0){
-      document.querySelector('.container').innerHTML =`명세서 업로드 이력이 없습니다. 명세서 업로드 후 누적 기반 맞춤 카드 추천이 가능합니다.<br>
-      <button onclick="location.href='byBill.jsp'"/>명세서 업로드 하러가기`;
+    	document.querySelector(".recommend").innerHTML = `
+    		<div style="text-align: center; padding: 40px 0;">
+    	    명세서 업로드 이력이 없습니다. 명세서 업로드 후 누적 기반 맞춤 카드 추천이 가능합니다.<br>
+    	    <button style="display: inline-block; padding: 10px 20px; background-color: #10b981; color: white; border-radius: 8px; font-size: 1rem; cursor: pointer; margin-top: 20px;" onclick="location.href='byBill.jsp'">
+    	      명세서 업로드 하러가기
+    	    </button>
+    	  </div>
+    		`;
          return; //return 이 있어야 아닌경우 아래 구문들이 실행될 수 있다.
     }
     
@@ -65,7 +76,14 @@
           <div class="match-bar-container">
             <div class="match-bar" style="width: \${card.matchingRate}%; background-color: "#3b82f6";"></div>
           </div>
-          <div class="reason">할인혜택:\${card.cardBenefitList[0].category}-\${card.cardBenefitList[0].discountRate}%, \${card.cardBenefitList[1].category}-\${card.cardBenefitList[1].discountRate}%
+          <div class="reason"><!-- cardBenefitList가 비어있지 않으면 첫 번째 항목을 출력하고, 두 번째 항목이 있으면 출력 -->
+          \${card.cardBenefitList && card.cardBenefitList.length > 0 ? 
+                  `할인혜택: \${card.cardBenefitList[0].category} - \${card.cardBenefitList[0].discountRate}%` 
+                  : '할인 혜택 정보 없음'}
+                
+               \${card.cardBenefitList && card.cardBenefitList.length > 1 ? 
+                  `, \${card.cardBenefitList[1].category} - \${card.cardBenefitList[1].discountRate}%` 
+                  : ''}
             </div>
           <a class="btn-sm" href="#">비교 바구니 담기</a>
         </div>
@@ -84,56 +102,6 @@
     
   </script>
 
-	<style>
-.card-match-box {
-	background: white;
-	border-radius: 16px;
-	padding: 30px;
-	margin-bottom: 24px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-	display: flex;
-	gap: 24px;
-	align-items: center;
-}
 
-.card-info {
-	flex: 1;
-}
-
-.match-bar-container {
-	background: #e5e7eb;
-	height: 12px;
-	border-radius: 6px;
-	overflow: hidden;
-	margin: 12px 0;
-}
-
-.match-bar {
-	height: 100%;
-	background-color: #3b82f6;
-	transition: width 0.5s ease-in-out;
-}
-
-.match-rate {
-	font-weight: 600;
-	color: #2563eb;
-}
-
-.reason {
-	font-size: 0.95rem;
-	color: #374151;
-	margin-top: 8px;
-}
-
-.btn-sm {
-	background: #10b981;
-	color: white;
-	padding: 6px 14px;
-	border-radius: 8px;
-	font-size: 0.9rem;
-	margin-top: 10px;
-	display: inline-block;
-}
-</style>
 </body>
 </html>

@@ -6,16 +6,23 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- 공통 스타일 -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/common.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/ocrResult.css">
+<!-- 공통 스크립트 -->
+<script src="${pageContext.request.contextPath}/static/js/common.js"
+	defer></script>
 </head>
-<style>
-#spendingChart {
-	width: 320px !important;
-	height: 320px !important;
-}
-</style>
+
+
 <body>
+	<!-- header -->
+	<jsp:include page="../../views/common/header.jsp" />
+	<!-- 메인 콘텐츠 -->
 	<main class="container">
-		<h2>분석 결과</h2>
+		<h2>명세서 분석 결과</h2>
 
 		<section>
 			<canvas id="spendingChart" class="small-chart"></canvas>
@@ -35,7 +42,8 @@
 				보기</a>
 		</p>
 	</main>
-
+	<!-- footer -->
+	<jsp:include page="../../views/common/footer.jsp" />
 	<script>
  
   const spendingData = async () => {
@@ -84,7 +92,7 @@
 	  await cardMatch();
 	  if(1===1) //회원이 로그인 한 상태라면!!
 	  document.getElementById('memberCheck')
-	  .innerHTML=`<button id="memberAnalysis" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="window.location.href = 'memberCardRecommend.jsp'"> 누적소비 기반 맞춤카드 확인하기 </button>`;
+	  .innerHTML=`<button id="memberAnalysis"  onclick="location.href = 'memberCardRecommend.jsp'"> 누적소비 기반 맞춤카드 확인하기 </button>`;
 	  
 	};
 	
@@ -115,6 +123,8 @@
 		        }]
 		      },
 		      options: {
+		    	  responsive: true,
+		          maintainAspectRatio: false,
 		        plugins: { title: { display: true, text: '추천 카드 매칭률' } },
 		        scales: { y: { beginAtZero: true, max: 100 } }
 		      }
