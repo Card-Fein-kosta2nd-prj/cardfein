@@ -119,11 +119,10 @@ public class StatementDAOImpl implements StatementDAO {
 			con.setAutoCommit(false);
 			ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//			ps.setString(2, encryptedOcrText);
-			ps.setString(2, "테스트 암호화 문자열");
+			ps.setString(2, encryptedOcrText);
+//			ps.setString(2, "테스트 암호화 문자열");
 
 			result = ps.executeUpdate();
-			System.out.println("receipt insert 결과: " + result);
 			if (result == 0) {
 				con.rollback();
 				throw new SQLException("OCR데이터 저장이 불가합니다.");
@@ -201,16 +200,14 @@ public class StatementDAOImpl implements StatementDAO {
 		String sql = proFile.getProperty("query.insertMonthlySummary");// insert into monthly_summary(user_no,expense_year,expense_month,category,total_amount,updated_at) values(?,?,?,?,?,now());
 		String year =dateArr[0];
 		String month =dateArr[1];
-		String encryptedCategory ="";
 		try {
 			ps = con.prepareStatement(sql);
 			for (String category : categorySums.keySet()) {
-				encryptedCategory = OcrEncryptor.encrypt(category);
 				
 				ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 				ps.setInt(2, Integer.parseInt(year));
 				ps.setInt(3, Integer.parseInt(month));
-				ps.setString(4, encryptedCategory);
+				ps.setString(4, category);
 				ps.setInt(5, categorySums.get(category));
 				
 				ps.addBatch(); 
