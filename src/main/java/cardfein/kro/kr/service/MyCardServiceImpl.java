@@ -18,8 +18,8 @@ public class MyCardServiceImpl implements MyCardService {
 
 	@Override
 	public int insertMyCard(int cardNo) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = dao.insertMyCard(cardNo);
+		return result;
 	}
 
 	@Override

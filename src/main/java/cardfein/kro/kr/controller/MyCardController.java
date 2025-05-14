@@ -35,5 +35,15 @@ public class MyCardController implements RestController {
 		List<CardDto> list = service.selectByKeyword(keyword);
 		return list;
 	}
+	
+	/**
+	 * 보유카드 등록
+	 */
+	public Object registerCard(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, SQLException{
+		int cardNo = Integer.parseInt(request.getParameter("cardNo"));
+		int result = service.insertMyCard(cardNo);
+		return result;
+	}
 
 }

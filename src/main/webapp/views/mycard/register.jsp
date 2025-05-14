@@ -39,11 +39,11 @@
 					<!--여기에 화면 출력-->
 				</div>
 				<div class="inquiry-form" id="inquiryForm" style="display: none">
-     			 <h3>❓ 카드가 DB에 없습니다</h3>
-     			 <p>입력한 카드를 등록 요청하시겠어요? 아래 내용을 확인 후 1:1 문의를 남겨주세요.</p>
-      			<textarea id="inquiryContent" rows="4">카드명: </textarea>
-    			  <button onclick="submitInquiry()">1:1 문의 등록</button>
-   				 </div>
+					<h3>❓ 카드가 DB에 없습니다</h3>
+					<p>입력한 카드를 등록 요청하시겠어요? 아래 내용을 확인 후 1:1 문의를 남겨주세요.</p>
+					<textarea id="inquiryContent" rows="4">카드명: </textarea>
+					<button onclick="submitInquiry()">1:1 문의 등록</button>
+				</div>
 			</div>
 
 		</div>
@@ -81,7 +81,9 @@
             word : e.target.value
             })
         });
+		
         let result = await response.json();
+        
         console.log(result);
 		if(result.length===0){
 			inquiryForm.style.display = 'block';
@@ -95,15 +97,27 @@
 		cardList.forEach(card => {
 			content +=`<tr>
 				<td><img
-				src="${pageContext.request.contextPath}/views/recommend/삼성_2V4.png"
+				src="${path}/views/recommend/삼성_2V4.png"
 				alt="카드 이미지"></td>
 				<td>\${card.provider}</td>
 				<td>\${card.cardName}</td>
-				<td><button id="\${card.cardNo}">등록</button></td>
+				<td><button id="\${card.cardNo}" onclick="register(this.id)">등록</button></td>
 				</tr>`;
 		});
 		document.getElementById("cards").innerHTML=content;
 	};
+	const register= async(cardNo)=>{
+		let response = await fetch("${path}/ajax",{
+	          method :"POST",
+	          body:new URLSearchParams({
+	            key:"mycard",
+			    methodName:"registerCard",
+	            cardNo
+	            })
+	        });
+		let result = await response.json();
+		if(result===1) alert('카드가 등록 되었습니다.');
+	}
 	
 	
 	
