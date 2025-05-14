@@ -103,7 +103,33 @@ main {
 
 /* 이미지 크기 조정 */
 .image-content img {
-    width: 100%; /* 100% 너비로 부모 영역에 맞추기 */
-    height: 100%; /* 부모 영역을 가득 채우도록 높이 조정 */
-    object-fit: contain; /* 이미지가 비율을 유지하면서 영역에 맞게 크기 조정 */
+    max-width: 100%;
+    height: auto;
+}
+
+.ocr-result-section {
+  margin-top: 60px;
+  background: #f9f9f9;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.ocr-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+}
+
+.ocr-table th, .ocr-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.ocr-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+
 }

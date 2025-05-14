@@ -1,0 +1,143 @@
+@charset "UTF-8";
+/* 전체 페이지 스타일 */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9fafb;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 중앙 정렬을 위한 스타일 */
+    main.container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h2.mt-8 {
+      margin-top: 50px;
+    }
+
+    /* 카드 추천 목록 스타일 */
+    .card-match-box {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .card-info {
+      flex: 1;
+    }
+
+    .match-rate {
+      font-weight: 600;
+      color: #2563eb;
+      font-size: 1rem;
+    }
+
+    .match-bar-container {
+      background: #e5e7eb;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .match-bar {
+      height: 100%;
+      background-color: #3b82f6;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .reason {
+      font-size: 0.95rem;
+      color: #374151;
+      margin-top: 8px;
+    }
+
+    .btn-sm {
+      background: #10b981;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .btn-sm:hover {
+      background-color: #059669;
+    }
+
+    /* 카드 이미지 스타일 */
+    .card-info img {
+      width: 100px;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    /* 최근 사용 카테고리 스타일 */
+    #recentCategory {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #374151;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* 비회원 메시지 스타일 */
+    #guestNote {
+      background-color: #fef3c7;
+      border-left: 4px solid #fbbf24;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    #guestNote p {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #9e7b0b;
+    }
+
+    /* 로그인 버튼 스타일 */
+    #memberCheck {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #374151;
+      margin-top: 20px;
+    }
+
+    #memberCheck a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    #memberCheck button {
+      padding: 10px 20px;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #memberCheck button:hover {
+      background-color: #059669;
+    }

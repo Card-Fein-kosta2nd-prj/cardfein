@@ -20,5 +20,16 @@ public class StatementServiceImpl implements StatementService {
 		List<CardBenefitDto> cardList = dao.selectByCardNo(cardNoList);
 		return cardList;
 	}
-
+	
+	@Override
+	public int insertStatementResult(List<Object> statementResult) throws SQLException{
+		int result = dao.insertStatementResult(statementResult);
+		if(result==0) new SQLException("명세서 결과 추가 불가합니다."); 
+		return result;
+	}
+	@Override
+	public List<CardDto> selectRecommendCardList() throws SQLException {
+		List<CardDto> cardList =dao.selectRecommendCardList();
+		return cardList;
+	}
 }
