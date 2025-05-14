@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
   const boardBody = document.getElementById("board-body");
   const btnWrite = document.getElementById("btn-write");
   const modalOverlay = document.getElementById("modal-overlay");
@@ -102,4 +102,4 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   renderPosts();
-});
+});*/

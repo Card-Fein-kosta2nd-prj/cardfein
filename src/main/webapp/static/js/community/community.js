@@ -1,4 +1,4 @@
-// 전역 데이터 저장소
+/*// 전역 데이터 저장소
 let posts = {};
 const POSTS_PER_PAGE = 5; // 페이지당 게시물 수
 let currentPage = 1;
@@ -256,4 +256,4 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 사이드바 초기화
 	const sidebarContainer = document.getElementById('sidebar-container');
 	new Sidebar(sidebarContainer, 'cardReview');
-});
+});*/

@@ -153,6 +153,7 @@ public class StatementDAOImpl implements StatementDAO {
 			throws SQLException {
 		String encryptedDate ="";
 		String encryptedMerchant ="";
+		String encryptedAmount ="";
 		String encryptedCategory="";
 		
 		PreparedStatement ps = null;
@@ -165,6 +166,7 @@ public class StatementDAOImpl implements StatementDAO {
 			for (Map<String, String> item : statement) {
 				encryptedDate = OcrEncryptor.encrypt(item.get("date"));
 				encryptedMerchant = OcrEncryptor.encrypt(item.get("merchant"));
+				encryptedAmount = OcrEncryptor.encrypt(item.get("amount"));
 			    encryptedCategory = OcrEncryptor.encrypt(item.get("category"));
 				
 			    
@@ -172,7 +174,7 @@ public class StatementDAOImpl implements StatementDAO {
 				ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 				ps.setString(3, encryptedDate); 
 				ps.setString(4, encryptedMerchant);
-				ps.setInt(5, Integer.parseInt(item.get("amount")));
+				ps.setString(5, encryptedAmount);
 				ps.setString(6, encryptedCategory);
 				
 				ps.addBatch(); 
