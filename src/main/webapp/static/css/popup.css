@@ -110,7 +110,7 @@
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 15px;
-  width: 100%;
+  width: 93%;
   min-height: 448px;
   display: flex;
   justify-content: center;
@@ -125,7 +125,7 @@
 
 .image-wrapper {
   position: relative;
-  width: 320px;  
+  width: 300px;  
   height: 448px;  
   border-radius: 5%;
   overflow: hidden; 
