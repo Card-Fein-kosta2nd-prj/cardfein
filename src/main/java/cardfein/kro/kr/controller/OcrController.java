@@ -33,7 +33,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
 /**
- * 명세서 ocr 분석 Controller
+ * 명세서 ocr 분석 및 맞춤 카드 추천 Controller
  */
 
 public class OcrController implements RestController {
