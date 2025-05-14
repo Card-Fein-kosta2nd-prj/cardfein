@@ -1,169 +1,303 @@
-/* 로고 헤더 (중앙 배치) */
+/* 헤더와 푸터 폰트 */
+header,
+footer {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+}
+
+/* ----------------------------- */
+/* 로고 헤더 (페이지 상단 중앙) */
+/* ----------------------------- */
+
+/* 로고 영역 (중앙 배치) */
 .logo-header {
-    padding: 20px 0;
-    text-align: center;
-    background-color: #fff;
+    padding: 20px 0; /* 위아래 여백 20px */
+    text-align: center; /* 로고 중앙 정렬 */
+    background-color: #fff; /* 흰 배경 */
 }
 
+/* 로고 이미지 */
 .main-logo {
-    max-height: 70px; /* 로고 높이 증가 */
+    max-height: 70px; /* 로고 최대 높이 제한 */
     width: auto; /* 가로 비율 유지 */
-    display: inline-block;
+    display: inline-block; /* inline + block 성질 */
 }
 
-/* 네비게이션 헤더 (스크롤 시 고정) */
+/* --------------------------------- */
+/* 네비게이션 바 */
+/* --------------------------------- */
+
+/* 네비게이션 헤더 (스크롤 전 고정)  */
 .card-nav {
-    padding: 12px 0; /* 패딩 줄임 */
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    height: 60px; /* 고정된 높이 설정 */
+    background-color: #fff; /* 흰 배경 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 연한 그림자 */
+    transition: all 0.3s ease; /* 스크롤 시 부드러운 변화 */
     position: relative; /* 추가: 부모 요소에 relative 설정 */
+    display: flex; /* flex로 변경하여 내부 요소 정렬 용이하게 */
+    align-items: center; /* 수직 중앙 정렬 */
 }
 
+/* 네비게이션 헤더 (스크롤 ㅈ 고정)  */
 .card-nav.sticky {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* 다른 요소 위에 표시 */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* 더 진한 그림자 */
 }
 
+/* 네비게이션 콘텐츠 배치 (작은 로고, 메뉴, 이미지) */
 .card-nav .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; /* 가로 배치 */
+    align-items: center; /* 수직 정렬 */
+    justify-content: space-between; /* 좌우 정렬 */
+    height: 100%; /* 부모 높이 전체 사용 */
+    width: 100%; /* 부모의 너비 전체 사용 */
 }
 
+/* 작은 로고 (스크롤 전) */
 .card-nav-logo {
-    display: none; /* 초기에는 숨김 처리 */
+    display: none; /* 기본 보이지 않음으로 설정 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height: 100%; /* 부모 높이 전체 사용 */
+    width: auto; /* 수평 공간 필요한 만큼만 사용 */
+    justify-content: flex-start; /* 수평 왼쪽 정렬 */
 }
 
+/* 작은 로고 (스크롤 후)  */
 .card-nav.sticky .card-nav-logo {
-    display: block; /* 스크롤 시에만 표시 */
+    display: flex; /* 스크롤 후 flex로 보이도록 변경 */
+    justify-content: flex-start; /* 수평 왼쪽 정렬로 변경 */
+    align-items: center; /* 수직 가운데 정렬 */
+    position: absolute; /* 절대 위치로 이동 */
+    left: 10px; /* 왼쪽에 고정 */
+    width: auto; /* 전체 너비 사용하지 않도록 설정 */
 }
 
-/* 네비게이션 바의 로고 이미지 스타일 */
+/* 작은 로고 이미지 스타일 */
 .nav-logo-img {
     max-height: 40px; /* 네비게이션 바 높이에 맞춤 */
     width: auto; /* 가로 비율 유지 */
-    vertical-align: middle;
+    margin: 0; /* auto 제거하고 0으로 설정 */
+    align-items: center; /* 수직 가운데 정렬 */
 }
 
-/* 메뉴 항목을 화면 가로 기준 중앙에 배치 (스크롤 전) */
+/* 메뉴 리스트 (스크롤 전) */
 .card-nav-menu {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 50%; /* 가운데 정렬 기준 */
+    transform: translateX(-50%); /* 정확한 중앙 배치 */
     width: auto;
     z-index: 1;
+    height: 100%; /* 부모 높이 전체 사용 */
+    display: flex; /* flex로 변경 */
+    align-items: center; /* 추가: 수직 중앙 정렬 */
 }
 
-/* 스크롤 후에도 중앙 위치 유지 */
+/* 메뉴 리스트 (스크롤 후) */
 .card-nav.sticky .card-nav-menu {
-    position: absolute;
+    position: absolute; /* 위치 고정 */
     /* transform은 이미 상속됨 */
 }
 
+/* 메뉴 리스트 스타일 */
 .card-nav-menu ul {
-    display: flex;
+    display: flex; /* 가로 정렬 */
     align-items: center;
-    gap: 30px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+    height: 100%; /* 부모 높이 전체 사용 */
 }
 
-.card-nav-menu a {
+/* 메뉴 리스트 각각 항목 */
+.card-nav-menu ul li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0; /* 메뉴 항목이 축소되지 않도록 */
+    height: 100%; /* 부모 높이 전체 사용 */
+    display: flex; /* flex로 변경 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+/* 메뉴 리스트 각각 (랭킹, 카드, 커뮤니티, 카드커버) */
+.card-nav-menu ul li a {
+    display: flex; /* 블록에서 flex로 변경 */
+    align-items: center; /* 수직 중앙 정렬 */
+    height: 100%; /* 부모 높이 전체 사용 */
+    padding: 0 20px; /* 좌우 여백만 */
+    text-decoration: none;
     color: #333;
+    transition: background-color 0.3s ease;
+}
+
+/* 메뉴 항목 마우스 hover 시 */
+.card-nav-menu ul li a:hover {
+    background-color: #f2f2f2; /* 옅은 회색 배경 */
+}
+
+/* 메뉴 리스트 텍스트 스타일 */
+.card-nav-menu a {
+    color: #333; /* 기본 글자색 */
     font-weight: 500;
     padding: 10px 0;
-    transition: color 0.3s;
+    transition: color 0.3s; /* hover 시 색 변경 */
 }
 
+/* 메뉴 리스트 텍스트 hover 시 스타일 */
 .card-nav-menu a:hover {
-    color: #0078d7;
+    color: #0078d7; /* 파란색으로 변경 */
 }
 
-/* 드롭다운 메뉴 스타일 */
+/* ------------------------- */
+/* 드롭다운 메뉴 스타일 설정 */
+/* ------------------------- */
+
+/* 드롭다운 부모 요소 (ex. 랭킹, 카드, 커뮤니티..) */
 .dropdown {
-    position: relative;
-    display: inline-block;
+    position: relative; /* 자식 요소의 절대 위치 기준 설정 */
+    display: inline-block; /* 인라인 요소처럼 배치하면서 블록 성질 부여 */
 }
 
 /* 마우스 오버 시 배경 변화 */
 .dropdown:hover .dropbtn {
-    background-color: #f2f2f2;
-    border-radius: 4px;
+    background-color: #f2f2f2; /* 옅은 회색 배경 */
 }
 
+/* 드롭다운 버튼 */
 .dropbtn {
-    padding: 10px 15px;
-    transition: all 0.3s ease;
+    padding: 10px 15px; /* 내부 여백 */
+    transition: all 0.3s ease; /* 배경색 전환 부드럽게 */
 }
 
+/* 드롭다운 내용 숨김 상태 (기본) */
 .dropdown-content {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    min-width: 160px;
-    background-color: #fff;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    border-radius: 4px;
-    padding: 10px 0;
-    top: 100%;
-    left: 0;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
+    visibility: hidden; /* 화면에서 안보임 */
+    opacity: 0; /* 투명 처리 */
+    position: absolute; /* 부모 기준 절대 위치 */
+    min-width: 160px; /* 최소 너비 */
+    background-color: #fff; /* 흰 배경 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    z-index: 1; /* 다른 요소보다 위에 표시 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    padding: 0; /* 위아래 여백 */
+    top: 100%; /* 버튼 아래에 위치 */
+    left: 0; /* 왼쪽 정렬 */
+    transform: translateY(-10px); /* 살짝 위에서 시작 */
+    transition: all 0.3s ease; /* 자연스럽게 표시됨 */
 }
 
+/* 드롭다운 내부 링크 */
 .dropdown-content a {
-    display: block;
-    padding: 8px 15px;
-    color: #333;
-    white-space: nowrap;
+    display: block; /* 블록 요소로 배치 */
+    padding: 5px 15px; /* 내부 여백 */
+    color: #333; /* 어두운 회색 텍스트 */
+    white-space: nowrap; /* 줄바꿈 없음 */
+    height: 50px !important; /* 항목 높이를 직접 설정 */
+    line-height: 50px !important; /* 텍스트가 수직 중앙 정렬되도록 설정 */
+    margin: 0 !important;
 }
 
+/* 드롭다운 항목 hover 시 배경 변경 */
 .dropdown-content a:hover {
-    background-color: #f5f5f5;
+    background-color: #f5f5f5; /* 살짝 진한 회색 */
+    border-radius: 4px;
 }
 
+/* 드롭다운 활성화 (hover 시 보여짐) */
 .dropdown:hover .dropdown-content {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
+    visibility: visible; /* 보임 */
+    opacity: 1; /* 투명도 제거 */
+    transform: translateY(0); /* 제자리 위치 */
 }
 
-/* 사용자 액션 (장바구니, 프로필) */
+/* ---------------------------------- */
+/* 사용자 액션 버튼 (장바구니, 프로필) */
+/* ---------------------------------- */
 .user-actions {
+    display: flex; /* 가로 배치 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 5px; /* 요소 간 간격 */
+    margin-left: auto; /* 로그인 버튼을 오른쪽으로 밀어냄 */
+}
+
+/* 스크롤 후 로그인 버튼 위치 */
+.card-nav.sticky .user-actions {
+    position: absolute;
+    right: 10px; /* 오른쪽에서 10px 간격 */
+}
+
+/* 컨테이너 높이 일관성 유지 */
+#logged-out-actions,
+#logged-in-actions {
+    height: 100%; /* 부모 높이 전체 사용 */
     display: flex;
     align-items: center;
-    gap: 30px; /* 15px에서 30px로 간격 증가 */
-    margin-left: auto; /* 오른쪽으로 밀어냄 */
 }
 
+/* 로그인 버튼 스타일 */
+.login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    margin-left: 16px; /* 로고와 간격 */
+    background-color: #fff;
+    border: solid 2px #1382F3;
+    color: #1382F3;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #1382F3;
+    color: #fff;
+}
+
+/* 장바구니 아이콘 영역 */
 .cart {
-    position: relative;
+    position: relative; /* 뱃지 위치 기준 */
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px;
 }
 
+/* 프로필 아이콘 영역 */
+.profile {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px;
+}
+
+/* 장바구니 이미지 크기 */
 .cart img {
     width: 24px;
     height: 24px;
 }
 
+/* 프로필 이미지 크기 */
 .profile img {
     width: 30px; /* 프로필 이미지 크기 증가 */
     height: 30px;
 }
 
+/* 장바구니 알림 숫자 (뱃지) */
 .cart-count {
     position: absolute;
     top: -8px;
-    right: -8px;
-    background-color: #0078d7;
-    color: #fff;
-    border-radius: 50%;
+    right: -1px;
+    background-color: #0078d7; /* 파란 배경 */
+    color: #fff; /* 흰 글씨 */
+    border-radius: 50%; /* 원형 */
     width: 18px;
     height: 18px;
     display: flex;
@@ -171,24 +305,30 @@
     justify-content: center;
     font-size: 12px;
     font-weight: bold;
+    text-align: center;  /* 텍스트 가로 정렬 */
+    line-height: 18px;  /* 텍스트 세로 정렬 */
 }
 
-/* 푸터 */
+/* ------------------ */
+/* 푸터 영역 스타일 */
+/* ------------------ */
+
+/* 푸터 전체 영역 */
 footer {
-    background-color: #fff;
-    padding: 30px 0;
-    text-align: center;
-    color: #666;
+    background-color: #fff; /* 흰 배경 */
+    padding: 30px 0; /* 위아래 여백 */
+    text-align: center; /* 가운데 정렬 */
+    color: #666; /* 중간 회색 텍스트 */
     font-size: 14px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #eee; /* 상단 경계선 */
 }
 
 /* 푸터 소셜 아이콘 */
 footer .footer-icons {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* 아래 여백 */
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    justify-content: center; /* 가운데 정렬 */
+    gap: 20px; /* 아이콘 간 간격 */
 }
 
 footer .footer-icon img {
