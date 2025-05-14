@@ -3,7 +3,7 @@
 
 <!-- 로고 헤더 (중앙 배치) -->
 <header class="logo-header">
-    <div class="container">
+    <div class="header-ontainer">
     	<a href="${path}/main.jsp">
         	<img src="${path}/static/images/icons/logo.png" alt="로고" class="main-logo">
     	</a>
@@ -12,7 +12,7 @@
 
 <!-- 네비게이션 헤더 (스크롤 시 보이는 헤더) -->
 <div class="card-nav" id="sticky-nav">
-    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="header-container" style="display: flex; justify-content: space-between; align-items: center;">
         <!-- 로고 부분 -->
         <div class="card-nav-logo">
             <a href="${path}/main.jsp">
