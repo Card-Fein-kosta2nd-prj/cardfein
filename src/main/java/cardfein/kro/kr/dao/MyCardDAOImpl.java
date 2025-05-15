@@ -41,6 +41,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, '%' + keyword + '%');
+			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			rs = ps.executeQuery();
 			// CardDto(int cardNo,String cardName, String provider, String fee, String
@@ -82,8 +83,27 @@ public class MyCardDAOImpl implements MyCardDAO {
 
 	@Override
 	public int insertRequest(String content) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+		String sql = proFile.getProperty("query.insertRequest");// insert into ask(title,content) values(?,?);
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, "카드 추가 요청");
+			ps.setString(2, content);
+			
+			result = ps.executeUpdate();
+			if (result == 0) {
+				throw new SQLException("문의 등록이 불가합니다.");
+			}
+
+		} catch (Exception e) {
+			throw new SQLException("문의 등록이 불가합니다. 고객센터에 연락 바랍니다.");
+		} finally {
+			DbUtil.dbClose(con, ps, null);
+		}
+		return result;
 	}
 
 	@Override

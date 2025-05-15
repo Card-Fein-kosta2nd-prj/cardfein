@@ -45,5 +45,14 @@ public class MyCardController implements RestController {
 		int result = service.insertMyCard(cardNo);
 		return result;
 	}
-
+	
+	/**
+	 * 카드추가 문의 등록
+	 */
+	public Object submitInquiry(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, SQLException{
+		String content = request.getParameter("content");
+		int result = service.insertRequest(content);
+		return result;
+	}
 }

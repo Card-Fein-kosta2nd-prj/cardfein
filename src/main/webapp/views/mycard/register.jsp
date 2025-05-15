@@ -33,7 +33,7 @@
 			<div class="List">
 				<p>등록할 카드 검색</p>
 				<!--widow + .-->
-				<input type="text" placeholder='카드명을 입력해주세요.' id="keyword" />
+				<input type="text" placeholder='카드명을 입력해주세요.' id="keyword" onkeyup="search(event)" />
 
 				<div class="card_list">
 					<!--여기에 화면 출력-->
@@ -55,7 +55,8 @@
 	let printList = document.querySelector(".card_list");
 	let inquiryForm = document.getElementById('inquiryForm');
 	let inquiryContent = document.getElementById('inquiryContent');
-	document.querySelector("#keyword").onkeyup = async(e)=>{
+	let input = document.querySelector("#keyword");
+	const search = async(e)=>{
 		inquiryForm.style.display = 'none';
 		if(!e.target.value) { 
 			printList.innerHTML ='';
@@ -117,9 +118,25 @@
 	        });
 		let result = await response.json();
 		if(result===1) alert('카드가 등록 되었습니다.');
-	}
+		input.value= '';
+		printList.innerHTML='';
+	};
 	
-	
+	const submitInquiry=async()=>{
+		let content = inquiryContent.value;
+		let response = await fetch("${path}/ajax",{
+			method :"POST",
+	          body:new URLSearchParams({
+	            key:"mycard",
+			    methodName:"submitInquiry",
+			    content
+	            })
+		});
+		let result = await response.json();
+		if(result===1) alert('문의가 등록 되었습니다.');
+		input.value= '';
+		printList.innerHTML='';
+	};
 	
 	
 	
