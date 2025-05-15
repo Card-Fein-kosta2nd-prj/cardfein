@@ -157,17 +157,15 @@
 			    methodName:"matchingTrend"})
     	});
     	let result = await response.json();
-    	console.log(result);
     	let labels = result.DateSet;
     	let matchHistory = result.matchTrend;
     	
-    	console.log(labels);
-    	console.log(matchHistory);
     	
     	const datasets = Object.entries(matchHistory).map(([cardName, dateRateMap]) => {
     		let data = labels.map(date => dateRateMap[date] ?? 0); // 누락된 월은 0 처리
+    		let avg = (data.reduce((a, b) => a + b, 0) / data.length).toFixed(1);
     		return {
-    			label: cardName,
+    			label: `\${cardName} (평균 \${avg}%)`,
     			data: data, //매칭율
     			borderWidth: 2,
     			tension: 0.3
