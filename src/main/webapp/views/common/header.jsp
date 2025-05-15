@@ -1,12 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" 
-pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="cardfein.kro.kr.dto.LoginDto" %>
 <%
   String path = request.getContextPath();
   LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
 %>
-
-<!-- 로고 헤더 -->
 <header class="logo-header">
   <div class="container">
     <a href="<%= path %>/main.jsp">
@@ -14,19 +11,13 @@ pageEncoding="UTF-8"%>
     </a>
   </div>
 </header>
-
-<!-- 네비게이션 헤더 -->
 <div class="card-nav" id="sticky-nav">
   <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-    
-    <!-- 좌측 로고 -->
     <div class="card-nav-logo">
       <a href="<%= path %>/main.jsp">
         <img src="<%= path %>/static/images/icons/logo.png" alt="로고" class="nav-logo-img">
       </a>
     </div>
-
-    <!-- 메뉴 -->
     <nav class="card-nav-menu">
       <ul>
         <li class="dropdown">
@@ -56,26 +47,16 @@ pageEncoding="UTF-8"%>
         <li><a href="#">카드커버</a></li>
       </ul>
     </nav>
-
-    <!-- 사용자 영역 -->
     <div class="user-actions" style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
-      <!-- 장바구니 -->
       <a href="#" class="cart">
         <img src="<%= path %>/static/images/icons/cart.png" alt="장바구니">
         <span class="cart-count">0</span>
       </a>
-
       <% if (loginUser == null) { %>
-        <!-- 로그인 전 -->
         <a href="<%= path %>/views/card_login.jsp" class="login-btn">로그인</a>
       <% } else { %>
-        <!-- 로그인 후 -->
         <a href="<%= path %>/logout" class="login-btn">로그아웃</a>
         <a href="<%= path %>/views/myinfo.jsp" class="login-btn">회원정보</a>
-      <% } %>
-
-      <% if (loginUser != null) { %>
-        <!-- 우측 끝 프로필 아이콘 -->
         <a href="<%= path %>/views/myinfo.jsp" class="profile">
           <img src="<%= path %>/static/images/icons/profile.png" alt="프로필" />
         </a>
