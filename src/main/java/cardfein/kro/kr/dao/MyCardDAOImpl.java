@@ -6,15 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
-import cardfein.kro.kr.dto.CardBenefitDto;
 import cardfein.kro.kr.dto.CardDto;
 import cardfein.kro.kr.dto.UserCardDto;
 import cardfein.kro.kr.util.DbUtil;
-import cardfein.kro.kr.util.OcrEncryptor;
 
 public class MyCardDAOImpl implements MyCardDAO {
 	private Properties proFile = new Properties();
@@ -92,7 +92,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, "카드 추가 요청");
 			ps.setString(2, content);
-			
+
 			result = ps.executeUpdate();
 			if (result == 0) {
 				throw new SQLException("문의 등록이 불가합니다.");
@@ -107,14 +107,55 @@ public class MyCardDAOImpl implements MyCardDAO {
 	}
 
 	@Override
-	public List<UserCardDto> selectMatchTrend() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public UserCardDto selectMatchTrend() throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		UserCardDto userCard = new UserCardDto();
+		Set<String> dateSet = userCard.getDateSet();
+		Map<String, Map<String, Double>> matchTrend = userCard.getMatchTrend();
+
+		String sql = proFile.getProperty("query.selectMatchTrend");// select card_name,concat(yr,'-',case when m<10 then
+																	// concat(0,m) else m end) as date,round(match_r,1)
+																	// m_rate
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(3, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+			rs = ps.executeQuery();
+			//
+			while (rs.next()) {
+				String cardName = rs.getString(1);
+				String date = rs.getString(2);
+				Double rate = rs.getDouble(3);
+
+				dateSet.add(date);
+				if (matchTrend.get(cardName) == null) {
+					Map<String, Double> map = new HashMap<>();
+					map.put(date, rate);
+					matchTrend.put(cardName, map);
+				} else
+					matchTrend.get(cardName).put(date, rate);
+			}
+
+			for (String date : dateSet) {
+				for (String name : matchTrend.keySet()) {
+					if (matchTrend.get(name).get(date) == null) {
+						matchTrend.get(name).put(date, 0.0);
+					}
+				}
+			}
+		} finally {
+			DbUtil.dbClose(con, ps, rs);
+		}
+		return userCard;
 	}
 
 	@Override
 	public List<CardDto> selectMyCardDetails() throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

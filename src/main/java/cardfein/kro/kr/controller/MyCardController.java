@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import cardfein.kro.kr.dto.CardDto;
+import cardfein.kro.kr.dto.UserCardDto;
 import cardfein.kro.kr.service.MyCardService;
 import cardfein.kro.kr.service.MyCardServiceImpl;
 import jakarta.servlet.ServletException;
@@ -55,4 +56,15 @@ public class MyCardController implements RestController {
 		int result = service.insertRequest(content);
 		return result;
 	}
+	
+	/**
+	 * 보유카드 매칭률 트랜드 확인
+	 */
+	public Object matchingTrend(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, SQLException{
+		UserCardDto matchingTrend = service.selectMatchTrend();
+		return matchingTrend;
+	}
+	
+	
 }

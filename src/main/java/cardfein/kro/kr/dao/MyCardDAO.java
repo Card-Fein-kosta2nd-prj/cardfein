@@ -28,7 +28,7 @@ public interface MyCardDAO {
 	/**
 	 * 보유카드 매칭율 검색
 	 */
-	List<UserCardDto> selectMatchTrend() throws SQLException;
+	UserCardDto selectMatchTrend() throws SQLException;
 	
 	/**
 	 * 보유카드 상세정보 검색

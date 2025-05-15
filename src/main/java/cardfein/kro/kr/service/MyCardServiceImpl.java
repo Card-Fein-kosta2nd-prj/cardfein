@@ -29,9 +29,9 @@ public class MyCardServiceImpl implements MyCardService {
 	}
 
 	@Override
-	public List<UserCardDto> selectMatchTrend() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public UserCardDto selectMatchTrend() throws SQLException {
+		UserCardDto userCard = dao.selectMatchTrend();
+		return userCard;
 	}
 
 	@Override
