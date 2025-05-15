@@ -5,16 +5,18 @@ public class ReplyDto {
 	private String replyContent;
 	private String inputDate;
 	private String userId;
+	private int parentReviewNo;
 	
 	public ReplyDto() {
 		
 	}
 	
-	public ReplyDto(int replyNum, String replyContent, String inputDate, String userId) {
+	public ReplyDto(int replyNum, String replyContent, String inputDate, int parentReviewNo, String userId) {
 		super();
 		this.replyNum = replyNum;
 		this.replyContent = replyContent;
 		this.inputDate = inputDate;
+		this.parentReviewNo = parentReviewNo;
 		this.userId = userId;
 	}
 
@@ -48,6 +50,14 @@ public class ReplyDto {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public int getParentReviewNo() {
+		return parentReviewNo;
+	}
+
+	public void setParentReviewNo(int parentReviewNo) {
+		this.parentReviewNo = parentReviewNo;
 	}
 	
 }

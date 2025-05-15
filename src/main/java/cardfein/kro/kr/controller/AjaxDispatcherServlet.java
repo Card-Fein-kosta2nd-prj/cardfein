@@ -39,7 +39,8 @@ public class AjaxDispatcherServlet extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		String key = request.getParameter("key"); 
 		String methodName = request.getParameter("methodName"); 
-		
+		System.out.println("key = " + key);
+		System.out.println("methodName = " + methodName);
 		try {
 			Class<?> clz = clzMap.get(key);
 			Method method = clz.getMethod(methodName, HttpServletRequest.class , HttpServletResponse.class);

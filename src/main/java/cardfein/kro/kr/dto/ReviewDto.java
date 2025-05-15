@@ -8,7 +8,12 @@ public class ReviewDto {
 	private String reviewContent;
 	private int rating;
 	private String inputDate;
-	private int cardName;
+	private String cardName;
+	private String cardImg;
+	private String userId;
+	private int views;
+	private int replyCount;
+	
 	
 	//댓글 정보
 	private List<ReplyDto> replyList;
@@ -16,9 +21,10 @@ public class ReviewDto {
 	public ReviewDto() {
 		
 	}
-
-	public ReviewDto(int reviewNo, String reviewTitle, String reviewContent, int rating, String inputDate, int cardName,
-			List<ReplyDto> replyList) {
+	
+	//리뷰 전체 조회시 사용
+	public ReviewDto(int reviewNo, String reviewTitle, String reviewContent, int rating, String inputDate,
+			String cardName, String cardImg, String userId, int views) {
 		super();
 		this.reviewNo = reviewNo;
 		this.reviewTitle = reviewTitle;
@@ -26,9 +32,11 @@ public class ReviewDto {
 		this.rating = rating;
 		this.inputDate = inputDate;
 		this.cardName = cardName;
-		this.replyList = replyList;
+		this.cardImg = cardImg;
+		this.userId = userId;
+		this.views = views;
 	}
-
+	
 	public int getReviewNo() {
 		return reviewNo;
 	}
@@ -69,12 +77,45 @@ public class ReviewDto {
 		this.inputDate = inputDate;
 	}
 
-	public int getCardName() {
+	public String getCardName() {
 		return cardName;
 	}
 
-	public void setCardName(int cardName) {
+	public void setCardName(String cardName) {
 		this.cardName = cardName;
+	}
+
+	public String getCardImg() {
+		return cardImg;
+	}
+
+	public void setCardImg(String cardImg) {
+		this.cardImg = cardImg;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
+
+	public int getViews() {
+		return views;
+	}
+
+	public void setViews(int views) {
+		this.views = views;
+	}
+
+	public int getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
 	}
 
 	public List<ReplyDto> getReplyList() {

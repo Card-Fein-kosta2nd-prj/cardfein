@@ -5,14 +5,14 @@
   LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
 %>
 <header class="logo-header">
-  <div class="container">
+  <div class="header-container">
     <a href="<%= path %>/main.jsp">
       <img src="<%= path %>/static/images/icons/logo.png" alt="로고" class="main-logo">
     </a>
   </div>
 </header>
 <div class="card-nav" id="sticky-nav">
-  <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="header-container" style="display: flex; justify-content: space-between; align-items: center;">
     <div class="card-nav-logo">
       <a href="<%= path %>/main.jsp">
         <img src="<%= path %>/static/images/icons/logo.png" alt="로고" class="nav-logo-img">
