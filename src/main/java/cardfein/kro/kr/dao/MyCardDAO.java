@@ -2,6 +2,7 @@ package cardfein.kro.kr.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import cardfein.kro.kr.dto.CardDto;
 import cardfein.kro.kr.dto.UserCardDto;
@@ -33,5 +34,9 @@ public interface MyCardDAO {
 	/**
 	 * 보유카드 상세정보 검색
 	 */
-	List<CardDto> selectMyCardDetails() throws SQLException;
+	Map<Integer, CardDto> selectMyCardDetails() throws SQLException;
+	/**
+	 * 보유카드 삭제
+	 */
+	int deleteMyCard(int cardNo) throws SQLException;
 }

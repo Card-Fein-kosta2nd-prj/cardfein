@@ -34,7 +34,8 @@
 			<div class="List">
 				<p>등록할 카드 검색</p>
 				<!--widow + .-->
-				<input type="text" placeholder='카드명을 입력해주세요.' id="keyword" onkeyup="search(event)" />
+				<input type="text" placeholder='카드명을 입력해주세요.' id="keyword"
+					onkeyup="search(event)" />
 
 				<div class="card_list">
 					<!--여기에 화면 출력-->
@@ -45,14 +46,19 @@
 					<textarea id="inquiryContent" rows="4">카드명: </textarea>
 					<button onclick="submitInquiry()">1:1 문의 등록</button>
 				</div>
-				
-				<div class="card_list">
+
+
+			</div>
+			<div class="chart">
 				<h2>📊 누적 소비 기반 카드 매칭율 변화</h2>
 				<canvas id="lineChart" height="100"></canvas>
+			</div>
+			<div class="my_cards">
+				<h2>📌 내 보유 카드 목록</h2>
+				<div class="draw-cards">
+				<!-- 여기에 보유카드 목록 출력 -->
 				</div>
 			</div>
-
-		</div>
 	</main>
 	<!-- footer -->
 	<jsp:include page="../../views/common/footer.jsp" />
@@ -63,6 +69,7 @@
 	let inquiryContent = document.getElementById('inquiryContent');
 	let input = document.querySelector("#keyword");
 	let matchChart = null;
+	let mycards = document.querySelector(".draw-cards");
 	
 	const search = async(e)=>{
 		inquiryForm.style.display = 'none';
@@ -129,6 +136,7 @@
 		input.value= '';
 		printList.innerHTML='';
 		drawTrend();
+		 printMyCards();
 		}
 	};
 	
@@ -197,7 +205,74 @@
     	    }
     	
     };
+    const printMyCards = async()=>{
+    	let response = await fetch("${path}/ajax",{
+	          method :"POST",
+	          body:new URLSearchParams({
+	            key:"mycard",
+			    methodName:"selectMyCards"
+	            })
+	        });
+		let result = await response.json();
+		console.log(result);
+		let lists='';
+		const cardNos =  Object.keys(result);
+		cardNos.forEach(cardNo => {
+			let cardName = result[cardNo].cardName;
+			let discount = result[cardNo].discount;
+			let img=result[cardNo].cardImageUrl;
+			let disList='';
+			discount.forEach((item)=>{
+				disList+=`☑️ \${item}% 할인<br>`
+			});
+			
+				
+				lists+=`
+				<div class="card-box" id="card\${cardNo}">
+			      <img src="삼성_2V4.png" class="card-img" alt="카드 이미지" />
+			      <div class="card-info">
+			        <h3 contenteditable="false">\${cardName}</h3>
+			        <div class="benefit" contenteditable="false">
+			        \${disList}
+			        </div>
+			        <div class="btn-group">
+			          <button class="btn-sm btn-detail" onclick="alert('상세 페이지로 이동합니다.')">상세 보기</button>
+			          <button class="btn-sm btn-compare" onclick="#">비교바구니담기</button>
+			          <button class="btn-sm btn-delete" onclick="deleteCard('\${cardNo}')">삭제</button>
+			        </div>
+			      </div>
+			    </div>
+			`;
+			
+		});
+
+		mycards.innerHTML=lists;
+		
+    }
+    
+    const deleteCard=async(cardNo)=> {
+    	if (!confirm("이 카드를 삭제하시겠습니까?")) return;
+    	let response = await fetch("${path}/ajax", {
+            method: "POST",
+            body: new URLSearchParams({
+                key: "mycard",
+                methodName: "deleteMyCard",
+                cardNo
+            })
+        });
+
+        let result = await response.json();
+        if (result === 1) {
+            alert("카드가 삭제되었습니다.");
+            printMyCards();   
+            drawTrend();      
+        } else {
+            alert("삭제에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
+    printMyCards();
     drawTrend();
+    
 	
 	</script>
 </body>

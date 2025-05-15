@@ -155,8 +155,65 @@ public class MyCardDAOImpl implements MyCardDAO {
 	}
 
 	@Override
-	public List<CardDto> selectMyCardDetails() throws SQLException {
-		return null;
+	public Map<Integer, CardDto> selectMyCardDetails() throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Map<Integer, CardDto> map = new HashMap<>();
+
+		String sql = proFile.getProperty("query.selectMyCards");// select
+																// card_no,card_name,card_image_url,concat(category,'
+																// ',round(discount_rate,1))
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				int cardNo = rs.getInt(1);
+				String cardName = rs.getString(2);
+				String url = rs.getString(3);
+				String category = rs.getString(4);
+
+				if (map.get(cardNo) == null) {
+					CardDto card = new CardDto(cardNo, cardName, "test");//추후 바꿔야함
+					card.getDiscount().add(category);
+					map.put(cardNo, card);
+				} else {
+					map.get(cardNo).getDiscount().add(category);
+				}
+			}
+
+		} finally {
+			DbUtil.dbClose(con, ps, rs);
+		}
+
+		return map;
+	}
+	@Override
+	public int deleteMyCard(int cardNo) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+		String sql = proFile.getProperty("query.deleteMyCard");// delete from user_card where user_no=? and card_no=?;
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(2, cardNo);
+
+			result = ps.executeUpdate();
+			if (result == 0) {
+				throw new SQLException("카드 삭제가 불가합니다.");
+			}
+
+		} catch (Exception e) {
+			throw new SQLException("카드 삭제가 불가합니다.");
+		} finally {
+			DbUtil.dbClose(con, ps, null);
+		}
+		return result;
 	}
 
 }

@@ -3,6 +3,7 @@ package cardfein.kro.kr.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import cardfein.kro.kr.dto.CardDto;
 import cardfein.kro.kr.dto.UserCardDto;
@@ -64,6 +65,23 @@ public class MyCardController implements RestController {
 			throws IOException, ServletException, SQLException{
 		UserCardDto matchingTrend = service.selectMatchTrend();
 		return matchingTrend;
+	}
+	/**
+	 * 보유카드 목록 확인
+	 */
+	public Object selectMyCards(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, SQLException{
+		Map<Integer, CardDto> cards = service.selectMyCardDetails();
+		return cards;
+	}
+	/**
+	 * 보유카드 삭제
+	 */
+	public Object deleteMyCard(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, SQLException{
+		int cardNo = Integer.parseInt(request.getParameter("cardNo"));
+		int result = service.deleteMyCard(cardNo);
+		return result;
 	}
 	
 	
