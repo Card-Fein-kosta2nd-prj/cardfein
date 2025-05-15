@@ -1,20 +1,25 @@
 package cardfein.kro.kr.dao;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import cardfein.kro.kr.util.DbUtil;
 
 public class CardCoverLikeDAOImpl implements CardCoverLikeDAO {
 	
-	private static final CardCoverLikeDAOImpl instance = new CardCoverLikeDAOImpl();
+private Properties proFile = new Properties();
 	
-	private CardCoverLikeDAOImpl() {}
-	
-	public static CardCoverLikeDAOImpl getInstance() {
-		return instance;
+	public CardCoverLikeDAOImpl() {
+		try {
+			InputStream is = getClass().getClassLoader().getResourceAsStream("dbQuery.properties");
+			proFile.load(is);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -45,11 +50,11 @@ public class CardCoverLikeDAOImpl implements CardCoverLikeDAO {
 	}
 
 	/**
-	 * user_no = 2 일단 로그인 정보가 없어서 넣어놓고 구현
+	 * 좋아요 추가 메서드
 	 */
 	@Override
-	public void addLike(int coverNo, int userNo) {
-		String sql = "insert into cover_like(cover_no, user_no) values (?, 2)";
+	public void likeCover(int coverNo, int userNo) throws SQLException {
+		String sql = "insert into cover_like(cover_no, user_no) values (?, ?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		
@@ -65,6 +70,28 @@ public class CardCoverLikeDAOImpl implements CardCoverLikeDAO {
 			DbUtil.dbClose(ps, con);
 		}
 	}
+	
+	/**
+	 * 좋아요 취소 메서드
+	 */
+	
+	@Override
+		public void unlikeCover(int coverNo, int userNo) throws SQLException {
+			String sql = "Delete from cover_like where cover_no = ? and user_no = ?";
+			
+			try (Connection con = DbUtil.getConnection();
+				PreparedStatement ps = con.prepareStatement(sql)) {
+				
+				ps.setInt(1, coverNo);
+				ps.setInt(2, userNo);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	
+	
 
 	@Override
 	public int getLikeCount(int coverNo) {

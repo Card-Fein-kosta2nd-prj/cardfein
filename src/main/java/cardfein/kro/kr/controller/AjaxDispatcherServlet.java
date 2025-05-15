@@ -25,6 +25,7 @@ public class AjaxDispatcherServlet extends HttpServlet {
 	
     Map<String, RestController> map;
     Map<String, Class<?>> clzMap;
+    
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		ServletContext application = config.getServletContext();
@@ -37,6 +38,7 @@ public class AjaxDispatcherServlet extends HttpServlet {
   
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json;charset=UTF-8");
+		
 		String key = request.getParameter("key"); 
 		String methodName = request.getParameter("methodName"); 
 		

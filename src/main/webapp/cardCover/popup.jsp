@@ -274,17 +274,16 @@
             // FormData로 전송 (multipart/form-data)
             const formData = new FormData();
             const fileName = coverName+".png";
+            
+            formData.append('key', 'cover');
+            formData.append('methodName', "saveFinalCard")
             formData.append('title', coverName);
             formData.append('finalImage', imageBlob, fileName);
 
             try {
                 const response = await fetch('${path}/ajax', {
                     method: 'POST',
-                    body: new URLSearchParams({
-                    	key:"cover",
-                    	methodName:"saveFinalCard",
-                    	formData
-                    })
+                    body: formData
                 });
 
                 if (!response.ok) {
@@ -294,10 +293,10 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('카드가 성공적으로 저장되었습니다!');
+                    alert(result.message || '카드 저장 성공');
                     closePopupBtn.click();
                 } else {
-                    alert('카드 저장에 실패했습니다.');
+                    alert(result.message || "카드 저장에 실패");
                 }
             } catch (error) {
                 console.error('카드 저장 실패:', error);

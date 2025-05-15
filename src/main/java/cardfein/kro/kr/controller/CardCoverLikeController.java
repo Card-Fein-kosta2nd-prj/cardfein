@@ -15,17 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class CardCoverLikeController {
 	
-	private static final CardCoverLikeController instance = new CardCoverLikeController();
-	
-	private final CardCoverLikeService likeService;
-	
-	private CardCoverLikeController() {
-		this.likeService = CardCoverLikeServiceImpl.getInstance();
-	}
-	
-	public static CardCoverLikeController getInstance() {
-		return instance;
-	}
+	CardCoverLikeService service = new CardCoverLikeServiceImpl();
 	
 	
 	/**
@@ -39,23 +29,25 @@ public class CardCoverLikeController {
         /**
     	 * 이미 좋아요를 눌렀는지 확인
     	 */
-        boolean liked = likeService.hasUserLiked(coverNo, userNo);
+        boolean liked = service.hasUserLiked(coverNo, userNo);
         
         /**
     	 * 좋아요를 아직 누르지 않았다면 추가
     	 */
         if (!liked) {
-        	likeService.likeCover(coverNo, userNo);
+        	service.addLike(coverNo, userNo);
+        } else {
+        	service.removeLike(coverNo, userNo);
         }
         
         /**
     	 * 갱신된 좋아요 수 조회
     	 */
-        int likeCount = likeService.getLikeCount(coverNo);
+		/* int likeCount = service.getLikeCount(coverNo); */
 
         Map<String, Object> result = new HashMap<>();
         result.put("liked", liked);
-        result.put("likeCount", likeCount);
+		/* result.put("likeCount", likeCount); */
 
         String json = new Gson().toJson(result);
         response.setContentType("application/json");

@@ -1,7 +1,9 @@
 package cardfein.kro.kr.controller;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -17,16 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class CardRankingController implements RestController{
 	
-	private static final CardRankingController instance = new CardRankingController();
-
-	private final CardRankingService service;
+	CardRankingService service = new CardRankingServiceImpl();
 	
 	public CardRankingController() {
-		this.service = CardRankingServiceImpl.getInstance();
-	}
-	
-	public static CardRankingController getInstance() {
-		return instance;
+		
 	}
 	
 	/**
@@ -62,6 +58,9 @@ public class CardRankingController implements RestController{
 		
 		Gson gson = new Gson();
 		String json = gson.toJson(list);
+		
+		Map<String, Object> result = new HashMap<>();
+		/* result.put("rank", rank); */
 		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");

@@ -8,28 +8,19 @@ import cardfein.kro.kr.dto.CardCoverDto;
 
 public class CardRankingServiceImpl implements CardRankingService {
 
-	private static final CardRankingServiceImpl instance = new CardRankingServiceImpl();
+	CardRankingDAO dao = new CardRankingDAOImpl();
 	
-	private final CardRankingDAO cardRankingDAO;
-	
-	public CardRankingServiceImpl() {
-		this.cardRankingDAO = CardRankingDAOImpl.getInstance();
-	}
-	
-	public static CardRankingServiceImpl getInstance() {
-		return instance;
-	}
 
 	@Override
 	public List<CardCoverDto> getAllCovers() {
 		
-		return cardRankingDAO.findAllCovers();
+		return dao.findAllCovers();
 	}
 	
 	@Override
 	public List<CardCoverDto> getTopCovers() {
 		
-		return null;
+		return dao.findTopCovers();
 	}
 
 }

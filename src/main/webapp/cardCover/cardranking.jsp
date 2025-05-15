@@ -76,18 +76,66 @@ pageEncoding="UTF-8"%>
     <jsp:include page="/views/common/footer.jsp" />
     
     <script type="text/javascript">
+    async function loadTopRankedCards() {
+    	try {
+    		const fetchResponse = await fetch('${path}/ajax', {
+    			method: "GET",
+    			body: new URLSearchParams({
+    				key: "rank",
+    				methodName: "getTopCardCovers"
+    			})
+    		});
+    		
+    		if (!fetchResponse.ok) {
+    			throw new Error('서버 응답 오류');
+    		}
+    		
+    		const topCards = await fetchResponse.json();
+    		const rankingList = document.querySelector('.ranking-list');
+    		
+    		topCards.forEach((card, index) => {
+    			const rankCard = document.createElement('div');
+    			rankCard.classList.add('rank-card');
+    			rankCard.classList.add('top${index + 1}');
+    			
+    			const rankNum = document.createElement('div');
+    		    rankNum.classList.add('rank-num');
+    		    rankNum.textContent = `${index + 1}.`;
+
+    		    const img = document.createElement('img');
+    		    img.src = card.imageUrl;
+    		    img.alt = card.title || `Top ${index + 1} Card`;
+
+    		    const titleDiv = document.createElement('div');
+    		    titleDiv.classList.add('title');
+    		    titleDiv.textContent = card.title || '제목 없음' ;
+    		    
+    		    rankCard.appendChild(rankNum);
+    		    rankCard.appendChild(img);
+    		    rankCard.appendChild(titleDiv);
+    		    
+    		    rankingList.appendChild(rankCard);
+    		});
+    	} catch (error) {
+    		console.error('인기 카드 로드 실패:', error);
+    	}
+    }
+    window.addEventListener('DOMContentLoaded', loadTopRankedCards);
+    
+    
+    
     async function loadCards() {
     	  try {
-    	    const response = await fetch('${path}/ajax', {
-    	    	method: "GET",
+    	    const fetchResponse = await fetch('${path}/ajax', {
+    	    	method: "POST",
     	    	body:new URLSearchParams({
     	    		key:"rank",
     	    		methodName:"getAllCardCover"
     	    	})
     	    });
-    	    if (!response.ok) throw new Error('서버 응답 오류');
+    	    if (!fetchResponse.ok) throw new Error('서버 응답 오류');
 
-    	    const cards = await response.json(); // [{user_id, img_url}, ...]
+    	    const cards = await fetchResponse.json(); // [{user_id, img_url}, ...]
 
     	    const grid = document.querySelector('.card-grid');
     	    grid.innerHTML = '';  // 기존 내용 초기화
@@ -102,26 +150,36 @@ pageEncoding="UTF-8"%>
     	      likeBtn.setAttribute('data-cover-no', card.cover_no);
     	      
     	      likeBtn.addEventListener('click', async() => {
-    	    		const isLiked = likeBtn.classList.toggle('liked');
-    	    		likeBtn.innerHTML = isLiked ? '🤍': '♡';
-    	    		
+    	 
+    	    		const isLiked = likeBtn.classList.toggle('liked'); 	    		
     	    		const coverNo = likeBtn.getAttribute('data-cover-no');
+    	    		<%-- const userNo = '<%= ((LoginDto)session.getAttribute("loginUser")).getUserNo() %>'; --%>
     	    		
     	    		try {
-    	    			const result = await fetch('${path}/ajax', {
+    	    			const likeResponse = await fetch('${path}/ajax', {
     	    				method: "POST",
-    	    				headers: {
-    	    					'Content-Type' : 'application/x-www-form-urlencoded',
-    	    				},
     	    				body:new URLSearchParams({
     	    					key:"like",
     	    					methodName: "liked",
+    	    					cover_no: coverNo,
+    	    					userNo: userNo
     	    				})   	    					
     	    			});
     	    			
-    	    			if (!result.ok) throw new Error('서버 저장 실패');
-    	    			const serverMsg = await result.text();
-    	    			console.log('서버 응답:', serverMsg);
+    	    			if (!likeResponse.ok) throw new Error('서버 저장 실패');
+    	    			
+    	    			const likeResult = await likeResponse.json();
+    	    			
+    	    			console.log('서버 응답:', likeResult);
+    	    			
+    	    			if (likeResult.liked) {
+    	    				likeBtn.classList.remove('liked');
+    	    				likeBtn.innerHTML = '♡';
+    	    			} else {
+    	    				likeBtn.classList.add('liked');
+    	    				likeBtn.innerHTML = '🤍';
+    	    			}
+    	    			
     	    		}catch (err) {
     	    			console.error("좋아요 요청 실패:", err);
     	    		}

@@ -1,24 +1,29 @@
 package cardfein.kro.kr.dao;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import cardfein.kro.kr.dto.CardCoverDto;
 import cardfein.kro.kr.util.DbUtil;
 
 public class CardRankingDAOImpl implements CardRankingDAO {
 	
-	private static final CardRankingDAOImpl instance = new CardRankingDAOImpl();
-
-    private CardRankingDAOImpl() {} // 생성자 private
-
-    public static CardRankingDAOImpl getInstance() {
-        return instance;
-    }
+private Properties proFile = new Properties();
+	
+	public CardRankingDAOImpl() {
+		try {
+			InputStream is = getClass().getClassLoader().getResourceAsStream("dbQuery.properties");
+			proFile.load(is);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public List<CardCoverDto> findAllCovers() {

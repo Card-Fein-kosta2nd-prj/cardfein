@@ -6,21 +6,11 @@ import cardfein.kro.kr.dao.CardDesignDAOImpl;
 
 public class CardDesignServiceImpl implements CardDesignService {
 	
-	private static final CardDesignServiceImpl instance = new CardDesignServiceImpl();
-
-    private final CardDesignDAO cardDesignDAO;
-
-    private CardDesignServiceImpl() {
-        this.cardDesignDAO = CardDesignDAOImpl.getInstance();
-    }
-
-    public static CardDesignServiceImpl getInstance() {
-        return instance;
-    }
+	CardDesignDAO dao = new CardDesignDAOImpl();
 	
 	@Override
 	public String getBaseImageUrl() {
-		String coverDesign = cardDesignDAO.getDefaultCardDesign();
+		String coverDesign = dao.getDefaultCardDesign();
 		return coverDesign;
 	}
 	
@@ -32,10 +22,10 @@ public class CardDesignServiceImpl implements CardDesignService {
 	 * (SQLException e) { e.printStackTrace(); } }
 	 */
 	@Override
-	public void saveFinalCard(String title, String finalCoverUrl) {
+	public void saveFinalCard(int userNo, String title, String finalCoverUrl) {
 	    try {
 	        // user_no는 DAO 내부에서 2로 고정되어 있으므로 생략
-	        cardDesignDAO.saveFinalCardImage(2, title, finalCoverUrl);
+	        dao.saveFinalCardImage(userNo, title, finalCoverUrl);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }

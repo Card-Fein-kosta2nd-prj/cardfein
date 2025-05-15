@@ -61,7 +61,7 @@
 			
 			<!-- 로그인하지 않은 경우 -->
 			<div id="logged-out-actions">
-				<a href="#" class="login-btn">로그인</a>
+				<a href="${path}/views/card_login.jsp" class="login-btn">로그인</a>
 			</div>
 
 			<!-- 로그인한 경우 -->

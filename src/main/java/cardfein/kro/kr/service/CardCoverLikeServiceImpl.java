@@ -1,35 +1,30 @@
 package cardfein.kro.kr.service;
 
+import java.sql.SQLException;
+
 import cardfein.kro.kr.dao.CardCoverLikeDAO;
 import cardfein.kro.kr.dao.CardCoverLikeDAOImpl;
 
 public class CardCoverLikeServiceImpl implements CardCoverLikeService {
 	
-	private static final CardCoverLikeServiceImpl instance = new CardCoverLikeServiceImpl();
-
-    private final CardCoverLikeDAO likeDAO;
-
-    private CardCoverLikeServiceImpl() {
-        this.likeDAO = CardCoverLikeDAOImpl.getInstance();
-    }
-
-    public static CardCoverLikeServiceImpl getInstance() {
-        return instance;
-    }
+	CardCoverLikeDAO dao = new CardCoverLikeDAOImpl();
 	
 	@Override
-	public void likeCover(int coverNo, int userNo) {
-		if (!likeDAO.hasUserLiked(coverNo, userNo)) {
-			likeDAO.addLike(coverNo, userNo);
-			
-		}
+	public void addLike(int coverNo, int userNo) throws SQLException {
 		
+		dao.likeCover(coverNo, userNo);
+	}
+	
+	@Override
+	public void removeLike(int coverNo, int userNo) throws SQLException {
+		
+		dao.unlikeCover(coverNo, userNo);	
 	}
 
 	@Override
 	public int getLikeCount(int coverNo) {
 		
-		return likeDAO.getLikeCount(coverNo);
+		return dao.getLikeCount(coverNo);
 	}
 	
 	@Override

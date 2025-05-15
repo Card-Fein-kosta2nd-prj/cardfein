@@ -11,5 +11,5 @@ public interface CardDesignService {
 	 * 커스터마이징 이미지 저장 메서드
 	 */
 	/* void saveFinalCard(int userNo, String title, String finalCoverUrl); */
-	void saveFinalCard(String title, String finalCoverUrl);
+	void saveFinalCard(int userNo, String title, String finalCoverUrl);
 }

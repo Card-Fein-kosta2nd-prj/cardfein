@@ -1,5 +1,7 @@
 package cardfein.kro.kr.dao;
 
+import java.sql.SQLException;
+
 public interface CardCoverLikeDAO {
 
 	/**
@@ -12,7 +14,9 @@ public interface CardCoverLikeDAO {
 	 * insert into cover_like(cover_no, user_no) values (?, ?);
 	 * 사용자가 특정 카드 커버에 좋아요를 추가
 	 */
-	void addLike(int coverNo, int userNo);
+	void likeCover(int coverNo, int userNo) throws SQLException;
+	
+	void unlikeCover(int coverNo, int userNo) throws SQLException;
 	
 	/**
 	 * select count(*) from cover_like where cover_no = ?
