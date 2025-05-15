@@ -2,6 +2,7 @@ package cardfein.kro.kr.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import cardfein.kro.kr.dao.MyCardDAO;
 import cardfein.kro.kr.dao.MyCardDAOImpl;
@@ -29,15 +30,21 @@ public class MyCardServiceImpl implements MyCardService {
 	}
 
 	@Override
-	public List<UserCardDto> selectMatchTrend() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public UserCardDto selectMatchTrend() throws SQLException {
+		UserCardDto userCard = dao.selectMatchTrend();
+		return userCard;
 	}
 
 	@Override
-	public List<CardDto> selectMyCardDetails() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Integer, CardDto> selectMyCardDetails() throws SQLException {
+		Map<Integer, CardDto> map = dao.selectMyCardDetails();
+		return map;
+	}
+	
+	@Override
+	public int deleteMyCard(int cardNo) throws SQLException {
+		int result = dao.deleteMyCard(cardNo);
+		return result;
 	}
 
 }

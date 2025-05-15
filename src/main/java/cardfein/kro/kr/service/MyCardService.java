@@ -2,6 +2,7 @@ package cardfein.kro.kr.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import cardfein.kro.kr.dto.CardDto;
 import cardfein.kro.kr.dto.UserCardDto;
@@ -28,10 +29,15 @@ public interface MyCardService {
 	/**
 	 * MyCardDAOIml의 보유카드 매칭율 검색하는 메소드 호출
 	 */
-	List<UserCardDto> selectMatchTrend() throws SQLException;
+	UserCardDto selectMatchTrend() throws SQLException;
 	
 	/**
 	 * MyCardDAOIml의 보유카드 상세정보 검색하는 메소드 호출
 	 */
-	List<CardDto> selectMyCardDetails() throws SQLException;
+	Map<Integer, CardDto> selectMyCardDetails() throws SQLException;
+	
+	/**
+	 * MyCardDAOIml의 보유카드 삭제 메소드 호출
+	 */
+	int deleteMyCard(int cardNo) throws SQLException;
 }
