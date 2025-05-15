@@ -3,27 +3,32 @@ package cardfein.kro.kr.dto;
 import java.time.LocalDateTime;
 
 public class BulletinBoardDto {
-    private int boardId;        // 글 번호 (PK)
-    private String title;       // 제목
-    private String content;     // 내용
-    private String author;      // 작성자
-    private LocalDateTime regDate; // 작성일
-    private int views;          // 조회수
+    private int boardId;
+    private String title;
+    private String content;
+    private String author;
+    private LocalDateTime regDate;
+    private int views;
 
-    // 기본 생성자
+    // 기본 생성자 - 자동으로 등록 날짜 설정
     public BulletinBoardDto() {
-        this.views = 0; // 조회수 기본값 0
-        this.regDate = LocalDateTime.now(); // 작성일 기본값 현재 시간
+        this.views = 0;
+        this.regDate = LocalDateTime.now();
     }
 
-    // 전체 필드를 받는 생성자
+    // 전체 필드 포함 생성자
     public BulletinBoardDto(int boardId, String title, String content, String author, LocalDateTime regDate) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
         this.author = author;
         this.regDate = regDate;
-        this.views = 0; // 조회수 기본값 0
+        this.views = 0; // 조회수 초기값 설정
+    }
+
+    // 조회수 증가 기능 추가
+    public void incrementViews() {
+        this.views++;
     }
 
     // Getter & Setter
