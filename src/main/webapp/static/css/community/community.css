@@ -17,118 +17,239 @@ body {
 }
 
 .content-wrapper {
-    display: flex;
-    gap: 30px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.05);
-    padding: 20px;
+	display: flex;
+	gap: 30px;
+	background: white;
+	border-radius: 8px;
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.05);
+	padding: 20px;
+}
+/* 헤더 스타일 */
+.com-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* 두 요소를 상단 기준 정렬 */
+  padding: 20px 0;
+  margin-bottom: 40px;
+  height: 80px; /* 높이를 고정해 아래 정렬 가능하게 함 */
+  position: relative;
+}
+
+.com-header h1 {
+	font-size: 40px;
+	font-weight: 700;
+	color: #333;
+}
+
+/* 검색 */
+.search-select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* 검색창을 오른쪽 아래처럼 보이게 (위에서 margin push) */
+.search-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 50px; /* ⬅ h1보다 아래로 내려가게 조절 */
+}
+
+.search-input {
+  padding: 6px 10px;         /* 위아래: 6px, 좌우: 10px */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 160px;              /* 기존보다 좁게 */
+  font-size: 13px;           /* 글자 크기 ↓ */
+}
+
+.search-button {
+  padding: 6px 14px;         /* 버튼 크기 ↓ */
+  background-color: #4263eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;           /* 글자 크기 ↓ */
 }
 
 /* 사이드바 */
 .sidebar {
-  width: 180px;
-  border-right: 1px solid #eee;
+	width: 180px;
+	border-right: 1px solid #eee;
 }
 
 .menu {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  list-style: none;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	list-style: none;
 }
 
 .menu-item {
-  padding: 12px 20px;
-  cursor: pointer;
-  color: #868e96;
-  transition: all 0.2s ease;
-  order: 2; /* 기본은 아래 */
+	padding: 12px 20px;
+	cursor: pointer;
+	color: #868e96;
+	transition: all 0.2s ease;
+	order: 2; /* 기본은 아래 */
 }
 
 .menu-item:hover {
-  color: #4263eb;
+	color: #4263eb;
 }
 
 /* 메인 콘텐츠 */
 .main-content {
-  flex: 1;
-  padding-left: 10px;
+	flex: 1;
+	padding-left: 10px;
 }
 
 .main-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #333;
+	font-size: 24px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: #333;
 }
 
 .main-body {
-  font-size: 14px;
-  color: #555;
-  line-height: 1.6;
+	font-size: 14px;
+	color: #555;
+	line-height: 1.6;
 }
 
 .post-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+	margin-bottom: 15px;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
 
-      .post-item:hover {
-        background-color: #f8f9fa;
-      }
+.post-item:hover {
+	background-color: #f8f9fa;
+}
 
-      .post-item:hover .post-title {
-        color: #4263eb;
-      }
+.post-item:hover .post-title {
+	color: #4263eb;
+}
 
-      .post-content {
-        flex: 1;
-        margin-right: 20px;
-      }
+.post-content {
+	flex: 1;
+	margin-right: 20px;
+}
 
-      .post-title {
-        font-size: 16px;
-        font-weight: 500;
-        color: #333;
-        margin-bottom: 8px;
-      }
-      
-      .post-meta {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 15px;
-      }
-      
+.post-title {
+	font-size: 16px;
+	font-weight: 500;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.post-meta {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 15px;
+}
+
 .post-info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
 
-      .post-write-info {
-        order: 1;
-        font-size: 13px;
-        color: #888;
-        margin-bottom: 5px;
-      }
+.post-write-info {
+	order: 1;
+	font-size: 13px;
+	color: #888;
+	margin-bottom: 5px;
+}
 
-      .post-stats {
-        order: 2;
-        display: flex;
-        gap: 15px;
-      }
+.post-stats {
+	order: 2;
+	display: flex;
+	gap: 15px;
+}
 
-      .views,
-      .stars {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 13px;
-        color: #888;
-      }
+.post-stats img {
+  width: 14px;                /* 글자 높이 정도 */
+  height: 14px;
+  vertical-align: middle;     /* 또는 text-bottom 도 OK */
+  margin-right: 4px;          /* 아이콘과 숫자 간 간격 */
+}
+
+.reply, .stars {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 13px;
+	color: #888;
+}
+
+/* 이미지 스타일 */
+.post-image-container {
+	width: 90px;
+	height: 90px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.card-image {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+	display: block;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+	gap: 5px;
+}
+
+.page-number {
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	color: #666;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.page-number.active {
+	background-color: #4263eb;
+	color: white;
+	font-weight: 500;
+}
+
+.prev-page, .next-page {
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	color: #666;
+	text-decoration: none;
+}
+
+#detail-view {
+  display: none;
+}
+
+a {
+	text-decoration-line: none
+}
