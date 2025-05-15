@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +33,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
 /**
- * 비회원 명세서 ocr 분석 Controller
+ * 명세서 ocr 분석 및 맞춤 카드 추천 Controller
  */
 
 public class OcrController implements RestController {
@@ -43,7 +42,6 @@ public class OcrController implements RestController {
 	public OcrController() {
 	}
 
-	StringBuilder ocrResult = new StringBuilder();
 
 	/**
 	 * ocr 명세서인식
@@ -53,6 +51,7 @@ public class OcrController implements RestController {
 	 */
 	public Object recognize(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
+		StringBuilder ocrResult = new StringBuilder();
 		String apiUrl = "https://wpowaclttw.apigw.ntruss.com/custom/v1/41289/3d95171c4ef12bef25ccd28b47c4be4e3ceaf6a913911f0959fdc24765c790ed/general";
 		String secretKey = "aGNyVGRzVkxLSndmVkpNUHNybkh0YUdScGhmbEVaQWs="; // Naver Cloud에서 발급받은 Secret Key
 
@@ -93,7 +92,33 @@ public class OcrController implements RestController {
 				ocrResult.append(fieldNode.path("inferText").asText()).append("\n");
 			}
 		}
-		return ocrResult.toString();
+		
+		// 개별 항목 파싱
+		String[] lines = ocrResult.toString().split("\n");
+		List<Map<String, String>> entries = new ArrayList<>(); // 세부항목 모두 저장
+
+		for (int i = 0; i < lines.length - 3; i++) {
+			if (lines[i].matches("\\d{4}-\\d{2}-\\d{2}")) {
+				String date = lines[i];
+				String merchant = lines[i + 1];
+				int amount = Integer.parseInt(lines[i + 2].replace(",", "").replace("원", ""));
+				String category = lines[i + 3];
+
+				// 저장
+				Map<String, String> entry = new HashMap<>();
+				entry.put("date", date);  //날짜
+				entry.put("merchant", merchant); //가맹점
+				entry.put("amount", String.valueOf(amount)); //금액
+				entry.put("category", category); //카테고리
+				entries.add(entry);
+
+			}
+		}
+		
+		request.getSession().setAttribute("ocrText", ocrResult.toString());
+		request.getSession().setAttribute("statementEntries", entries); // 회원인 경우 db 저장 데이터
+		
+		return entries;
 	}
 
 	/**
@@ -107,39 +132,33 @@ public class OcrController implements RestController {
 	 */
 	public Object parsing(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-		String ocrText = ocrResult.toString();
+		String ocrText = (String)request.getSession().getAttribute("ocrText");
 		Map<String, Integer> categorySums = new HashMap<>(); // 카테고리별 합산
-		int totalAmount = 0;
 		// 총 사용금액 추출
-		Pattern totalPattern = Pattern.compile("총 사용금액:\\n([\\d,]+)원");
-		Matcher totalMatcher = totalPattern.matcher(ocrText);
-		if (totalMatcher.find()) {
-			totalAmount = Integer.parseInt(totalMatcher.group(1).replace(",", ""));
+		String[] lines = ocrText.split("\n");
+		int totalAmount = 0;
+
+		for (int i = 0; i < lines.length - 2; i++) {
+		    if (lines[i].contains("총") && lines[i + 1].contains("사용금액")) {
+		        String amountLine = lines[i + 2].replaceAll("[^\\d]", "");
+		        totalAmount = Integer.parseInt(amountLine);
+		        break;
+		    }
 		}
 
-		// 개별 항목 파싱
-		String[] lines = ocrText.split("\n");
-		List<Map<String, String>> entries = new ArrayList<>(); // 세부항목 모두 저장
 
+		// 카테고리별 합산
 		for (int i = 0; i < lines.length - 3; i++) {
 			if (lines[i].matches("\\d{4}-\\d{2}-\\d{2}")) {
-				String date = lines[i];
-				String merchant = lines[i + 1];
 				int amount = Integer.parseInt(lines[i + 2].replace(",", "").replace("원", ""));
 				String category = lines[i + 3];
 
-				// 저장
-				Map<String, String> entry = new HashMap<>();
-				entry.put("date", date);
-				entry.put("merchant", merchant);
-				entry.put("amount", String.valueOf(amount));
-				entry.put("category", category);
-				entries.add(entry);
-
-				// 카테고리별 합산
 				categorySums.put(category, categorySums.getOrDefault(category, 0) + amount);
 			}
 		}
+		
+		
+		request.getSession().setAttribute("ocrText", ocrText); // 회원인 경우 db 저장 데이터
 		request.getSession().setAttribute("categorySums", categorySums);
 		request.getSession().setAttribute("totalAmount", totalAmount);
 		
@@ -147,7 +166,7 @@ public class OcrController implements RestController {
 	}
 
 	/**
-	 * ocr 결과 기반 카드추천
+	 * ocr 결과 기반 카드추천(비회원)
 	 * 
 	 * @param request
 	 * @param response
@@ -161,7 +180,6 @@ public class OcrController implements RestController {
 		Map<String, Double> spendingRate = new HashMap<>();
 		Map<String, Integer> categorySums = (Map<String, Integer>) request.getSession().getAttribute("categorySums");
 		Integer totalAmount = (Integer) request.getSession().getAttribute("totalAmount");
-		
 		// top2 소비 카테고리 추출
 		List<Map.Entry<String, Integer>> entries = new ArrayList<>(categorySums.entrySet());
 		entries.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
@@ -180,7 +198,6 @@ public class OcrController implements RestController {
 		Map<Integer, List<CardBenefitDto>> cardBenefitMap = new HashMap<>();
 		for (CardBenefitDto benefit : cardBenefitList) {
 			int cardNo = benefit.getCardNo();
-			System.out.println(cardNo);
 			cardBenefitMap.computeIfAbsent(cardNo, k -> new ArrayList<>()) // 카드번호가 없으면 새 리스트 생성
 					.add(benefit); // 해당 카드번호 리스트에 추가
 		}
@@ -210,17 +227,58 @@ public class OcrController implements RestController {
 		
 		//카드별 매칭률 구하기
 		Map<String,Double> matchingRate = new HashMap<>();
+		Map<Integer,Double> matchingRateDb = new HashMap<>(); //회원인 경우 db 에 저장할 Map<카드번호,매칭률>
 		for (CardDto card : cardList) {
 			String cardName = card.getCardName();
 			for (int cardNo : cardMatch.keySet()) {
 				if(card.getCardNo()==cardNo) {
 					Double matchscore = cardMatch.get(cardNo);
 					matchingRate.put(cardName, Math.round(matchscore / max * 0.9 * 1000) / 10.0);
+					matchingRateDb.put(cardNo, Math.round(matchscore / max * 0.9 * 1000) / 10.0); //회원인 경우 db 에 저장할 Map<카드번호,매칭률>
 				}
 			}
 		}
+		request.getSession().setAttribute("matchingRateDb", matchingRateDb);
+		
+		if(1==1) insertStatement(request,response); //회원이 로그인한 상태면 db 저장 메소드 호출
+		
 		
 		return matchingRate;
 	}
+	
+	/**
+	 * ocr 인식 결과 db 에 저장(회원)
+	 */
+	public void insertStatement(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, SQLException {
+		String ocrText = (String)request.getSession().getAttribute("ocrText"); //db 저장할 ocr text
+		List<Map<String, String>> statement =  (List<Map<String, String>>)request.getSession().getAttribute("statementEntries"); //db 저장할 명세서 데이터
+		Map<String, Integer> categorySums = (Map<String, Integer>) request.getSession().getAttribute("categorySums"); //db 저장할 category별 합계
+		Map<Integer,Double> matchingRateDb = (Map<Integer,Double>) request.getSession().getAttribute("matchingRateDb"); //db 저장할 Map<카드번호,매칭률>
+		
+		//회원인 경우, ocr결과, 명세서내용 List, 카테고리 별 금액 map,  카드번호=매칭률 map service 로 전달
+		List<Object> inputData = new ArrayList<>();
+		
+		inputData.add(ocrText);
+		inputData.add(statement);
+		inputData.add(categorySums);
+		inputData.add(matchingRateDb);
+		service.insertStatementResult(inputData);
+	}
+	
+	
+	/**
+	 * 누적 소비 기반 카드추천(회원)
+	 */
+	public Object memberCardRecommend(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException, SQLException{
+		
+		List<CardDto> list = service.selectRecommendCardList();
+		list.sort((a, b) -> Double.compare(b.getMatchingRate(), a.getMatchingRate())); //매칭율 기준 내림차순 정렬
+		request.setAttribute("cardList", list);
+		
+		return list;
+	}
+	
+	
 
 }

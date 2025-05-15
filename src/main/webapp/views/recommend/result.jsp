@@ -6,16 +6,23 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- 공통 스타일 -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/common.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/ocrResult.css">
+<!-- 공통 스크립트 -->
+<script src="${pageContext.request.contextPath}/static/js/common.js"
+	defer></script>
 </head>
-<style>
-#spendingChart {
-	width: 320px !important;
-	height: 320px !important;
-}
-</style>
+
+
 <body>
+	<!-- header -->
+	<jsp:include page="../../views/common/header.jsp" />
+	<!-- 메인 콘텐츠 -->
 	<main class="container">
-		<h2>분석 결과 (일회성 추천)</h2>
+		<h2>명세서 분석 결과</h2>
 
 		<section>
 			<canvas id="spendingChart" class="small-chart"></canvas>
@@ -30,12 +37,13 @@
 			<p class="font-medium">※ 비회원은 카드 추천 결과가 저장되지 않으며, 누적 분석은 제공되지
 				않습니다.</p>
 		</section>
-		<p>
+		<p id="memberCheck">
 			더 정확한 추천을 원하시나요? <a href="member-dashboard.html">회원 로그인 후 누적 분석
 				보기</a>
 		</p>
 	</main>
-
+	<!-- footer -->
+	<jsp:include page="../../views/common/footer.jsp" />
 	<script>
  
   const spendingData = async () => {
@@ -82,6 +90,9 @@
 	    }
 	  });
 	  await cardMatch();
+	  if(1===1) //회원이 로그인 한 상태라면!!
+	  document.getElementById('memberCheck')
+	  .innerHTML=`<button id="memberAnalysis"  onclick="location.href = 'memberCardRecommend.jsp'"> 누적소비 기반 맞춤카드 확인하기 </button>`;
 	  
 	};
 	
@@ -97,7 +108,7 @@
 		  });
 
 		  let result = await response.json(); 
-		  console.log(result);
+		  
 		  const cardNames =  Object.keys(result); //또는   Map<String, Integer> spendingMap = (Map<String, Integer>) result; downcasting
 		  const matchingRate = Object.values(result);
 		  
@@ -112,11 +123,18 @@
 		        }]
 		      },
 		      options: {
+		    	  responsive: true,
+		          maintainAspectRatio: false,
 		        plugins: { title: { display: true, text: '추천 카드 매칭률' } },
 		        scales: { y: { beginAtZero: true, max: 100 } }
 		      }
 		    });
+		  
+		  
+		  
    }
+   
+   
    
    
    spendingData();
