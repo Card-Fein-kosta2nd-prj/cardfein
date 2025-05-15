@@ -59,7 +59,6 @@ dbinfo.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -102,3 +101,7 @@ $RECYCLE.BIN/
 
 # Database configuration
 resources/
+.gitignore
+/build/
+
+/build/
