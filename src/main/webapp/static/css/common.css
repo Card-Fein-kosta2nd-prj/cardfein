@@ -38,7 +38,7 @@ footer {
     align-items: center; /* 수직 중앙 정렬 */
 }
 
-/* 네비게이션 헤더 (스크롤 ㅈ 고정)  */
+/* 네비게이션 헤더 (스크롤 전 고정)  */
 .card-nav.sticky {
     position: fixed;
     top: 0;
