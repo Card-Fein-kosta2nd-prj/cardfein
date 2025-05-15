@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Card:fein - 내카드 등록하기</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- 공통 스타일 -->
 <link rel="stylesheet"
@@ -44,6 +45,11 @@
 					<textarea id="inquiryContent" rows="4">카드명: </textarea>
 					<button onclick="submitInquiry()">1:1 문의 등록</button>
 				</div>
+				
+				<div class="card_list">
+				<h2>📊 누적 소비 기반 카드 매칭율 변화</h2>
+				<canvas id="lineChart" height="100"></canvas>
+				</div>
 			</div>
 
 		</div>
@@ -56,6 +62,8 @@
 	let inquiryForm = document.getElementById('inquiryForm');
 	let inquiryContent = document.getElementById('inquiryContent');
 	let input = document.querySelector("#keyword");
+	let matchChart = null;
+	
 	const search = async(e)=>{
 		inquiryForm.style.display = 'none';
 		if(!e.target.value) { 
@@ -117,9 +125,11 @@
 	            })
 	        });
 		let result = await response.json();
-		if(result===1) alert('카드가 등록 되었습니다.');
+		if(result===1) {alert('카드가 등록 되었습니다.');
 		input.value= '';
 		printList.innerHTML='';
+		drawTrend();
+		}
 	};
 	
 	const submitInquiry=async()=>{
@@ -138,7 +148,56 @@
 		printList.innerHTML='';
 	};
 	
-	
+	const lineCtx = document.getElementById('lineChart').getContext('2d');
+    const drawTrend =async()=>{
+    	let response = await fetch("${path}/ajax",{
+    		method :"POST",
+	          body:new URLSearchParams({
+	            key:"mycard",
+			    methodName:"matchingTrend"})
+    	});
+    	let result = await response.json();
+    	let labels = result.DateSet;
+    	let matchHistory = result.matchTrend;
+    	
+    	
+    	const datasets = Object.entries(matchHistory).map(([cardName, dateRateMap]) => {
+    		let data = labels.map(date => dateRateMap[date] ?? 0); // 누락된 월은 0 처리
+    		let avg = (data.reduce((a, b) => a + b, 0) / data.length).toFixed(1);
+    		return {
+    			label: `\${cardName} (평균 \${avg}%)`,
+    			data: data, //매칭율
+    			borderWidth: 2,
+    			tension: 0.3
+    		};
+    	});
+    	
+    	 if (matchChart) {
+    	        // 이미 생성된 차트가 있다면 데이터만 갱신
+    	        matchChart.data.labels = labels;
+    	        matchChart.data.datasets = datasets;
+    	        matchChart.update();
+    	    } else {
+    	        // 없으면 새로 생성
+    	        matchChart = new Chart(document.getElementById('lineChart').getContext('2d'), {
+    	            type: 'line',
+    	            data: {
+    	                labels: labels,
+    	                datasets: datasets
+    	            },
+    	            options: {
+    	                plugins: {
+    	                    title: { display: false }
+    	                },
+    	                scales: {
+    	                    y: { beginAtZero: true, max: 100 }
+    	                }
+    	            }
+    	        });
+    	    }
+    	
+    };
+    drawTrend();
 	
 	</script>
 </body>
