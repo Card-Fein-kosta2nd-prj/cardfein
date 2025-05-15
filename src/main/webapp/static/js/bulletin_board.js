@@ -1,4 +1,4 @@
-/*document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const boardBody = document.getElementById("board-body");
   const btnWrite = document.getElementById("btn-write");
   const modalOverlay = document.getElementById("modal-overlay");
@@ -9,47 +9,58 @@
   const savePostButton = document.getElementById("save-post");
   const cancelPostButton = document.getElementById("cancel-post");
 
-  let posts = [];
-  let editIndex = null;
+  let editId = null;
 
-  // 게시글 렌더링
-  function renderPosts() {
+  function fetchPosts() {
+    fetch("/board")
+      .then((res) => res.json())
+      .then((data) => renderPosts(data))
+      .catch((err) => console.error("불러오기 실패:", err));
+  }
+
+  function renderPosts(posts) {
     boardBody.innerHTML = "";
-    posts.forEach((post, index) => {
+    posts.forEach((post) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${post.title}</td>
+        <td>${post.boardId}</td>
+        <td onclick="increaseViews(${post.boardId})">${post.title}</td>
         <td>${post.author}</td>
         <td>${post.content}</td>
         <td>${post.regDate}</td>
         <td>${post.views}</td>
         <td>
-          <button onclick="editPost(${index})">수정</button>
-          <button onclick="deletePost(${index})">삭제</button>
+          <button class="edit-btn" data-id="${post.boardId}">수정</button>
+          <button class="delete-btn" data-id="${post.boardId}">삭제</button>
         </td>
       `;
       boardBody.appendChild(row);
     });
+
+    document.querySelectorAll(".edit-btn").forEach((btn) => {
+      btn.addEventListener("click", () => loadPost(btn.dataset.id));
+    });
+    document.querySelectorAll(".delete-btn").forEach((btn) => {
+      btn.addEventListener("click", () => deletePost(btn.dataset.id));
+    });
   }
 
-  // 글쓰기 모달 열기
   btnWrite.addEventListener("click", () => {
-    postModal.style.display = "block";
-    modalOverlay.style.display = "block";
+    editId = null;
     postTitle.value = "";
     postAuthor.value = "";
     postContent.value = "";
-    editIndex = null;
+    postModal.style.display = "block";
+    modalOverlay.style.display = "block";
   });
 
-  // 글쓰기 모달 닫기
-  cancelPostButton.addEventListener("click", () => {
+  cancelPostButton.addEventListener("click", closeModal);
+
+  function closeModal() {
     postModal.style.display = "none";
     modalOverlay.style.display = "none";
-  });
+  }
 
-  // 게시글 저장
   savePostButton.addEventListener("click", () => {
     const title = postTitle.value.trim();
     const author = postAuthor.value.trim();
@@ -60,46 +71,61 @@
       return;
     }
 
-    const newPost = {
-      title,
-      author,
-      content,
-      regDate: new Date().toLocaleString(),
-      views: 0,
-    };
+    const data = new URLSearchParams();
+    data.append("boardId", editId || "0");
+    data.append("title", title);
+    data.append("author", author);
+    data.append("content", content);
 
-    if (editIndex === null) {
-      // 새 글 작성
-      posts.push(newPost);
-    } else {
-      // 기존 글 수정
-      posts[editIndex] = { ...posts[editIndex], ...newPost };
-    }
-
-    renderPosts();
-    postModal.style.display = "none";
-    modalOverlay.style.display = "none";
+    fetch("/board", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: data.toString(),
+    })
+      .then((res) => {
+        if (res.ok) {
+          fetchPosts();
+          closeModal();
+        } else {
+          return res.text().then((msg) => alert("저장 실패: " + msg));
+        }
+      })
+      .catch((err) => alert("저장 오류: " + err));
   });
 
-  // 게시글 수정
-  window.editPost = (index) => {
-    const post = posts[index];
-    postTitle.value = post.title;
-    postAuthor.value = post.author;
-    postContent.value = post.content;
-    editIndex = index;
+  function loadPost(boardId) {
+    fetch(`/board?boardId=${boardId}`)
+      .then((res) => res.json())
+      .then((post) => {
+        editId = post.boardId;
+        postTitle.value = post.title;
+        postAuthor.value = post.author;
+        postContent.value = post.content;
+        postModal.style.display = "block";
+        modalOverlay.style.display = "block";
+      })
+      .catch((err) => alert("불러오기 실패: " + err));
+  }
 
-    postModal.style.display = "block";
-    modalOverlay.style.display = "block";
+  function deletePost(boardId) {
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+
+    fetch(`/board?boardId=${boardId}`, { method: "DELETE" })
+      .then((res) => {
+        if (res.ok) {
+          fetchPosts();
+        } else {
+          return res.text().then((msg) => alert("삭제 실패: " + msg));
+        }
+      })
+      .catch((err) => alert("삭제 오류: " + err));
+  }
+
+  window.increaseViews = function(boardId) {
+    fetch(`/board?boardId=${boardId}&action=view`)
+      .then(() => fetchPosts())
+      .catch((err) => console.error("조회수 증가 실패:", err));
   };
 
-  // 게시글 삭제
-  window.deletePost = (index) => {
-    if (confirm("정말 삭제하시겠습니까?")) {
-      posts.splice(index, 1);
-      renderPosts();
-    }
-  };
-
-  renderPosts();
-});*/
+  fetchPosts();
+});
