@@ -4,33 +4,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserCardDto {
-	private int cardNo;
+	private String cardName;
 	private String cosumeDate;
 	private Double matchScore;
-	private Map<String,Double> matchTrend;
+	private Map<String,Double[]> matchTrend; //cardName = matchScore[]
 	
 	public UserCardDto() {
 	}
 
-	public UserCardDto(int cardNo, Map<String, Double> matchTrend) {
+	public UserCardDto(String cardName, Map<String, Double> matchTrend) {
 		super();
-		this.cardNo = cardNo;
-		this.matchTrend = new HashMap<String, Double>();
+		this.cardName = cardName;
+		this.matchTrend = new HashMap<String, Double[]>();
 	}
 
-	public int getCardNo() {
-		return cardNo;
+	public String getCardName() {
+		return cardName;
 	}
 
-	public void setCardNo(int cardNo) {
-		this.cardNo = cardNo;
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
 	}
 
-	public Map<String, Double> getMatchTrend() {
+	public Map<String, Double[]> getMatchTrend() {
 		return matchTrend;
 	}
 
-	public void setMatchTrend(Map<String, Double> matchTrend) {
+	public void setMatchTrend(Map<String, Double[]> matchTrend) {
 		this.matchTrend = matchTrend;
 	}
 	
