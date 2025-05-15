@@ -23,7 +23,7 @@ public class CardRankingDAOImpl implements CardRankingDAO {
 	@Override
 	public List<CardCoverDto> findAllCovers() {
 		List<CardCoverDto> list = new ArrayList<CardCoverDto>();
-		String sql = "Select user_no, final_cover_url from card_cover";
+		String sql = "Select cover_no, user_no, final_cover_url, title from card_cover";
 		
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -35,9 +35,11 @@ public class CardRankingDAOImpl implements CardRankingDAO {
 			rs = ps.executeQuery();
 			
 			while(rs.next()) {
+				int coverNo = rs.getInt("cover_no");
 				int userId = rs.getInt("user_no");
 				String finalUrl = rs.getString("final_cover_url");
-				list.add(new CardCoverDto(userId, finalUrl));
+				String title = rs.getString("title");
+				list.add(new CardCoverDto(coverNo, userId, finalUrl, title));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

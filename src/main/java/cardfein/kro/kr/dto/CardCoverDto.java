@@ -14,9 +14,11 @@ public class CardCoverDto {
 		
 	}
 	
-	public CardCoverDto(int userId, String finalCardUrl) {
+	public CardCoverDto(int cover_no, int userId, String finalCardUrl, String title) {
+		this.cover_no = cover_no;
 		this.userId = userId;
 		this.finalCardUrl = finalCardUrl;
+		this.title = title;
 	}
 	
 	public CardCoverDto(int cover_no, String title, String baseCardUrl, String finalCardUrl) {

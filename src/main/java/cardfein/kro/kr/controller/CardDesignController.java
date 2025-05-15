@@ -1,13 +1,16 @@
 package cardfein.kro.kr.controller;
 
 import java.awt.Graphics2D;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,16 +22,18 @@ import com.google.gson.Gson;
 import cardfein.kro.kr.service.CardDesignService;
 import cardfein.kro.kr.service.CardDesignServiceImpl;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
-public class CardDesignController {
+public class CardDesignController implements RestController{
 	private static final CardDesignController instance = new CardDesignController();
 
     private final CardDesignService service;
 
     private CardDesignController() {
-        this.service = CardDesignServiceImpl.getInstance(); // ✅ 싱글톤 서비스 주입
+        this.service = CardDesignServiceImpl.getInstance(); // 싱글톤 서비스 주입
     }
 
     public static CardDesignController getInstance() {
@@ -55,39 +60,54 @@ public class CardDesignController {
 	/**
 	 * 완성된 커버 이미지 저장
 	 */
+	
 	public void saveFinalCard(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		BufferedReader reader = request.getReader();
-		StringBuilder sb = new StringBuilder();
-		String line;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line);
-		}
-		String jsonData = sb.toString();
-		
-		Gson gson = new Gson();
-		Map<String, String> formData = gson.fromJson(jsonData, Map.class);
-		
-		String title = formData.get("title");
-		String finalImageUrl = formData.get("finalImageUrl");
-		
-		ServletContext sc = request.getServletContext();
-		
-		String fileName = "cover_"+System.currentTimeMillis();
-		String imageUrl = saveBase64ImageToFile(finalImageUrl, fileName, sc);
-		
-		service.saveFinalCard(title, imageUrl);
-		
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("success", "카드 커버 저장 성공");
-		result.put("message", "실패요");
-		
-		String jsonResponse = gson.toJson(result);
-		
-		response.setContentType("appliction/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().print(jsonResponse);
+	    request.setCharacterEncoding("UTF-8");
+	    response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+
+	    // 1. 폼 필드(title) 추출
+	    String title = request.getParameter("title");
+
+	    // 2. 파일 파트(finalImage) 추출
+	    Part imagePart = request.getPart("finalImage");
+
+	    // 3. 파일 이름 및 저장 경로 설정
+	    String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+	    String fileName = title+"_img.png";
+
+	    ServletContext sc = request.getServletContext();
+	    String uploadPath = sc.getRealPath("/static/upload/cover");
+	    File uploadDir = new File(uploadPath);
+	    if (!uploadDir.exists()) uploadDir.mkdirs();
+
+	    // 4. 파일 저장
+	    File file = new File(uploadDir, fileName);
+	    try (InputStream input = imagePart.getInputStream();
+	         FileOutputStream output = new FileOutputStream(file)) {
+	        byte[] buffer = new byte[1024];
+	        int bytesRead;
+	        while ((bytesRead = input.read(buffer)) != -1) {
+	            output.write(buffer, 0, bytesRead);
+	        }
+	    }
+
+	    // 5. DB에 저장할 상대경로 생성
+	    String imageUrl = "/static/upload/cover/" + fileName;
+
+	    // 6. DB 저장 호출
+	    service.saveFinalCard(title, imageUrl);
+
+	    // 7. 응답 JSON
+	    Map<String, String> result = new HashMap<>();
+	    result.put("success", "카드 커버 저장 성공");
+	    result.put("error", "실패");
+
+	    Gson gson = new Gson();
+	    String jsonResponse = gson.toJson(result);
+	    response.getWriter().print(jsonResponse);
 	}
+
 	
 	private String saveBase64ImageToFile(String base64Image, String fileName, ServletContext sc) throws Exception {
 	    // base64 헤더 제거

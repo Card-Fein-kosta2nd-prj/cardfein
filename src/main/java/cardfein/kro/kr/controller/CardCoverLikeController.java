@@ -33,7 +33,7 @@ public class CardCoverLikeController {
 	 * 누르지 않았다면 좋아요 추가 후 현재 좋아요 수를 Json 형태로 응답
 	 */
 	public void liked(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int coverNo = Integer.parseInt(request.getParameter("coverNo"));
+        int coverNo = Integer.parseInt(request.getParameter("cover_no"));
         int userNo = Integer.parseInt(request.getParameter("userNo"));
 
         /**

@@ -44,9 +44,12 @@ public class CardCoverLikeDAOImpl implements CardCoverLikeDAO {
 		return false;
 	}
 
+	/**
+	 * user_no = 2 일단 로그인 정보가 없어서 넣어놓고 구현
+	 */
 	@Override
 	public void addLike(int coverNo, int userNo) {
-		String sql = "insert into cover_like(cover_no, user_no) values (?, ?)";
+		String sql = "insert into cover_like(cover_no, user_no) values (?, 2)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		

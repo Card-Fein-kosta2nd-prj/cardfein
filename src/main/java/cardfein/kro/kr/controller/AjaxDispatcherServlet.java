@@ -1,19 +1,13 @@
 package cardfein.kro.kr.controller;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Map;
 
-import cardfein.kro.kr.dao.CardCoverLikeDAO;
-import cardfein.kro.kr.dao.CardCoverLikeDAOImpl;
-import cardfein.kro.kr.dao.CardDesignDAO;
-import cardfein.kro.kr.dao.CardDesignDAOImpl;
-import cardfein.kro.kr.dao.CardRankingDAO;
-import cardfein.kro.kr.dao.CardRankingDAOImpl;
-import cardfein.kro.kr.service.CardCoverLikeService;
-import cardfein.kro.kr.service.CardCoverLikeServiceImpl;
-import cardfein.kro.kr.service.CardDesignService;
-import cardfein.kro.kr.service.CardDesignServiceImpl;
-import cardfein.kro.kr.service.CardRankingService;
-import cardfein.kro.kr.service.CardRankingServiceImpl;
+import com.google.gson.Gson;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,80 +19,44 @@ import jakarta.servlet.http.HttpServletResponse;
  *  사용자의 모든 요청을 처리할 진입점 Controller이다(FrontController의 역할한다)
  */
 @WebServlet(urlPatterns = "/ajax" , loadOnStartup = 1)
-
+@MultipartConfig
 public class AjaxDispatcherServlet extends HttpServlet {
-	private CardDesignController cardDesignController;
-	private CardRankingController cardRankingController;
-	private CardCoverLikeController cardCoverLikeController;
+	private static final long serialVersionUID = 1L;
 	
+    Map<String, RestController> map;
+    Map<String, Class<?>> clzMap;
 	@Override
-	public void init() throws ServletException {
-		cardDesignController = CardDesignController.getInstance();
-		cardRankingController = CardRankingController.getInstance();
-		cardCoverLikeController = CardCoverLikeController.getInstance();
+	public void init(ServletConfig config) throws ServletException {
+		ServletContext application = config.getServletContext();
+		Object obj = application.getAttribute("ajaxMap");
+		map = (Map<String, RestController>)obj;
+		System.out.println(map);
+		clzMap = (Map<String, Class<?>>)config.getServletContext().getAttribute("ajaxClzMap");
+		
 	}
-	
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json;charset=UTF-8");
+		String key = request.getParameter("key"); 
+		String methodName = request.getParameter("methodName"); 
 		
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
-		String action = request.getParameter("action");
-		
-		if (action == null) {
-			response.getWriter().print("오류발생");
-			return;
+		try {
+			Class<?> clz = clzMap.get(key);
+			Method method = clz.getMethod(methodName, HttpServletRequest.class , HttpServletResponse.class);
+			
+			RestController controller = map.get(key);
+			Object obj = method.invoke(controller, request , response);
+			
+			
+			Gson gson = new Gson();
+			String data = gson.toJson(obj);
+			
+			
+			response.getWriter().print(data);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			
 		}
-		
-		switch (action) {
-		case "getBaseImage":
-			try {
-				cardDesignController.getBaseImage(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-			
-		case "saveFinalCard":
-			try {
-				cardDesignController.saveFinalCard(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-			
-		case "getAllCardCover":
-			try {
-				cardRankingController.getAllCardCover(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
-			
-		case "likedCardCover":
-			try {
-				cardCoverLikeController.liked(request, response);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;		
-			
-		default:
-			response.getWriter().print("존재하지 않는 키입니다.");
-				
-		}
-	}
+	}//service 메소드 끝 
 }
-
-
-
-
-
-
-
-
-

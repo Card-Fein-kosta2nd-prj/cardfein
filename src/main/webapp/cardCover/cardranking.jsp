@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -31,31 +32,31 @@ pageEncoding="UTF-8"%>
         <div class="ranking-list">
           <div class="rank-card top1">
             <div class="rank-num">1.</div>
-            <img src="img/sample1.png" alt="Card1" />
+            <img src="" alt="Card1" />
             <div class="title">나의견 카드 커버</div>
             <div class="author">개발자몽</div>
           </div>
           <div class="rank-card">
             <div class="rank-num">2.</div>
-            <img src="img/sample2.png" alt="Card2" />
+            <img src="" alt="Card2" />
             <div class="title">고양 고양이의꿈</div>
             <div class="author">코딩러</div>
           </div>
           <div class="rank-card">
             <div class="rank-num">3.</div>
-            <img src="img/sample3.png" alt="Card3" />
+            <img src="" alt="Card3" />
             <div class="title">간바레 루루</div>
             <div class="author">히어로</div>
           </div>
           <div class="rank-card">
             <div class="rank-num">4.</div>
-            <img src="img/sample4.png" alt="Card4" />
+            <img src="" alt="Card4" />
             <div class="title">고른 선택은 댕기</div>
             <div class="author">삼색이</div>
           </div>
           <div class="rank-card">
             <div class="rank-num">5.</div>
-            <img src="img/sample5.png" alt="Card5" />
+            <img src="" alt="Card5" />
             <div class="title">전공과 커버링</div>
             <div class="author">공돌이</div>
           </div>
@@ -65,28 +66,101 @@ pageEncoding="UTF-8"%>
       <!-- 카드 목록 -->
       <div class="card-grid">
         <div class="card-item">
-          <img src="img/sample6.png" alt="Card6" />
+          <img src="" alt="Card6" />
           <div class="title">고른 선택, 댕기</div>
         </div>
-        <div class="card-item">
-          <img src="img/sample7.png" alt="Card7" />
-          <div class="title">커엽 댕기+곰곰</div>
-        </div>
-        <div class="card-item">
-          <img src="img/sample8.png" alt="Card8" />
-          <div class="title">게임을 한다면?</div>
-        </div>
-        <div class="card-item">
-          <img src="img/sample9.png" alt="Card9" />
-          <div class="title">냥카드, 귀요쓰</div>
-        </div>
-        <div class="card-item">
-          <img src="img/sample10.png" alt="Card10" />
-          <div class="title">노을빛 찐-카드</div>
-        </div>
+        
       </div>
     </div>
 
     <jsp:include page="/views/common/footer.jsp" />
+    
+    <script type="text/javascript">
+    async function loadCards() {
+    	  try {
+    	    const response = await fetch('${path}/ajax', {
+    	    	method: "GET",
+    	    	body:new URLSearchParams({
+    	    		key:"rank",
+    	    		methodName:"getAllCardCover"
+    	    	})
+    	    });
+    	    if (!response.ok) throw new Error('서버 응답 오류');
+
+    	    const cards = await response.json(); // [{user_id, img_url}, ...]
+
+    	    const grid = document.querySelector('.card-grid');
+    	    grid.innerHTML = '';  // 기존 내용 초기화
+
+    	    cards.forEach(card => {
+    	      const cardItem = document.createElement('div');
+    	      cardItem.classList.add('card-item');
+    	      
+    	      const likeBtn = document.createElement('button');
+    	      likeBtn.classList.add('like-button');
+    	      likeBtn.innerHTML = '♡';
+    	      likeBtn.setAttribute('data-cover-no', card.cover_no);
+    	      
+    	      likeBtn.addEventListener('click', async() => {
+    	    		const isLiked = likeBtn.classList.toggle('liked');
+    	    		likeBtn.innerHTML = isLiked ? '🤍': '♡';
+    	    		
+    	    		const coverNo = likeBtn.getAttribute('data-cover-no');
+    	    		
+    	    		try {
+    	    			const result = await fetch('${path}/ajax', {
+    	    				method: "POST",
+    	    				headers: {
+    	    					'Content-Type' : 'application/x-www-form-urlencoded',
+    	    				},
+    	    				body:new URLSearchParams({
+    	    					key:"like",
+    	    					methodName: "liked",
+    	    				})   	    					
+    	    			});
+    	    			
+    	    			if (!result.ok) throw new Error('서버 저장 실패');
+    	    			const serverMsg = await result.text();
+    	    			console.log('서버 응답:', serverMsg);
+    	    		}catch (err) {
+    	    			console.error("좋아요 요청 실패:", err);
+    	    		}
+    	    	});
+    	      
+    	      const imgContainer = document.createElement('div');
+    	      imgContainer.classList.add('img-container');
+			   
+    	      const img = document.createElement('img');
+    	      img.src = card.finalCardUrl;
+    	      img.alt = `User ${card.userId}`;
+    	      img.classList.add('imgBox');
+    	      
+    	      const overlayImg = document.createElement('img');
+    	      overlayImg.src = `${path}/static/images/small_top.png`;
+    	      overlayImg.alt = 'Overlay';
+    	      overlayImg.classList.add('overlay');
+    	      
+    	      imgContainer.appendChild(img);
+    	      imgContainer.appendChild(overlayImg);
+
+    	      const title = document.createElement('div');
+    	      title.classList.add('title');
+    	      title.textContent = card.title;
+
+    	      cardItem.appendChild(likeBtn);
+    	      cardItem.appendChild(imgContainer);
+    	      cardItem.appendChild(title);
+
+    	      grid.appendChild(cardItem);
+    	    });
+
+    	  } catch (error) {
+    	    console.error('카드 로드 실패:', error);
+    	  }
+    	}
+
+    	// 페이지 로드되면 자동 실행
+    	window.addEventListener('DOMContentLoaded', loadCards);
+    </script>
   </body>
 </html>

@@ -102,20 +102,48 @@ body {
 }
 
 .card-item {
-    background-color: white;
-    border-radius: 10px;
+    background-color: #E2E2E2;
+    border-radius: 10%;
     padding: 10px;
     text-align: center;
-    width: 150px;
+    width: 265px;
+    height: 300px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.card-item img {
+.like-button {
+	border: none;
+	font-size: 25px;
+	margin-left: 202px;
+	background-color: #E2E2E2;
+}
+
+.img-container {
+	height: 75%;
+	position: relative;
+	width: fit-content;
+}
+
+.imgBox {
+	display: block;
     width: 100%;
-    height: 180px;
+    height: 198px;
     object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 10px;
+    border-radius: 5%;
+}
+
+.overlay {
+	position: absolute;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 198px;
+	pointer-events: none;
 }
 
 .card-item .title {

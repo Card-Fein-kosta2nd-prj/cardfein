@@ -1,5 +1,6 @@
 package cardfein.kro.kr.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -14,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * 카드 랭킹 관련 요청을 처리하는 controller 클래스
  */
 
-public class CardRankingController {
+public class CardRankingController implements RestController{
 	
 	private static final CardRankingController instance = new CardRankingController();
 
@@ -48,6 +49,16 @@ public class CardRankingController {
 	public void getAllCardCover(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		List<CardCoverDto> list = service.getAllCovers();
+		
+		String contextPath = request.getContextPath();
+		
+		for (CardCoverDto dto : list) {
+			String originalUrl = dto.getFinalCardUrl();
+			if (originalUrl != null && !originalUrl.startsWith(contextPath)) {
+				dto.setFinalCardUrl(contextPath + originalUrl);
+				System.out.println("이미지 :"+ contextPath+originalUrl);
+			}
+		}
 		
 		Gson gson = new Gson();
 		String json = gson.toJson(list);

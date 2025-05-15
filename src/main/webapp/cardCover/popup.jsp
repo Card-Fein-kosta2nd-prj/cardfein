@@ -115,12 +115,11 @@
 
         // 팝업이 열릴 때, baseRectObj를 만들어 canvas에 추가, 그리고 기본 마그네틱 이미지도 캔버스에 추가
         if (openPopupBtn) {
-            openPopupBtn.addEventListener("click", () => {
+            openPopupBtn.addEventListener("click", async () => {
                 canvas.clear();
                 baseRectObj = null;
                 overlayImageObj = null;
                 templateOverlayObj = null;
-                /* clipZone = null; */
 
                 baseRectObj = new fabric.Rect({
                     left: (canvas.width - cardAreaWidth) / 2,
@@ -134,17 +133,9 @@
                     strokeWidth: 1
                 });
                 canvas.add(baseRectObj);
-                /* canvas.sendToBack(baseRectObj); */
-
-                /* clipZone = new fabric.Rect({
-                    left: baseRectObj.left,
-                    top: baseRectObj.top,
-                    width: cardAreaWidth,
-                    height: cardAreaHeight,
-                    absolutePositioned: true
-                }); */
                 
-                fabric.Image.fromURL(baseImage.src, function(img) {
+                const base64 = await imageToBase64(baseImage);
+                fabric.Image.fromURL(base64, function(img) {
                 	templateOverlayObj = img;
                 	templateOverlayObj.set({
                 		left: (canvas.width - img.width) / 2,
@@ -158,9 +149,8 @@
                 	
                 	canvas.add(templateOverlayObj);
                 	arrangeLayersInOrder();
-                	/* canvas.bringToFront(baseRectObj); */
                 	canvas.renderAll();
-                }, { crossOrigin: 'anonymous'});
+                });
 
                 /* fetchTemplateOverlayImage(); */
 
@@ -203,20 +193,36 @@
             }
         });
         
+     // HTMLImageElement → base64 string으로 변환
+        function imageToBase64(imgElement) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement("canvas");
+                canvas.width = imgElement.naturalWidth;
+                canvas.height = imgElement.naturalHeight;
+
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(imgElement, 0, 0);
+
+                const dataURL = canvas.toDataURL("image/png");
+                resolve(dataURL);
+            });
+        }
+        
      // 레이어 순서 재조정 함수 (재사용을 위해 별도 함수로 분리)
         function arrangeLayersInOrder() {
-        	const objects = canvas.getObjects();
-            canvas.clear(); // 캔버스 초기화
+        	/* const objects = canvas.getObjects();
+            canvas.clear(); // 캔버스 초기화 */
+            canvas.remove(...canvas.getObjects());
 
             // 순서대로 객체 추가
             if (baseRectObj) {
                 canvas.add(baseRectObj);
             }
-            if (templateOverlayObj) {
-                canvas.add(templateOverlayObj);
-            }
             if (overlayImageObj) {
                 canvas.add(overlayImageObj);
+            }
+            if (templateOverlayObj) {
+                canvas.add(templateOverlayObj);
             }
 
             canvas.renderAll();
@@ -249,38 +255,49 @@
                 src: obj.getSrc ? obj.getSrc() : 'N/A'
             })));
 
-            // 캔버스 내용을 이미지 데이터 URL로 변환
-            const imageDataURL = canvas.toDataURL({
-                format: 'png',
-                quality: 1.0
-            });
-            console.log("생성된 URL:", imageDataURL);
+         // 캔버스를 base64 → Blob으로 변환
+            const dataURL = canvas.toDataURL('image/png');
 
-            const formData = {
-                "title": coverName,
-                "finalImageUrl": imageDataURL
-            };
+            // base64 → Blob 변환 함수
+            function base64ToBlob(base64, mime = 'image/png') {
+                const base64Data = base64.split(',')[1];
+                const binary = atob(base64Data);
+                const array = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    array[i] = binary.charCodeAt(i);
+                }
+                return new Blob([array], { type: mime });
+            }
+
+            const imageBlob = base64ToBlob(dataURL);
+
+            // FormData로 전송 (multipart/form-data)
+            const formData = new FormData();
+            const fileName = coverName+".png";
+            formData.append('title', coverName);
+            formData.append('finalImage', imageBlob, fileName);
 
             try {
-                const response = await fetch(baseUrl + '/ajax?action=saveFinalCard', {
+                const response = await fetch('${path}/ajax', {
                     method: 'POST',
-                    headers: {
-                        "Content-Type": 'application/json'
-                    },
-                    body: JSON.stringify(formData),
+                    body: new URLSearchParams({
+                    	key:"cover",
+                    	methodName:"saveFinalCard",
+                    	formData
+                    })
                 });
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                const result = await response.json(); // JSON 응답 파싱
+                const result = await response.json();
 
                 if (result.success) {
                     alert('카드가 성공적으로 저장되었습니다!');
                     closePopupBtn.click();
                 } else {
-                    alert('카드 저장에 실패했습니다: ');
+                    alert('카드 저장에 실패했습니다.');
                 }
             } catch (error) {
                 console.error('카드 저장 실패:', error);
