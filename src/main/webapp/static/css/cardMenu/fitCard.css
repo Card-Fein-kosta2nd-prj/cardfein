@@ -1,0 +1,141 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+body {
+	background-color: #f5f5f5;
+}
+
+.fitCard-container {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.search-header {
+	margin-bottom: 20px;
+}
+
+.search-header h1 {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.filter-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 20px;
+}
+
+.filter-tag {
+	background-color: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 20px;
+	padding: 8px 16px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.filter-tag.active {
+	background-color: #333;
+	color: #fff;
+}
+
+.card-list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+.card-item {
+	background-color: #fff;
+	border-radius: 10px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-info {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.card-image {
+	width: 120px;
+	height: 80px;
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	margin-bottom: 15px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	float: left;
+	margin-right: 15px;
+}
+
+.card-image img {
+	width: 100%;
+	height: auto;
+	object-fit: contain;
+}
+
+.card-title-container {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 8px;
+}
+
+.card-title {
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 2px;
+	color: #000;
+}
+
+.card-subtitle {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 5px;
+}
+
+.card-tag-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	margin-bottom: 10px;
+	clear: both;
+}
+
+.card-tag {
+	background-color: #f5f5f5;
+	color: #333;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	display: inline-block;
+}
+
+.card-tag.highlight {
+	background-color: #fff2cc;
+	color: #ff9800;
+}
+
+.back-button {
+	display: inline-block;
+	background-color: #f5f5f5;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+	padding: 10px 15px;
+	margin-bottom: 20px;
+	text-decoration: none;
+	color: #333;
+	font-weight: bold;
+}
