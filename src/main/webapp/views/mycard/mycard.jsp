@@ -113,7 +113,7 @@
 		cardList.forEach(card => {
 			content +=`<tr>
 				<td><img
-				src="${path}/views/recommend/삼성_2V4.png"
+				src="${path}/static/images/cards/\${card.cardImageUrl}"
 				alt="카드 이미지"></td>
 				<td>\${card.provider}</td>
 				<td>\${card.cardName}</td>
@@ -229,7 +229,7 @@
 				
 				lists+=`
 				<div class="card-box" id="card\${cardNo}">
-			      <img src="삼성_2V4.png" class="card-img" alt="카드 이미지" />
+			      <img src="${path}/static/images/cards/\${img}" class="card-img" alt="카드 이미지" />
 			      <div class="card-info">
 			        <h3 contenteditable="false">\${cardName}</h3>
 			        <div class="benefit" contenteditable="false">
