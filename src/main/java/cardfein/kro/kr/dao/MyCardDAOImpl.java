@@ -177,7 +177,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 				String category = rs.getString(4);
 
 				if (map.get(cardNo) == null) {
-					CardDto card = new CardDto(cardNo, cardName, "test");//추후 바꿔야함
+					CardDto card = new CardDto(cardNo, cardName, url);//추후 바꿔야함
 					card.getDiscount().add(category);
 					map.put(cardNo, card);
 				} else {

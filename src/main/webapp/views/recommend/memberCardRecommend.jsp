@@ -10,7 +10,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/static/css/common.css">
 	<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/cardRecommend.css">
+	href="${pageContext.request.contextPath}/static/css/recommend/cardRecommend.css">
 	<!-- 공통 스크립트 -->
 <script src="${pageContext.request.contextPath}/static/js/common.js"
 	defer></script>
@@ -59,9 +59,15 @@
     result[0].cardBenefitList.forEach((benefit)=>{
         recentCategories.push(benefit.category); 
     });
+    let category1 = recentCategories[0];
+    let category2 = recentCategories[1];
     
-    document.getElementById('recentCategory').innerHTML=`지난 3개월 간 "\${recentCategories[0]}"와 "\${recentCategories[1]}"에 많이 사용하셨군요!<br>
-해당 분야에 혜택이 많은 카드를 모아봤어요. 😊 `;
+    let message = category2
+    ? `지난 3개월 간 "\${category1}"와 "\${category2}"에 많이 사용하셨군요!<br>해당 분야에 혜택이 많은 카드를 모아봤어요. 😊`
+    : `지난 3개월 간 "\${category1}"에 많이 사용하셨군요!<br>해당 분야에 혜택이 많은 카드를 모아봤어요. 😊`;
+
+  document.getElementById('recentCategory').innerHTML = message;
+    
     
     console.log(result);
     const container = document.getElementById('personalizedCards');
@@ -69,7 +75,7 @@
       const box = document.createElement('div');
       box.className = 'card-match-box';
       box.innerHTML = `
-        <img src="삼성_2V4.png" alt="카드 이미지" style="width:10%" />
+        <img src="${path}/static/images/cards/\${card.cardImageUrl}" alt="카드 이미지" style="width:10%" />
         <div class="card-info">
           <h3>\${card.cardName}</h3>
           <div class="match-rate">매칭률: \${card.matchingRate}%</div>
@@ -85,7 +91,10 @@
                   `, \${card.cardBenefitList[1].category} - \${card.cardBenefitList[1].discountRate}%` 
                   : ''}
             </div>
-          <a class="btn-sm" href="#">비교 바구니 담기</a>
+            <div class="button-group">
+            <a class="btn-sm" href="#">비교 바구니 담기</a>
+            <a class="btn-detail" href="#">자세히 보기</a>
+          </div>
         </div>
       `;
       container.appendChild(box);

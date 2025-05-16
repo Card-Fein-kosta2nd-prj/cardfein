@@ -33,7 +33,10 @@
           <div class="dropdown-content">
             <a href="<%= path %>/views/cardMenu/fitCard.jsp">맞춤카드 검색</a>
             <a href="#">카드추천 테스트</a>
-            <a href="#">명세서 맞춤추천</a>
+            <a href="<%= path %>/views/recommend/byBill.jsp">명세서 추천</a>
+              <% if (loginUser != null) { %>
+    <a href="<%= path %>/views/recommend/memberCardRecommend.jsp">누적기반 맞춤추천</a>
+  <% } %>
           </div>
         </li>
         <li class="dropdown">
