@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -244,8 +244,14 @@ public class OcrController implements RestController {
 		
 		if(loginUser!=null) insertStatement(request,response); //회원이 로그인한 상태면 db 저장 메소드 호출
 		
+		List<Map.Entry<String, Double>> entryList = new ArrayList<>(matchingRate.entrySet());
+		Collections.sort(entryList, (a,b)->Double.compare(b.getValue(), a.getValue()));
+		Map<String, Double> sortedMap = new LinkedHashMap<>();
+		for (Map.Entry<String, Double> entry : entryList) {
+		    sortedMap.put(entry.getKey(), entry.getValue());
+		}   //매칭율 기준 내림차순
 		
-		return matchingRate;
+		return sortedMap;
 	}
 	
 	/**

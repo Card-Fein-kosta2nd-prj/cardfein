@@ -10,7 +10,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/static/css/common.css">
 	<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/cardRecommend.css">
+	href="${pageContext.request.contextPath}/static/css/recommend/cardRecommend.css">
 	<!-- 공통 스크립트 -->
 <script src="${pageContext.request.contextPath}/static/js/common.js"
 	defer></script>
@@ -91,7 +91,10 @@
                   `, \${card.cardBenefitList[1].category} - \${card.cardBenefitList[1].discountRate}%` 
                   : ''}
             </div>
-          <a class="btn-sm" href="#">비교 바구니 담기</a>
+            <div class="button-group">
+            <a class="btn-sm" href="#">비교 바구니 담기</a>
+            <a class="btn-detail" href="#">자세히 보기</a>
+          </div>
         </div>
       `;
       container.appendChild(box);
