@@ -29,9 +29,9 @@
           </div>
         </li>
         <li class="dropdown">
-          <a href="#" class="dropbtn">카드</a>
+          <a href="<%= path %>/views/cardMenu/fitCard.jsp" class="dropbtn">카드</a>
           <div class="dropdown-content">
-            <a href="#">맞춤카드 검색</a>
+            <a href="<%= path %>/views/cardMenu/fitCard.jsp">맞춤카드 검색</a>
             <a href="#">카드추천 테스트</a>
             <a href="#">명세서 맞춤추천</a>
           </div>
@@ -48,7 +48,7 @@
       </ul>
     </nav>
     <div class="user-actions" style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
-      <a href="#" class="cart">
+      <a href="<%= path %>/views/cart/cart.jsp" class="cart">
         <img src="<%= path %>/static/images/icons/cart.png" alt="장바구니">
         <span class="cart-count">0</span>
       </a>
