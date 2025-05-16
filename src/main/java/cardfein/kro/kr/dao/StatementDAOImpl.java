@@ -107,7 +107,9 @@ public class StatementDAOImpl implements StatementDAO {
 		List<Map<String, String>> statement = (List<Map<String, String>>) statementResult.get(1); // db 저장할 명세서 데이터
 		Map<String, Integer> categorySums = (Map<String, Integer>) statementResult.get(2); // db 저장할 category별 합계
 		Map<Integer, Double> matchingRateDb = (Map<Integer, Double>) statementResult.get(3); // db 저장할 Map<카드번호,매칭률>
+		int userNo = (Integer)statementResult.get(4);// userNo
 		String[] dateArr= statement.get(0).get("date").split("-");
+		
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -118,7 +120,7 @@ public class StatementDAOImpl implements StatementDAO {
 			con = DbUtil.getConnection();
 			con.setAutoCommit(false);
 			ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(1, userNo); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			ps.setString(2, encryptedOcrText);
 //			ps.setString(2, "테스트 암호화 문자열");
 
@@ -132,9 +134,9 @@ public class StatementDAOImpl implements StatementDAO {
 				if (rs.next()) {
 					statementId = rs.getInt(1);
 				}
-				insertStatementItems(con, statementId, statement);
-				insertMonthlyConsum(con, categorySums, dateArr);
-				insertMonthlyCard(con, matchingRateDb, dateArr);
+				insertStatementItems(con, statementId, statement,userNo);
+				insertMonthlyConsum(con, categorySums, dateArr,userNo);
+				insertMonthlyCard(con, matchingRateDb, dateArr,userNo);
 				con.commit();
 			}
 		} catch (Exception e) {
@@ -149,7 +151,7 @@ public class StatementDAOImpl implements StatementDAO {
 	/**
 	 * 명세서 항목들 추가
 	 */
-	public void insertStatementItems(Connection con, int statementId, List<Map<String, String>> statement)
+	public void insertStatementItems(Connection con, int statementId, List<Map<String, String>> statement,int userNo)
 			throws SQLException {
 		String encryptedDate ="";
 		String encryptedMerchant ="";
@@ -171,7 +173,7 @@ public class StatementDAOImpl implements StatementDAO {
 				
 			    
 				ps.setInt(1, statementId);
-				ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+				ps.setInt(2, userNo); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 				ps.setString(3, encryptedDate); 
 				ps.setString(4, encryptedMerchant);
 				ps.setString(5, encryptedAmount);
@@ -195,7 +197,7 @@ public class StatementDAOImpl implements StatementDAO {
 	/**
 	 * 월별 소비내역 테이블에 추가
 	 */
-	public void insertMonthlyConsum(Connection con, Map<String, Integer> categorySums,String[] dateArr)
+	public void insertMonthlyConsum(Connection con, Map<String, Integer> categorySums,String[] dateArr,int userNo)
 			throws SQLException {
 		PreparedStatement ps = null;
 		int[] result = null;
@@ -206,7 +208,7 @@ public class StatementDAOImpl implements StatementDAO {
 			ps = con.prepareStatement(sql);
 			for (String category : categorySums.keySet()) {
 				
-				ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+				ps.setInt(1, userNo); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 				ps.setInt(2, Integer.parseInt(year));
 				ps.setInt(3, Integer.parseInt(month));
 				ps.setString(4, category);
@@ -229,7 +231,7 @@ public class StatementDAOImpl implements StatementDAO {
 	/**
 	 * 월별 추천카드 테이블에 추가
 	 */
-	public void insertMonthlyCard(Connection con, Map<Integer, Double> matchingRateDb,String[] dateArr)throws SQLException {
+	public void insertMonthlyCard(Connection con, Map<Integer, Double> matchingRateDb,String[] dateArr,int userNo)throws SQLException {
 		PreparedStatement ps = null;
 		int[] result = null;
 		String sql = proFile.getProperty("query.insertMonthlyRec");// insert into monthly_recommendations(expense_year,expense_month,match_score,recommended_at,card_no,user_no) values(?,?,?,now(),?,?);
@@ -242,7 +244,7 @@ public class StatementDAOImpl implements StatementDAO {
 				ps.setInt(2, Integer.parseInt(month));
 				ps.setDouble(3, matchingRateDb.get(cardNo));
 				ps.setInt(4, cardNo);
-				ps.setInt(5, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+				ps.setInt(5, userNo); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 				
 				ps.addBatch(); 
 				ps.clearParameters(); 
@@ -266,14 +268,14 @@ public class StatementDAOImpl implements StatementDAO {
 	 * 회원 맞춤 카드정보 검색
 	 */
 	@Override
-	public List<CardDto> selectRecommendCardList() throws SQLException {
+	public List<CardDto> selectRecommendCardList(int userNo) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Map<Integer, CardDto> cardMap = new HashMap<>();
 		
-		List<String> category=  selectRecentCategory();
-		Map<Integer,Double> matchingRates=selectMatchRate();
+		List<String> category=  selectRecentCategory(userNo);
+		Map<Integer,Double> matchingRates=selectMatchRate(userNo);
 		Integer[] cardNos = matchingRates.keySet().toArray(new Integer[0]);
 
 		String sql = proFile.getProperty("query.selectRecommendCardDetails");// select card_no,card_name,card_image_url,category,discount_rate
@@ -309,7 +311,7 @@ public class StatementDAOImpl implements StatementDAO {
 	/**
 	 * 회원 소비기반 매칭률,카드번호 검색(top3)
 	 */
-	public Map<Integer,Double> selectMatchRate() throws SQLException{
+	public Map<Integer,Double> selectMatchRate(int userNo) throws SQLException{
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -319,8 +321,8 @@ public class StatementDAOImpl implements StatementDAO {
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
-			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+			ps.setInt(1, userNo); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+			ps.setInt(2, userNo); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -336,7 +338,7 @@ public class StatementDAOImpl implements StatementDAO {
 	/**
 	 * 최근 소비가 많았던 카테고리 top2 검색
 	 */
-	public List<String> selectRecentCategory() throws SQLException{
+	public List<String> selectRecentCategory(int userNo) throws SQLException{
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -346,8 +348,8 @@ public class StatementDAOImpl implements StatementDAO {
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
-			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+			ps.setInt(1, userNo); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
+			ps.setInt(2, userNo); // 추후 해당하는 회원번호로 수정되어야 함!!!!!!!!!!!!!!!!!
 
 			rs = ps.executeQuery();
 			while (rs.next()) {

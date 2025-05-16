@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cardfein.kro.kr.dto.CardBenefitDto;
 import cardfein.kro.kr.dto.CardDto;
+import cardfein.kro.kr.dto.LoginDto;
 import cardfein.kro.kr.service.StatementService;
 import cardfein.kro.kr.service.StatementServiceImpl;
 import jakarta.servlet.ServletException;
@@ -180,6 +181,7 @@ public class OcrController implements RestController {
 		Map<String, Double> spendingRate = new HashMap<>();
 		Map<String, Integer> categorySums = (Map<String, Integer>) request.getSession().getAttribute("categorySums");
 		Integer totalAmount = (Integer) request.getSession().getAttribute("totalAmount");
+		LoginDto loginUser = (LoginDto) request.getSession().getAttribute("loginUser");
 		// top2 소비 카테고리 추출
 		List<Map.Entry<String, Integer>> entries = new ArrayList<>(categorySums.entrySet());
 		entries.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
@@ -240,7 +242,7 @@ public class OcrController implements RestController {
 		}
 		request.getSession().setAttribute("matchingRateDb", matchingRateDb);
 		
-		if(1==1) insertStatement(request,response); //회원이 로그인한 상태면 db 저장 메소드 호출
+		if(loginUser!=null) insertStatement(request,response); //회원이 로그인한 상태면 db 저장 메소드 호출
 		
 		
 		return matchingRate;
@@ -256,6 +258,7 @@ public class OcrController implements RestController {
 		Map<String, Integer> categorySums = (Map<String, Integer>) request.getSession().getAttribute("categorySums"); //db 저장할 category별 합계
 		Map<Integer,Double> matchingRateDb = (Map<Integer,Double>) request.getSession().getAttribute("matchingRateDb"); //db 저장할 Map<카드번호,매칭률>
 		
+		
 		//회원인 경우, ocr결과, 명세서내용 List, 카테고리 별 금액 map,  카드번호=매칭률 map service 로 전달
 		List<Object> inputData = new ArrayList<>();
 		
@@ -263,6 +266,7 @@ public class OcrController implements RestController {
 		inputData.add(statement);
 		inputData.add(categorySums);
 		inputData.add(matchingRateDb);
+		inputData.add(((LoginDto)request.getSession().getAttribute("loginUser")).getUserNo()); //userNo
 		service.insertStatementResult(inputData);
 	}
 	
@@ -271,8 +275,8 @@ public class OcrController implements RestController {
 	 * 누적 소비 기반 카드추천(회원)
 	 */
 	public Object memberCardRecommend(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException, SQLException{
-		
-		List<CardDto> list = service.selectRecommendCardList();
+		LoginDto loginUser = (LoginDto) request.getSession().getAttribute("loginUser");
+		List<CardDto> list = service.selectRecommendCardList(loginUser.getUserNo());
 		list.sort((a, b) -> Double.compare(b.getMatchingRate(), a.getMatchingRate())); //매칭율 기준 내림차순 정렬
 		request.setAttribute("cardList", list);
 		

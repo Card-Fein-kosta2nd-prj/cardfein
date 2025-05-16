@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ page import="cardfein.kro.kr.dto.LoginDto" %>
+<%
+    LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +18,10 @@
 <!-- 공통 스크립트 -->
 <script src="${pageContext.request.contextPath}/static/js/common.js"
 	defer></script>
+	
+	<script>
+  const isLogin = <%= (loginUser != null) ? "true" : "false" %>;
+</script>
 </head>
 
 
@@ -32,15 +40,16 @@
 		<section>
 			<canvas id="barChart" class="small-chart"></canvas>
 		</section>
+		<div id="memberCheck">
 		<section id="guestNote"
 			class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 hidden">
 			<p class="font-medium">※ 비회원은 카드 추천 결과가 저장되지 않으며, 누적 분석은 제공되지
 				않습니다.</p>
 		</section>
-		<p id="memberCheck">
-			더 정확한 추천을 원하시나요? <a href="member-dashboard.html">회원 로그인 후 누적 분석
-				보기</a>
+		<p>
+			더 정확한 추천을 원하시나요? <a href="${path}/views/card_login.jsp">회원 로그인 하러가기</a>
 		</p>
+		</div>
 	</main>
 	<!-- footer -->
 	<jsp:include page="../../views/common/footer.jsp" />
@@ -90,7 +99,7 @@
 	    }
 	  });
 	  await cardMatch();
-	  if(1===1) //회원이 로그인 한 상태라면!!
+	  if(isLogin) //회원이 로그인 한 상태라면!!
 	  document.getElementById('memberCheck')
 	  .innerHTML=`<button id="memberAnalysis"  onclick="location.href = 'memberCardRecommend.jsp'"> 누적소비 기반 맞춤카드 확인하기 </button>`;
 	  

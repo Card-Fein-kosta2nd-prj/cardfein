@@ -25,5 +25,5 @@ public interface StatementDAO {
 	/**
 	 * 회원 소비 기반 맞춤 카드 리스트 검색
 	 */
-	public List<CardDto> selectRecommendCardList() throws SQLException; //회원번호는 application영역에 저장되게끔 !!!!
+	public List<CardDto> selectRecommendCardList(int userNo) throws SQLException; //회원번호는 application영역에 저장되게끔 !!!!
 }
