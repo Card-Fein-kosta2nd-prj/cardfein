@@ -1,3 +1,4 @@
+<%@page import="cardfein.kro.kr.dto.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -30,36 +31,7 @@ pageEncoding="UTF-8"%>
       <div class="ranking-section">
         <h2>카드커버 TOP100 <span class="powered">Powered by @gif</span></h2>
         <div class="ranking-list">
-          <div class="rank-card top1">
-            <div class="rank-num">1.</div>
-            <img src="" alt="Card1" />
-            <div class="title">나의견 카드 커버</div>
-            <div class="author">개발자몽</div>
-          </div>
-          <div class="rank-card">
-            <div class="rank-num">2.</div>
-            <img src="" alt="Card2" />
-            <div class="title">고양 고양이의꿈</div>
-            <div class="author">코딩러</div>
-          </div>
-          <div class="rank-card">
-            <div class="rank-num">3.</div>
-            <img src="" alt="Card3" />
-            <div class="title">간바레 루루</div>
-            <div class="author">히어로</div>
-          </div>
-          <div class="rank-card">
-            <div class="rank-num">4.</div>
-            <img src="" alt="Card4" />
-            <div class="title">고른 선택은 댕기</div>
-            <div class="author">삼색이</div>
-          </div>
-          <div class="rank-card">
-            <div class="rank-num">5.</div>
-            <img src="" alt="Card5" />
-            <div class="title">전공과 커버링</div>
-            <div class="author">공돌이</div>
-          </div>
+          
         </div>
       </div>
 
@@ -74,12 +46,17 @@ pageEncoding="UTF-8"%>
     </div>
 
     <jsp:include page="/views/common/footer.jsp" />
-    
+    <%
+    	LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
+    	int userNo = (loginUser != null) ? loginUser.getUserNo() : -1;
+    %>
     <script type="text/javascript">
+    const userNo = <%= userNo %>;
+    
     async function loadTopRankedCards() {
     	try {
     		const fetchResponse = await fetch('${path}/ajax', {
-    			method: "GET",
+    			method: "POST",
     			body: new URLSearchParams({
     				key: "rank",
     				methodName: "getTopCardCovers"
@@ -91,27 +68,39 @@ pageEncoding="UTF-8"%>
     		}
     		
     		const topCards = await fetchResponse.json();
+    		console.log("topCards : ",topCards);
     		const rankingList = document.querySelector('.ranking-list');
     		
     		topCards.forEach((card, index) => {
     			const rankCard = document.createElement('div');
     			rankCard.classList.add('rank-card');
-    			rankCard.classList.add('top${index + 1}');
     			
     			const rankNum = document.createElement('div');
     		    rankNum.classList.add('rank-num');
-    		    rankNum.textContent = `${index + 1}.`;
+    		    rankNum.textContent = `${index + 1}위`;
+    		    
+    		    const imgContainer = document.createElement('div');
+      	        imgContainer.classList.add('rank-img-container');
 
-    		    const img = document.createElement('img');
-    		    img.src = card.imageUrl;
-    		    img.alt = card.title || `Top ${index + 1} Card`;
+      	        const img = document.createElement('img');
+    		    img.src = card.finalCardUrl;
+    		    img.classList.add("rank-img");
+      	      
+      	        const overlayImg = document.createElement('img');
+      	        overlayImg.src = `${path}/static/images/small_top.png`;
+      	        overlayImg.alt = 'Overlay';
+      	        overlayImg.classList.add('rank-overlay');
+      	      
+      	        imgContainer.appendChild(img);
+      	        imgContainer.appendChild(overlayImg);
+
 
     		    const titleDiv = document.createElement('div');
     		    titleDiv.classList.add('title');
-    		    titleDiv.textContent = card.title || '제목 없음' ;
+    		    titleDiv.textContent = card.title;
     		    
     		    rankCard.appendChild(rankNum);
-    		    rankCard.appendChild(img);
+    		    rankCard.appendChild(imgContainer);
     		    rankCard.appendChild(titleDiv);
     		    
     		    rankingList.appendChild(rankCard);
@@ -134,12 +123,14 @@ pageEncoding="UTF-8"%>
     	    	})
     	    });
     	    if (!fetchResponse.ok) throw new Error('서버 응답 오류');
-
+			
     	    const cards = await fetchResponse.json(); // [{user_id, img_url}, ...]
 
+    	    console.log("온 거 :", cards);
     	    const grid = document.querySelector('.card-grid');
     	    grid.innerHTML = '';  // 기존 내용 초기화
 
+    	    // card의 user_no는 카드 커버를 만든 사람의 id값
     	    cards.forEach(card => {
     	      const cardItem = document.createElement('div');
     	      cardItem.classList.add('card-item');
@@ -149,11 +140,16 @@ pageEncoding="UTF-8"%>
     	      likeBtn.innerHTML = '♡';
     	      likeBtn.setAttribute('data-cover-no', card.cover_no);
     	      
+    	      // 로그인 한 사용자가 어떤 카드 커버를 좋아요했는지 
     	      likeBtn.addEventListener('click', async() => {
+    	    	  
+    	    	  if (userNo === -1) {
+    	    		  alert("로그인 후 이용해주세요.");
+    	    		  return;
+    	    	  }
     	 
-    	    		const isLiked = likeBtn.classList.toggle('liked'); 	    		
+    	    		const isLiked = likeBtn.classList.contains('liked'); 	    		
     	    		const coverNo = likeBtn.getAttribute('data-cover-no');
-    	    		<%-- const userNo = '<%= ((LoginDto)session.getAttribute("loginUser")).getUserNo() %>'; --%>
     	    		
     	    		try {
     	    			const likeResponse = await fetch('${path}/ajax', {
@@ -162,7 +158,8 @@ pageEncoding="UTF-8"%>
     	    					key:"like",
     	    					methodName: "liked",
     	    					cover_no: coverNo,
-    	    					userNo: userNo
+    	    					user_no: userNo
+    	    					
     	    				})   	    					
     	    			});
     	    			
@@ -173,11 +170,11 @@ pageEncoding="UTF-8"%>
     	    			console.log('서버 응답:', likeResult);
     	    			
     	    			if (likeResult.liked) {
-    	    				likeBtn.classList.remove('liked');
-    	    				likeBtn.innerHTML = '♡';
-    	    			} else {
     	    				likeBtn.classList.add('liked');
     	    				likeBtn.innerHTML = '🤍';
+    	    			} else {
+    	    				likeBtn.classList.remove('liked');
+    	    				likeBtn.innerHTML = '♡';
     	    			}
     	    			
     	    		}catch (err) {
