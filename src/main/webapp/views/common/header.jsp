@@ -75,8 +75,14 @@ header {
             <a href="#">콘텐츠</a>
             <a href="#">공지사항</a>
           </div>
-        </li>
-        <li><a href="#">카드커버</a></li>
+        </li>      
+        <li class="dropdown">
+          <a href="#" class="dropbtn">커버</a>
+          <div class="dropdown-content">
+             <a href="<%= path %>/views/cardCover/cardmain.jsp">카드커버</a>
+             <a href="<%= path %>/views/cardCover/cardranking.jsp">커버순위</a>
+          </div>
+        </li>      
       </ul>
     </nav>
     <div class="user-actions" style="margin-left: auto; display: flex; align-items: center; gap: 12px;">

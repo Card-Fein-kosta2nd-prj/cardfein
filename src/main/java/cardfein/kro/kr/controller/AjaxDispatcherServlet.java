@@ -25,6 +25,7 @@ public class AjaxDispatcherServlet extends HttpServlet {
 	
     Map<String, RestController> map;
     Map<String, Class<?>> clzMap;
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		ServletContext application = config.getServletContext();
@@ -41,6 +42,7 @@ public class AjaxDispatcherServlet extends HttpServlet {
 		String methodName = request.getParameter("methodName"); 
 		System.out.println("key = " + key);
 		System.out.println("methodName = " + methodName);
+
 		try {
 			Class<?> clz = clzMap.get(key);
 			Method method = clz.getMethod(methodName, HttpServletRequest.class , HttpServletResponse.class);
@@ -61,12 +63,3 @@ public class AjaxDispatcherServlet extends HttpServlet {
 		}
 	}//service 메소드 끝 
 }
-
-  
-
-
-
-
-
-
-

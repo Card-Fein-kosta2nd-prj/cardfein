@@ -1,0 +1,182 @@
+@charset "UTF-8";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: sans-serif;
+}
+.title {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+.subtitle {
+  font-size: 1.2em;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.button {
+  background-color: #ff69b4;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.button:hover {
+  background-color: #d149a3;
+}
+
+.popup-overlay {
+  display: none; /* 처음에는 숨김 */
+  position: fixed; /* 화면 전체를 덮도록 고정 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* 다른 요소 위에 표시 */
+}
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 80%;
+  max-width: 600px; /* 최대 너비 설정 */
+  position: relative; /* 닫기 버튼 위치 설정 기준 */
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; */
+}
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.popup-title {
+  font-size: 1.5em;
+  color: #ff69b4; 
+}
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: #888;
+  cursor: pointer;
+}
+.close-button:hover {
+  color: #333;
+}
+.popup-body {
+  
+  text-align: center; 
+}
+.popup-body img {
+  max-width: 100%; 
+  height: auto;
+}
+.popup-menu {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.menu-item img {
+  width: 30px; 
+  height: 30px;
+  margin-bottom: 5px;
+}
+.menu-item span {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.card-preview {
+  background-color: #eee;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  width: 93%;
+  min-height: 448px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-preview p {
+  color: #777;
+  font-size: 0.9em;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 300px;  
+  height: 448px;  
+  border-radius: 5%;
+  overflow: hidden; 
+  /* border: 1px solid #ccc; */ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#cardCanvas {
+  background-color: #fff;
+}
+
+.base-image {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  object-fit: cover; 
+  z-index: 1;
+}
+
+.overlay-image {
+  position: absolute;
+  cursor: grab; 
+  z-index: 2;
+/*   border: 2px dashed #ff69b4; */
+  box-sizing: border-box; 
+}
+
+.cover-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-title input {
+  margin-left: 10px;
+}
+
+.BtnContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.saveBtn {
+  width: 25%;
+  height: 5%;
+  padding: 10px;
+  margin-top: 20px;
+  font-size: 20px;
+  border-radius: 10%;
+  border: none;
+}
