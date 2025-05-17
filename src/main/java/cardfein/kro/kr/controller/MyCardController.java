@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import cardfein.kro.kr.dto.CardDto;
+import cardfein.kro.kr.dto.LoginDto;
 import cardfein.kro.kr.dto.UserCardDto;
 import cardfein.kro.kr.service.MyCardService;
 import cardfein.kro.kr.service.MyCardServiceImpl;
@@ -34,7 +35,9 @@ public class MyCardController implements RestController {
 	public Object selectCard(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, SQLException{
 		String keyword = request.getParameter("word");
-		List<CardDto> list = service.selectByKeyword(keyword);
+		LoginDto loginUser = (LoginDto) request.getSession().getAttribute("loginUser");
+		List<CardDto> list = service.selectByKeyword(keyword,loginUser.getUserNo());
+		
 		return list;
 	}
 	
@@ -44,7 +47,8 @@ public class MyCardController implements RestController {
 	public Object registerCard(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, SQLException{
 		int cardNo = Integer.parseInt(request.getParameter("cardNo"));
-		int result = service.insertMyCard(cardNo);
+		LoginDto loginUser = (LoginDto) request.getSession().getAttribute("loginUser");
+		int result = service.insertMyCard(cardNo,loginUser.getUserNo());
 		return result;
 	}
 	
@@ -63,7 +67,8 @@ public class MyCardController implements RestController {
 	 */
 	public Object matchingTrend(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, SQLException{
-		UserCardDto matchingTrend = service.selectMatchTrend();
+		LoginDto loginUser = (LoginDto) request.getSession().getAttribute("loginUser");
+		UserCardDto matchingTrend = service.selectMatchTrend(loginUser.getUserNo());
 		return matchingTrend;
 	}
 	/**
@@ -71,7 +76,8 @@ public class MyCardController implements RestController {
 	 */
 	public Object selectMyCards(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, SQLException{
-		Map<Integer, CardDto> cards = service.selectMyCardDetails();
+		LoginDto loginUser = (LoginDto) request.getSession().getAttribute("loginUser");
+		Map<Integer, CardDto> cards = service.selectMyCardDetails(loginUser.getUserNo());
 		return cards;
 	}
 	/**
@@ -80,7 +86,8 @@ public class MyCardController implements RestController {
 	public Object deleteMyCard(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, SQLException{
 		int cardNo = Integer.parseInt(request.getParameter("cardNo"));
-		int result = service.deleteMyCard(cardNo);
+		LoginDto loginUser = (LoginDto) request.getSession().getAttribute("loginUser");
+		int result = service.deleteMyCard(cardNo,loginUser.getUserNo());
 		return result;
 	}
 	
