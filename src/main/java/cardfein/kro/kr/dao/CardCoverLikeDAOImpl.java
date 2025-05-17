@@ -43,7 +43,7 @@ private Properties proFile = new Properties();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DbUtil.dbClose(rs, ps, con);
+			DbUtil.dbClose(con, ps, rs);
 		}
 		
 		return false;
@@ -67,7 +67,7 @@ private Properties proFile = new Properties();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DbUtil.dbClose(ps, con);
+			DbUtil.dbClose(con, ps);
 		}
 	}
 	
@@ -87,8 +87,7 @@ private Properties proFile = new Properties();
 				ps.executeUpdate();
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}
-			
+			}		
 		}
 
 }

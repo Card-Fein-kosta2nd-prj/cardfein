@@ -41,7 +41,7 @@ public class CardDesignDAOImpl implements CardDesignDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DbUtil.dbClose(rs, ps, con);
+			DbUtil.dbClose(con, ps, rs);
 		}
 				
 		return null;
@@ -65,7 +65,7 @@ public class CardDesignDAOImpl implements CardDesignDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			DbUtil.dbClose(ps, con);
+			DbUtil.dbClose(con, ps);
 		}
 
 	}
