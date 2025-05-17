@@ -59,6 +59,7 @@
         <a href="<%= path %>/views/card_login.jsp" class="login-btn">로그인</a>
       <% } else { %>
         <a href="<%= path %>/logout" class="login-btn">로그아웃</a>
+        <a href="<%= path %>/views/mycard/mycard.jsp" class="login-btn">내지갑</a>
         <a href="<%= path %>/views/myinfo.jsp" class="login-btn">회원정보</a>
         <a href="<%= path %>/views/myinfo.jsp" class="profile">
           <img src="<%= path %>/static/images/icons/profile.png" alt="프로필" />

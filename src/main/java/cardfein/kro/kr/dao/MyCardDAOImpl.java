@@ -30,7 +30,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 	}
 
 	@Override
-	public List<CardDto> selectByKeyword(String keyword) throws SQLException {
+	public List<CardDto> selectByKeyword(String keyword,int userNo) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -41,7 +41,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, '%' + keyword + '%');
-			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(2, userNo); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			rs = ps.executeQuery();
 			// CardDto(int cardNo,String cardName, String provider, String fee, String
@@ -57,7 +57,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 	}
 
 	@Override
-	public int insertMyCard(int cardNo) throws SQLException {
+	public int insertMyCard(int cardNo,int userNo) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		int result = 0;
@@ -66,7 +66,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, cardNo);
-			ps.setInt(2, 1);// 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(2, userNo);// 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			result = ps.executeUpdate();
 			if (result == 0) {
@@ -107,7 +107,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 	}
 
 	@Override
-	public UserCardDto selectMatchTrend() throws SQLException {
+	public UserCardDto selectMatchTrend(int userNo) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -121,9 +121,9 @@ public class MyCardDAOImpl implements MyCardDAO {
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			ps.setInt(2, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			ps.setInt(3, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(1, userNo); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(2, userNo); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(3, userNo); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			rs = ps.executeQuery();
 			//
@@ -155,7 +155,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 	}
 
 	@Override
-	public Map<Integer, CardDto> selectMyCardDetails() throws SQLException {
+	public Map<Integer, CardDto> selectMyCardDetails(int userNo) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -167,7 +167,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(1, userNo); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -192,7 +192,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 		return map;
 	}
 	@Override
-	public int deleteMyCard(int cardNo) throws SQLException {
+	public int deleteMyCard(int cardNo,int userNo) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		int result = 0;
@@ -200,7 +200,7 @@ public class MyCardDAOImpl implements MyCardDAO {
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, 1); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			ps.setInt(1, userNo); // 추후 해당하는 회원번호로 수정해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			ps.setInt(2, cardNo);
 
 			result = ps.executeUpdate();
