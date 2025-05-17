@@ -1,0 +1,272 @@
+.main-container {
+    width: 100%;
+    padding: 40px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.banner-section {
+    position: relative;
+    background: #f8f8f8;
+    padding: 30px;
+    text-align: center;
+}
+
+.banner-section,
+.swiper-container,
+.swiper-slide,
+.carousel-item-horizontal {
+  position: relative;
+  z-index: 0 !important;
+}
+
+
+.swiper-container {
+  overflow: hidden; /* 이걸 꼭 추가해야 옆에 안 보임 */
+}
+.carousel-item-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  height: 300px;
+  gap: 40px;
+  text-align: left;
+}
+
+/* 기본 캐러셀 이미지 */
+.carousel-item img {
+  width:150px;
+  height: auto;
+  margin-bottom: 16px;
+}
+/* 가로형(좌우 정렬) 캐러셀에만 큰 이미지 */
+.carousel-img {
+  width: 400px;  /* ❗ 원하는 크기로 조절 */
+  margin-bottom: 0; /* 수직 정렬용 마진 제거 */
+}
+
+.carousel-text {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+
+
+.card-section {
+  margin-top: 60px;
+  padding: 0 20px;
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.card-item {
+  width: 140px;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ✅ 이미지 박스를 정사각형 or 고정비율로 */
+.card-image-box {
+  width: 100%;
+  aspect-ratio: 3 / 4; /* 약 4:6 비율 */
+  background: #f9f9f9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* ✅ 이미지는 박스 내 중앙 정렬 + 최대 크기 제한 */
+.card-image-box img {
+  max-height: 80%;  /* ← 기존 100% 에서 살짝 줄이기 */
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* ✅ 텍스트 통일감 있게 정렬 */
+.card-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 12px;
+  line-height: 1.3;
+  height: 2.6em;  /* 두 줄까지 정렬 유지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-brand {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  height: 1.2em; /* 줄맞춤 위해 고정 */
+}
+
+
+.card-item:hover {
+  transform: translateY(-4px);
+  transition: 0.2s ease;
+}
+
+.chart-tab-contents .chart-content {
+   display: flex;
+  justify-content: flex-start;
+  gap: 24px;
+  flex-wrap: nowrap;         /* ✅ 줄바꿈 방지 */
+  align-items: stretch;      /* ✅ 박스들 높이 맞춤 */
+}
+
+.chart-box {
+flex: 0 0 260px;            
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* ✅ 버튼을 맨 아래로 정렬 */
+  padding: 10px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.chart-box h3 {
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.chart-box ol {
+  list-style: none;
+  padding: 0;
+}
+
+.chart-box ol li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px; /* 줄 높이 통일 */
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+.chart-box ol li img {
+  width: 20px;
+  height: 28px;         /* 카드 이미지 비율 고려한 고정 높이 */
+  object-fit: contain;  /* 비율 유지하며 꽉 차게 */
+  border-radius: 4px;
+}
+
+.btn-more {
+    margin-top: 12px;
+    background: black;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.vote-ranking-section {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.vote-ranking-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 32px;
+  font-weight: bold;
+}
+
+.podium-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 40px;
+  height: 300px;
+  position: relative;
+}
+
+.podium-card {
+  width: 120px;
+  position: relative;
+  text-align: center;
+}
+
+.podium-card img {
+  width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.podium-card .rank {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.podium-card .star {
+  color: red;
+  font-size: 1.1rem;
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.podium-card .card-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.podium-card .provider {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* podium 높이 차이 */
+.podium-card.first {
+  height: 180px;
+  padding-top: 40px;
+  background: #a3c7ff;
+  border-radius: 8px 8px 0 0;
+}
+
+.podium-card.second {
+  height: 140px;
+  padding-top: 40px;
+  background: #a3c7ff;
+  border-radius: 8px 8px 0 0;
+}
+
+.podium-card.third {
+  height: 120px;
+  padding-top: 40px;
+  background: #a3c7ff;
+  border-radius: 8px 8px 0 0;
+}
+.vote-btn {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 10px 24px;
+  background-color: #111;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.vote-btn:hover {
+  background-color: #333;
+}
