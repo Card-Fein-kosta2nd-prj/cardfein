@@ -90,32 +90,5 @@ private Properties proFile = new Properties();
 			}
 			
 		}
-	
-	
-
-	@Override
-	public int getLikeCount(int coverNo) {
-		String sql = "SELECT COUNT(*) FROM cover_like WHERE cover_no = ?";
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try {
-			con = DbUtil.getConnection();
-			ps = con.prepareStatement(sql);
-			ps.setInt(1, coverNo);
-			
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				return rs.getInt(1);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.dbClose(rs, ps, con);
-		}
-		return 0;
-	}
 
 }

@@ -59,9 +59,6 @@ public class CardDesignController implements RestController{
 	 */
 	
 	public Map<String, Object> saveFinalCard(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	    request.setCharacterEncoding("UTF-8");
-	    response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
 
 	    Map<String, Object> result = new HashMap<>();
 

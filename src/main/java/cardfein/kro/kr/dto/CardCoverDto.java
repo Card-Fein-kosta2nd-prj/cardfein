@@ -9,6 +9,7 @@ public class CardCoverDto {
 	private String finalCardUrl;
 //	private DateTime created_at;
 	private int userId;
+	private int cardRank;
 	
 	public CardCoverDto() {
 		
@@ -64,6 +65,12 @@ public class CardCoverDto {
 	public void setFinalCardUrl(String finalCardUrl) {
 		this.finalCardUrl = finalCardUrl;
 	}
-	
-	
+
+	public int getCardRank() {
+		return cardRank;
+	}
+
+	public void setCardRank(int cardRank) {
+		this.cardRank = cardRank;
+	}
 }

@@ -78,6 +78,7 @@ body {
 .rank-num {
     font-size: 14px;
     font-weight: bold;
+    color: white;
 }
 
 .rank-card .title {

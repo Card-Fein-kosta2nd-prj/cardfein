@@ -20,7 +20,13 @@ public class CardRankingServiceImpl implements CardRankingService {
 	@Override
 	public List<CardCoverDto> getTopCovers() {
 		
-		return dao.findTopCovers();
+		List<CardCoverDto> topCovers = dao.findTopCovers();
+		
+		for (int i = 0; i < topCovers.size(); i++) {
+			topCovers.get(i).setCardRank(i+1);
+		}
+		
+		return topCovers;
 	}
 
 }

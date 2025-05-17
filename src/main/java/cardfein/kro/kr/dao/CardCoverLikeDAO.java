@@ -18,9 +18,4 @@ public interface CardCoverLikeDAO {
 	
 	void unlikeCover(int coverNo, int userNo) throws SQLException;
 	
-	/**
-	 * select count(*) from cover_like where cover_no = ?
-	 * 해당 커버의 좋아요 수
-	 */
-	int getLikeCount(int coverNo);
 }
