@@ -10,9 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelPostButton = document.getElementById("cancel-post");
 
   let editId = null;
+  const contextPath = window.contextPath || "";
 
   function fetchPosts() {
-    fetch("/board")
+    fetch(`${contextPath}/board`)
       .then((res) => res.json())
       .then((data) => renderPosts(data))
       .catch((err) => console.error("불러오기 실패:", err));
@@ -21,12 +22,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderPosts(posts) {
     boardBody.innerHTML = "";
     posts.forEach((post) => {
+      const truncatedContent = post.content.length > 20
+        ? post.content.substring(0, 20) + "..."
+        : post.content;
+
+      const fullContentBtn = post.content.length > 20
+        ? `<button class="full-view-btn" onclick="showFullContent(${post.boardId})">🔍</button>`
+        : "";
+
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${post.boardId}</td>
         <td onclick="increaseViews(${post.boardId})">${post.title}</td>
         <td>${post.author}</td>
-        <td>${post.content}</td>
+        <td>${truncatedContent} ${fullContentBtn}</td>
         <td>${post.regDate}</td>
         <td>${post.views}</td>
         <td>
@@ -77,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     data.append("author", author);
     data.append("content", content);
 
-    fetch("/board", {
+    fetch(`${contextPath}/board`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: data.toString(),
@@ -94,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function loadPost(boardId) {
-    fetch(`/board?boardId=${boardId}`)
+    fetch(`${contextPath}/board?boardId=${boardId}`)
       .then((res) => res.json())
       .then((post) => {
         editId = post.boardId;
@@ -110,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function deletePost(boardId) {
     if (!confirm("정말 삭제하시겠습니까?")) return;
 
-    fetch(`/board?boardId=${boardId}`, { method: "DELETE" })
+    fetch(`${contextPath}/board?boardId=${boardId}`, { method: "DELETE" })
       .then((res) => {
         if (res.ok) {
           fetchPosts();
@@ -121,10 +130,29 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch((err) => alert("삭제 오류: " + err));
   }
 
-  window.increaseViews = function(boardId) {
-    fetch(`/board?boardId=${boardId}&action=view`)
+  window.increaseViews = function (boardId) {
+    fetch(`${contextPath}/board?boardId=${boardId}&action=view`)
       .then(() => fetchPosts())
       .catch((err) => console.error("조회수 증가 실패:", err));
+  };
+
+  window.showFullContent = function (boardId) {
+    fetch(`${contextPath}/board?boardId=${boardId}`)
+      .then(res => res.json())
+      .then(post => {
+        const modal = document.getElementById("view-modal");
+        const overlay = document.getElementById("view-modal-overlay");
+        const content = document.getElementById("view-full-content");
+        content.textContent = post.content;
+        modal.style.display = "block";
+        overlay.style.display = "block";
+      })
+      .catch(err => alert("내용 불러오기 실패: " + err));
+  };
+
+  window.closeViewModal = function () {
+    document.getElementById("view-modal").style.display = "none";
+    document.getElementById("view-modal-overlay").style.display = "none";
   };
 
   fetchPosts();
