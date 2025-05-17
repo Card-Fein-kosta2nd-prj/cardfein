@@ -9,6 +9,7 @@ public class SignupService {
     public String register(String userId, String password, String email) {
         if (dao.isUserIdExists(userId)) return "id";
         if (dao.isPasswordExists(password)) return "pw";
+        if (dao.isEmailExists(email)) return "email";
         return dao.register(userId, password, email) ? "success" : "unknown";
     }
 }

@@ -80,3 +80,5 @@ public class BulletinBoardDto {
         this.views = views;
     }
 }
+
+//20글자 수정 전

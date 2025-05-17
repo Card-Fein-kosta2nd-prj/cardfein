@@ -6,10 +6,12 @@ import cardfein.kro.kr.util.DbUtil;
 
 public class MemberDaoImpl implements MemberDao {
 
+    // 회원 등록
     @Override
     public boolean register(String userId, String password, String email) {
         String sql = "INSERT INTO users (user_id, password, email, role, status) VALUES (?, ?, ?, 'member', 1)";
-        try (Connection conn = DbUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId);
             pstmt.setString(2, password);
             pstmt.setString(3, email);
@@ -20,10 +22,12 @@ public class MemberDaoImpl implements MemberDao {
         return false;
     }
 
+    // ID 중복 확인
     @Override
     public boolean isUserIdExists(String userId) {
         String sql = "SELECT COUNT(*) FROM users WHERE user_id = ?";
-        try (Connection conn = DbUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
@@ -34,10 +38,12 @@ public class MemberDaoImpl implements MemberDao {
         return false;
     }
 
+    // 비밀번호 중복 확인
     @Override
     public boolean isPasswordExists(String password) {
         String sql = "SELECT COUNT(*) FROM users WHERE password = ?";
-        try (Connection conn = DbUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, password);
             try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
@@ -48,10 +54,28 @@ public class MemberDaoImpl implements MemberDao {
         return false;
     }
 
+    // 이메일 중복 확인
+    @Override
+    public boolean isEmailExists(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // 로그인
     @Override
     public LoginDto login(String userId, String password) {
         String sql = "SELECT * FROM users WHERE user_id = ? AND password = ? AND status = 1";
-        try (Connection conn = DbUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId);
             pstmt.setString(2, password);
             try (ResultSet rs = pstmt.executeQuery()) {

@@ -142,3 +142,5 @@ public class BulletinBoardController extends HttpServlet {
         return input.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
     }
 }
+
+//20글자 수정전
