@@ -223,6 +223,174 @@ public class ReviewDAOImpl implements ReviewDAO {
 		return list;
 	}
 	
+	public int updateReviewViews(int reviewNo) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+
+		String sql = proFile.getProperty("query.updateViews");
+
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, reviewNo);
+			
+			result = ps.executeUpdate();
+		} finally {
+			DbUtil.dbClose(con, ps);
+		}
+		return result;
+	}
+
+
+	@Override
+	public int updateReview(ReviewDto review) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+
+		String sql = proFile.getProperty("query.updateReview");
+
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, review.getReviewTitle());
+			ps.setString(2, review.getReviewContent());
+			ps.setInt(3, review.getReviewNo());
+			
+			result = ps.executeUpdate();
+			
+		} finally {
+			DbUtil.dbClose(con, ps);
+		}
+		return result;
+	}
+
+
+	@Override
+	public int deleteReview(int reviewNo) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+
+		String sql = proFile.getProperty("query.deleteReview");
+		
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, reviewNo);
+			
+			result = ps.executeUpdate();
+			System.out.println(result);
+			
+		} finally {
+			DbUtil.dbClose(con, ps);
+		}
+		return result;
+	}
+
+
+	@Override
+	public List<ReviewDto> selectUserCards(int userNo) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps=null;
+		ResultSet rs=null;
+		List<ReviewDto> list = new ArrayList<>();
+		String sql=proFile.getProperty("query.selectUserCards");
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, userNo);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				ReviewDto review = new ReviewDto(rs.getInt(1), rs.getString(2));
+
+				list.add(review);
+			}
+			
+		}finally {
+			DbUtil.dbClose(null, ps, rs);
+		}
+		return list;
+	}
+
+
+	@Override
+	public int insertReview(ReviewDto review) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+
+		String sql = proFile.getProperty("query.insertReview");
+		
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			//review_title, review_content, rating, card_no, user_no
+			ps.setString(1, review.getReviewTitle());
+			ps.setString(2, review.getReviewContent());
+			ps.setInt(3, review.getRating());
+			ps.setInt(4, review.getCardNo());
+			ps.setInt(5, review.getUserNo());
+			
+			result = ps.executeUpdate();
+			System.out.println(result);
+			
+		} finally {
+			DbUtil.dbClose(con, ps);
+		}
+		return result;
+	}
+
+
+	@Override
+	public int insertReply(ReplyDto reply) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+
+		String sql = proFile.getProperty("query.insertReply");
+		
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			//reply_content, review_no, user_no
+			ps.setString(1, reply.getReplyContent());
+			ps.setInt(2, reply.getParentReviewNo());
+			ps.setInt(3, reply.getUserNo());
+			
+			result = ps.executeUpdate();
+			System.out.println(result);
+			
+		} finally {
+			DbUtil.dbClose(con, ps);
+		}
+		return result;
+	}
+
+
+	@Override
+	public int deleteReply(int replyNum) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int result = 0;
+
+		String sql = proFile.getProperty("query.deleteReply");
+		
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, replyNum);
+			
+			result = ps.executeUpdate();
+			System.out.println(result);
+			
+		} finally {
+			DbUtil.dbClose(con, ps);
+		}
+		return result;
+	}
+	
 	
 	
 }

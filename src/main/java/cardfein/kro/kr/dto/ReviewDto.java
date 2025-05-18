@@ -8,8 +8,10 @@ public class ReviewDto {
 	private String reviewContent;
 	private int rating;
 	private String inputDate;
+	private int cardNo;
 	private String cardName;
 	private String cardImg;
+	private int userNo;
 	private String userId;
 	private int views;
 	private int replyCount;
@@ -35,6 +37,13 @@ public class ReviewDto {
 		this.cardImg = cardImg;
 		this.userId = userId;
 		this.views = views;
+	}
+	
+	//보유 카드 목록 조회시 사용
+	public ReviewDto(int cardNo, String cardName) {
+		super();
+		this.cardNo = cardNo;
+		this.cardName = cardName;
 	}
 	
 	public int getReviewNo() {
@@ -76,6 +85,14 @@ public class ReviewDto {
 	public void setInputDate(String inputDate) {
 		this.inputDate = inputDate;
 	}
+	
+	public int getCardNo() {
+		return cardNo;
+	}
+
+	public void setCardNo(int cardNo) {
+		this.cardNo = cardNo;
+	}
 
 	public String getCardName() {
 		return cardName;
@@ -91,6 +108,14 @@ public class ReviewDto {
 
 	public void setCardImg(String cardImg) {
 		this.cardImg = cardImg;
+	}
+
+	public int getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
 	}
 
 	public String getUserId() {

@@ -56,4 +56,60 @@ public interface ReviewDAO {
 	 */
 	ReviewDto selectDetailByReviewNo(int reviewNo) throws SQLException;
 	
+	/**
+	 * 리뷰 내용 수정
+	 * @param reviewNo
+	 * @return 리뷰 수정 결과 (0/1)
+	 * @throws SQLException
+	 */
+	int updateReview(ReviewDto review) throws SQLException;
+	
+	/**
+	 * 리뷰 게시물 조회 시 조회수 증가
+	 * @param reviewNo
+	 * @return 조회수 증가 결과 (0/1)
+	 * @throws SQLException
+	 */
+	int updateReviewViews(int reviewNo) throws SQLException;
+	
+	/**
+	 * 리뷰 삭제
+	 * @param reviewNo
+	 * @return 리뷰 삭제 결과 (0/1)
+	 * @throws SQLException
+	 */
+	int deleteReview(int reviewNo) throws SQLException;
+	
+	/**
+	 * 회원 보유 카드 조회
+	 * @param user_no
+	 * @return 회원 보유 카드 리스트
+	 * @throws SQLException
+	 */
+	List<ReviewDto> selectUserCards(int user_no) throws SQLException;
+	
+	/**
+	 * 리뷰 등록
+	 * @param review
+	 * @return 리뷰 등록 결과 (0/1)
+	 * @throws SQLException
+	 */
+	int insertReview(ReviewDto review) throws SQLException;
+	
+	/**
+	 * 댓글 등록
+	 * @param review
+	 * @return 댓글 등록 결과 (0/1)
+	 * @throws SQLException
+	 */
+	int insertReply(ReplyDto reply) throws SQLException;
+	
+	/**
+	 * 댓글 삭제
+	 * @param replyNum
+	 * @return 댓글 삭제 결과 (0/1)
+	 * @throws SQLException
+	 */
+	int deleteReply(int replyNum) throws SQLException;
+	
 }

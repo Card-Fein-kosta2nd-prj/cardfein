@@ -4,6 +4,7 @@ public class ReplyDto {
 	private int replyNum;
 	private String replyContent;
 	private String inputDate;
+	private int userNo;
 	private String userId;
 	private int parentReviewNo;
 	
@@ -42,6 +43,14 @@ public class ReplyDto {
 
 	public void setInputDate(String inputDate) {
 		this.inputDate = inputDate;
+	}
+
+	public int getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
 	}
 
 	public String getUserId() {

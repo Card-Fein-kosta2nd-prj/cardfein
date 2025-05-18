@@ -54,15 +54,16 @@ body {
 /* 검색창을 오른쪽 아래처럼 보이게 (위에서 margin push) */
 .search-container {
   display: flex;
-  gap: 10px;
-  margin-top: 50px; /* ⬅ h1보다 아래로 내려가게 조절 */
+  margin-top: 10px;
+  width: 100%;
+  order: 2
 }
 
 .search-input {
   padding: 6px 10px;         /* 위아래: 6px, 좌우: 10px */
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: 160px;              /* 기존보다 좁게 */
+  width: 100%;              /* 기존보다 좁게 */
   font-size: 13px;           /* 글자 크기 ↓ */
 }
 
@@ -79,7 +80,8 @@ body {
 /* 사이드바 */
 .sidebar {
 	width: 180px;
-	border-right: 1px solid #eee;
+	margin-left:10px;
+	
 }
 
 .menu {
@@ -89,16 +91,24 @@ body {
 	list-style: none;
 }
 
-.menu-item {
+.write-content {
+	margin-top:5px;
+	height: 70px;
 	padding: 12px 20px;
 	cursor: pointer;
 	color: #868e96;
+	font-size: 17px;
+	font-weight: bold;
+	border:none;
+	border-radius: 8px;
 	transition: all 0.2s ease;
-	order: 2; /* 기본은 아래 */
+	order: 1; /* 기본은 아래 */
 }
 
-.menu-item:hover {
-	color: #4263eb;
+.write-content:hover {
+	color: #868e96;
+	border: 1px solid #868e96;
+	background: #FFFFFF;
 }
 
 /* 메인 콘텐츠 */

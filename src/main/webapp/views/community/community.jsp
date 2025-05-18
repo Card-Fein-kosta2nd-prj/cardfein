@@ -25,33 +25,32 @@
 
 	<div class="com-container">
 		<div class="com-header">
-			<h1>커뮤니티</h1>
-			<div class="search-container">
-<!-- 				<select class="search-select">
-					<option value="title">제목</option>
-					<option value="content">내용</option>
-					<option value="writer">작성자</option>
-				</select> -->
-				<input type="text" class="search-input" placeholder="검색어 입력">
-				<!-- <button class="search-button">검색</button> -->
-			</div>
+			<a href="${path}/views/community/community.jsp"><h1>커뮤니티</h1></a>
+			
 		
 		</div>
 		<div class="content-wrapper">
 			<div id="sidebar-container">
 				<div class="sidebar">
-					<ul class="menu" id="sidebar-menu">
-						<li class="menu-item" data-type="cardReview"><h2>카드리뷰</h2></li>
-						<!-- 
-						<li class="menu-item" data-type="cardReview"><h2>카드리뷰</h2></li>
-						<li class="menu-item" data-type="contents"><p>콘텐츠</p></li>
-						<li class="menu-item" data-type="notice"><p>공지</p></li>
-						 -->
-					</ul>
+					<div class="menu" id="sidebar-menu">
+						<c:if test="${not empty sessionScope.loginUser}">
+							<button class="write-content" onclick="window.location.href='${path}/front?key=detail&methodName=selectUserCards'">글쓰기</button>
+						</c:if>
+						<div class="search-container">
+		<!-- 				<select class="search-select">
+							<option value="title">제목</option>
+							<option value="content">내용</option>
+							<option value="writer">작성자</option>
+							</select> -->
+							<input type="text" class="search-input" placeholder="검색어 입력">
+							<!-- <button class="search-button">검색</button> -->
+						</div>
+					</div>
 				</div>
 			</div>
 		
 			<div class="main-content">
+
 				<div id="list-view">
 					<!-- 목록이 비동기로 여기에 표시 -->
 				</div>
@@ -62,10 +61,11 @@
 	</div>
 
 
-	<!-- footer -->
-	<jsp:include page="/views/common/footer.jsp" />
 
 	</div>
+
+	<!-- footer -->
+	<jsp:include page="/views/common/footer.jsp" />
 	
 	<script>
 	let currentPage = 1;
