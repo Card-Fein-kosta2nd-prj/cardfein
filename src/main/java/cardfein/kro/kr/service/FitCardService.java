@@ -7,4 +7,6 @@ import cardfein.kro.kr.dto.CardDto;
 public interface FitCardService {
 
 	List<CardDto> getCardsByCategory(String category) throws Exception;
+	
+	CardDto getCardsDetail(int cardNo);
 }

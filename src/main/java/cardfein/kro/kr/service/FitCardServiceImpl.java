@@ -15,4 +15,10 @@ public class FitCardServiceImpl implements FitCardService{
 		
 		return dao.getCardsByCategory(category);
 	}
+	
+	@Override
+	public CardDto getCardsDetail(int cardNo) {
+		
+		return dao.getCardsDetail(cardNo);
+	}
 }

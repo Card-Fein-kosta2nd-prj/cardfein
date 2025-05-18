@@ -7,4 +7,6 @@ import cardfein.kro.kr.dto.CardDto;
 public interface FitCardDAO {
 
 	List<CardDto> getCardsByCategory(String category);
+	
+	CardDto getCardsDetail(int cardNo);
 }

@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+.CardDetail-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.detail-img {
+	margin-top: 50px;
+}
+
+.card-header {
+	margin-bottom: 20px;
+}
+
+.card-title-category {
+	font-size: 14px;
+}
+
+.card-title {
+	font-size: 28px;
+	font-weight: bold;
+	margin: 8px 0;
+}
+
+.card-info {
+	margin-bottom: 20px;
+}
+
+.card-description {
+	font-size: 16px;
+	line-height: 1.6;
+	color: #222;
+}
+
+.card-note {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.card-fee {
+	width: 200px;
+	height: 60px;
+  border: 1px solid #ccc;
+  border-radius: 10%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  background-color: #f9f9f9;
+}
+
+.card-fee div:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-fee div:first-child div:first-child {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.card-fee div:first-child div:last-child {
+  color: #666;
+}
+
+.card-fee div:last-child {
+  font-weight: bold;
+}

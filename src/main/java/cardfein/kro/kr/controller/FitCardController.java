@@ -25,4 +25,13 @@ public class FitCardController implements RestController{
 		
 	}
 	
+	public CardDto getCardsDetail(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int cardNo = Integer.parseInt(request.getParameter("cardNo"));
+		
+		CardDto cardDto = service.getCardsDetail(cardNo);
+		
+		return cardDto;
+		
+	}
+	
 }

@@ -74,4 +74,74 @@ public class FitCardDAOImpl implements FitCardDAO{
 		}
 		return list;
 	}
+	
+	@Override
+    public CardDto getCardsDetail(int cardNo) {
+        String cardSql = """
+            SELECT
+                card_no,
+                card_name,
+                provider,
+                fee,
+                card_image_url
+            FROM
+                cards
+            WHERE
+                card_no = ?
+            """;
+
+        String benefitSql = """
+            SELECT
+                description
+            FROM
+                card_benefit
+            WHERE
+                card_no = ?
+            """;
+
+        Connection con = null;
+        PreparedStatement cardPs = null;
+        ResultSet cardRs = null;
+        
+        PreparedStatement benefitPs = null;
+        ResultSet benefitRs = null;
+        CardDto cardDetail = new CardDto();
+        List<CardBenefitDto> benefits = new ArrayList<>();
+
+        try {
+            con = DbUtil.getConnection();
+
+            // cards 테이블에서 카드 정보 가져오기
+            cardPs = con.prepareStatement(cardSql);
+            cardPs.setInt(1, cardNo);
+            cardRs = cardPs.executeQuery();
+
+            if (cardRs.next()) {
+                cardDetail.setCardNo(cardRs.getInt("card_no"));
+                cardDetail.setCardName(cardRs.getString("card_name"));
+                cardDetail.setProvider(cardRs.getString("provider"));
+                cardDetail.setFee(cardRs.getString("fee"));
+                cardDetail.setCardImageUrl(cardRs.getString("card_image_url"));
+            }
+
+            // card_benefit 테이블에서 해당 card_no의 모든 혜택 정보 가져오기
+            benefitPs = con.prepareStatement(benefitSql);
+            benefitPs.setInt(1, cardNo);
+            benefitRs = benefitPs.executeQuery();
+
+            while (benefitRs.next()) {
+                CardBenefitDto benefit = new CardBenefitDto();
+                benefit.setDescription(benefitRs.getString("description"));
+                benefits.add(benefit);
+            }
+            cardDetail.setCardBenefitList(benefits);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.dbClose(null, cardPs, cardRs);
+            DbUtil.dbClose(con, benefitPs, benefitRs);
+        }
+        return cardDetail; // List가 아닌 단일 CardDto 객체 반환
+    }
 }

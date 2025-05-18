@@ -35,27 +35,21 @@
         <h1>맞춤카드 검색</h1>
 
         <div class="filter-container">
-          <div class="filter-tag" data-category="이디어시 직원/할인">이디어시 직원/할인</div>
-          <div class="filter-tag" data-category="디지털 콘텐츠">디지털 콘텐츠</div>
-          <div class="filter-tag" data-category="해외">해외</div>
+          <div class="filter-tag active" data-category="온라인 쇼핑">온라인 쇼핑</div>
+          <div class="filter-tag" data-category="통신/디지털">통신/디지털</div>
+          <div class="filter-tag" data-category="주유">주유</div>
           <div class="filter-tag" data-category="온라인 쇼핑">온라인 쇼핑</div>
-          <div class="filter-tag" data-category="배우자">배우자</div>
-          <div class="filter-tag" data-category="크래딧">크래딧</div>
           <div class="filter-tag" data-category="렌탈">렌탈</div>
-          <div class="filter-tag" data-category="온라인 페이">온라인 페이</div>
+          <div class="filter-tag" data-category="병원/약국">병원/약국</div>
           <div class="filter-tag" data-category="배달 앱">배달 앱</div>
           <div class="filter-tag" data-category="오프라인 쇼핑">오프라인 쇼핑</div>
-          <div class="filter-tag" data-category="마일리지/공항라운지">마일리지/공항라운지</div>
+          <div class="filter-tag" data-category="마일리지/공항라운지">항공/여행</div>
           <div class="filter-tag" data-category="커피">커피</div>
-          <div class="filter-tag active" data-category="AUTO">AUTO</div>
-          <div class="filter-tag" data-category="주유">주유</div>
-          <div class="filter-tag" data-category="특급호텔/발레파킹">특급호텔/발레파킹</div>
-          <div class="filter-tag" data-category="멤버십 이용혜택">멤버십 이용혜택</div>
-          <div class="filter-tag" data-category="모빌리티">모빌리티</div>
-          <div class="filter-tag" data-category="생활편의영업">생활편의영업</div>
-          <div class="filter-tag" data-category="금융">금융</div>
-          <div class="filter-tag" data-category="개인사업자">개인사업자</div>
-          <div class="filter-tag" data-category="여행">여행</div>
+          <div class="filter-tag" data-category="편의점/마트">편의점/마트</div>
+          <div class="filter-tag" data-category="문화/여가">문화/여가</div>
+          <div class="filter-tag" data-category="외식">외식</div>
+          <div class="filter-tag" data-category="교통">교통</div>
+          <div class="filter-tag" data-category="쇼핑">쇼핑</div>
         </div>
       </div>
 
@@ -153,6 +147,10 @@
     				cards.forEach(card => {
     					const cardItem = document.createElement("div");
     					cardItem.classList.add("card-item");
+    					cardItem.style.cursor = "pointer";
+    					cardItem.addEventListener("click", () => {
+    						window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+card.cardNo;
+    					})
 
     					const cardInfo = document.createElement("div");
     					cardInfo.classList.add("card-info");
@@ -161,7 +159,7 @@
     					const cardImageDiv = document.createElement("div");
     					cardImageDiv.classList.add("card-image");
     					const cardImage = document.createElement("img");
-    					cardImage.src = `${path}/static/images/cards/${card.cardImageUrl}`;
+    					cardImage.src = "${path}/static/images/cards/"+card.cardImageUrl;
     					cardImage.alt = card.cardName;
     					cardImageDiv.appendChild(cardImage);
     					cardInfo.appendChild(cardImageDiv);
@@ -180,21 +178,26 @@
 
     					const cardTagContainer = document.createElement("div");
     					cardTagContainer.classList.add("card-tag-container");
+    					
     					const benefitCategoryTag = document.createElement("span");
     					benefitCategoryTag.classList.add("card-tag");
     					benefitCategoryTag.textContent = card.cardBenefit ? card.cardBenefit.category : "";
+    					
     					const benefitDescriptionTag = document.createElement("span");
     					benefitDescriptionTag.classList.add("card-tag");
     					benefitDescriptionTag.textContent = card.cardBenefit ? card.cardBenefit.description : "";
+    					
     					cardTagContainer.appendChild(benefitCategoryTag);
     					cardTagContainer.appendChild(benefitDescriptionTag);
     					cardInfo.appendChild(cardTagContainer);
 
     					const feeTagContainer = document.createElement("div");
     					feeTagContainer.classList.add("card-tag-container");
+    					
     					const feeTag = document.createElement("span");
     					feeTag.classList.add("card-tag");
-    					feeTag.textContent = `연회비 ${card.fee}`;
+    					feeTag.textContent = "연회비 "+ card.fee;
+    					
     					feeTagContainer.appendChild(feeTag);
     					cardInfo.appendChild(feeTagContainer);
 
