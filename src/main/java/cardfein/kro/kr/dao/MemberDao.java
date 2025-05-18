@@ -18,4 +18,10 @@ public interface MemberDao {
 
     // 로그인
     LoginDto login(String userId, String password);
+
+    // 이메일로 userId 찾기
+    String findUserIdByEmail(String email);
+
+    // 아이디 + 이메일로 비밀번호 찾기
+    String findPasswordByUserIdAndEmail(String userId, String email);
 }

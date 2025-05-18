@@ -28,9 +28,11 @@
       width: 360px;
       background-color: white;
       padding: 40px;
+      padding-bottom: 80px; /* 아래 여백 확보 */
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       text-align: center;
+      position: relative;
     }
 
     .login-container h1 {
@@ -67,11 +69,34 @@
       font-size: 12px;
       color: #6b7280;
       cursor: pointer;
+      background: none;
+      border: none;
     }
 
     .signup-link:hover {
       text-decoration: underline;
       color: #374151;
+    }
+
+    /* ✅ 카드 하단 고정 위치 스타일 */
+    .find-links {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .find-links a {
+      color: #6b7280;
+      text-decoration: none;
+      margin: 0 4px;
+    }
+
+    .find-links a:hover {
+      text-decoration: underline;
     }
 
     .message {
@@ -87,7 +112,7 @@
   <div class="login-container">
     <h1>Login</h1>
 
-    <% 
+    <%
       String signup = request.getParameter("signup");
       String error = request.getParameter("error");
       String message = "";
@@ -98,7 +123,6 @@
       <p class="message"><%= message %></p>
     <% } %>
 
-    <!-- ✅ 절대 경로 사용 -->
     <form action="<%= request.getContextPath() %>/login" method="post">
       <input type="text" name="username" placeholder="ID" required />
       <input type="password" name="password" placeholder="Password" required />
@@ -106,6 +130,13 @@
     </form>
 
     <button class="signup-link" onclick="location.href='<%= request.getContextPath() %>/views/signup.jsp'">회원가입</button>
+
+    <!-- ✅ 카드 하단 고정: 아이디/비밀번호 찾기 -->
+    <div class="find-links">
+      <a href="<%= request.getContextPath() %>/views/find_id.jsp">아이디 찾기</a>
+      <span class="divider">/</span>
+      <a href="<%= request.getContextPath() %>/views/find_pw.jsp">비밀번호 찾기</a>
+    </div>
   </div>
 </body>
 </html>
