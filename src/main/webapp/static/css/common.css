@@ -223,6 +223,7 @@ footer {
     align-items: center; /* 수직 중앙 정렬 */
     gap: 5px; /* 요소 간 간격 */
     margin-left: auto; /* 로그인 버튼을 오른쪽으로 밀어냄 */
+    padding-right: 10px; /* 오른쪽 여백 주기 (스크롤 전에도 적용됨) */
 }
 
 /* 스크롤 후 로그인 버튼 위치 */
@@ -352,6 +353,7 @@ footer .footer-icon img {
     font-weight: 500;
     text-transform: uppercase;
     cursor: default; /* 커서 모양 변경 없음 */
+    text-decoration: none;
 }
 
 /* 마우스오버 효과 제거 */

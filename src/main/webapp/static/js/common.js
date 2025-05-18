@@ -44,4 +44,23 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdownContent.style.transform = 'translateY(-10px)'; //드롭다운 내용 요소 위치 위로 이동
         });
     });
+
+	/* 장바구니 수 표시 업데이트 */
+	const cartCountEl = document.querySelector(".cart-count");
+	if (cartCountEl) {
+	    const saved = localStorage.getItem("cartCards");
+	    if (saved) {
+	        try {
+	            const parsed = JSON.parse(saved);
+	            const count = parsed.filter(c => c && c.cardNo).length;
+	            cartCountEl.textContent = count;
+	        } catch (e) {
+	            cartCountEl.textContent = 0;
+	        }
+	    } else {
+	        cartCountEl.textContent = 0;
+	    }
+	}
+	
+	
 });

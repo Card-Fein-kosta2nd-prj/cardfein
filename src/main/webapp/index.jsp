@@ -24,7 +24,7 @@
 	        </div>
         </div>
         <div class="login-content">
-            <button class="login-btn">로그인</button>
+            <a href="${path}/views/card_login.jsp" class="login-btn">로그인</a>
         </div>
     </header>
     <div class="container">

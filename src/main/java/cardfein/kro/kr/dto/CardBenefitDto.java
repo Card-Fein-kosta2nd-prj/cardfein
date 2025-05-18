@@ -19,6 +19,13 @@ public class CardBenefitDto {
 		this.cardNo = cardNo;
 		this.discountRate = discountRate;
 	}
+	
+	//장바구니 카드 정보 조회시
+    public CardBenefitDto(String category, String description) {
+        this.category = category;
+        this.description = description;
+    }
+	
 	public int getBenefitNo() {
 		return benefitNo;
 	}

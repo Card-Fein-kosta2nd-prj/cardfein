@@ -13,6 +13,9 @@ public class CardDto {
     private int view;                   // 조회수
     private Double matchingRate; // 카드 추천시 사용할 매칭율
     private List<String> discount;
+    
+    private String category;
+    private String description;
 
    private CardBenefitDto cardBenefit;
    private List<CardBenefitDto> cardBenefitList;
@@ -44,6 +47,24 @@ public class CardDto {
 		this.cardName = cardName;
 		this.cardImageUrl = cardImageUrl;
 		this.discount = new ArrayList<>();
+	}
+	
+	//카드 전체,카드사,키워드 목록 검색시
+	public CardDto(int cardNo, String cardName, String provider, String cardImageUrl) {
+		this.cardNo = cardNo;
+		this.cardName = cardName;
+		this.provider = provider;
+		this.cardImageUrl = cardImageUrl;
+	}
+	
+	//c.card_no, c.card_name, c.provider, c.fee, c.card_image_url, b.category, b.description
+	//카드 단일 정보 검색 시
+	public CardDto(int cardNo, String cardName, String provider, String fee, String cardImageUrl) {
+		this.cardNo = cardNo;
+		this.cardName = cardName;
+		this.provider = provider;
+		this.fee = fee;
+		this.cardImageUrl = cardImageUrl;
 	}
 
 	// Getter & Setter
