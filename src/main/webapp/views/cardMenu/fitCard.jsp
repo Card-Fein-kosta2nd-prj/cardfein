@@ -1,5 +1,12 @@
+<%@page import="cardfein.kro.kr.dto.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  String path = request.getContextPath();
+  LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
+  int userNo = (loginUser != null) ? loginUser.getUserNo() : -1;
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,27 +35,27 @@
         <h1>맞춤카드 검색</h1>
 
         <div class="filter-container">
-          <div class="filter-tag">이디어시 직원/할인</div>
-          <div class="filter-tag">디지털 콘텐츠</div>
-          <div class="filter-tag">해외</div>
-          <div class="filter-tag">온라인 쇼핑</div>
-          <div class="filter-tag">배우자</div>
-          <div class="filter-tag">크래딧</div>
-          <div class="filter-tag">렌탈</div>
-          <div class="filter-tag">온라인 페이</div>
-          <div class="filter-tag">배달 앱</div>
-          <div class="filter-tag">오프라인 쇼핑</div>
-          <div class="filter-tag">마일리지/공항라운지</div>
-          <div class="filter-tag">커피</div>
-          <div class="filter-tag active">AUTO</div>
-          <div class="filter-tag">주유</div>
-          <div class="filter-tag">특급호텔/발레파킹</div>
-          <div class="filter-tag">멤버십 이용혜택</div>
-          <div class="filter-tag">모빌리티</div>
-          <div class="filter-tag">생활편의영업</div>
-          <div class="filter-tag">금융</div>
-          <div class="filter-tag">개인사업자</div>
-          <div class="filter-tag">여행</div>
+          <div class="filter-tag" data-category="이디어시 직원/할인">이디어시 직원/할인</div>
+          <div class="filter-tag" data-category="디지털 콘텐츠">디지털 콘텐츠</div>
+          <div class="filter-tag" data-category="해외">해외</div>
+          <div class="filter-tag" data-category="온라인 쇼핑">온라인 쇼핑</div>
+          <div class="filter-tag" data-category="배우자">배우자</div>
+          <div class="filter-tag" data-category="크래딧">크래딧</div>
+          <div class="filter-tag" data-category="렌탈">렌탈</div>
+          <div class="filter-tag" data-category="온라인 페이">온라인 페이</div>
+          <div class="filter-tag" data-category="배달 앱">배달 앱</div>
+          <div class="filter-tag" data-category="오프라인 쇼핑">오프라인 쇼핑</div>
+          <div class="filter-tag" data-category="마일리지/공항라운지">마일리지/공항라운지</div>
+          <div class="filter-tag" data-category="커피">커피</div>
+          <div class="filter-tag active" data-category="AUTO">AUTO</div>
+          <div class="filter-tag" data-category="주유">주유</div>
+          <div class="filter-tag" data-category="특급호텔/발레파킹">특급호텔/발레파킹</div>
+          <div class="filter-tag" data-category="멤버십 이용혜택">멤버십 이용혜택</div>
+          <div class="filter-tag" data-category="모빌리티">모빌리티</div>
+          <div class="filter-tag" data-category="생활편의영업">생활편의영업</div>
+          <div class="filter-tag" data-category="금융">금융</div>
+          <div class="filter-tag" data-category="개인사업자">개인사업자</div>
+          <div class="filter-tag" data-category="여행">여행</div>
         </div>
       </div>
 
@@ -77,170 +84,9 @@
             </div>
           </div>
         </div>
-
-        <!-- 두 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+TE9DQTwvdGV4dD48L3N2Zz4="
-                alt="LOCA LIKIT 1.2"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">LOCA LIKIT 1.2</h2>
-              <p class="card-subtitle">롯데카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">최대 7만원 캐시백</span>
-              <span class="card-tag">모든가맹점 1.2% 할인</span>
-              <span class="card-tag">온라인 1.5% 할인</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 세 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmZmZmYiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+WkVSTzwvdGV4dD48L3N2Zz4="
-                alt="현대카드ZERO Edition3"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">현대카드ZERO Edition3(할인형)</h2>
-              <p class="card-subtitle">현대카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">1.5만원 캐시백</span>
-              <span class="card-tag">국내외 가맹점 0.8% 할인</span>
-              <span class="card-tag">AUTO</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 네 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMGUwZTAiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+U0hJTkhBTjwvdGV4dD48L3N2Zz4="
-                alt="신한카드 Deep Dream"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">신한카드 Deep Dream</h2>
-              <p class="card-subtitle">신한카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">신규 발급 5천원 캐시백</span>
-              <span class="card-tag">편의점 2.0% 할인</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 다섯 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMGU1ZTUiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+S0I8L3RleHQ+PC9zdmc+"
-                alt="KB국민 쏘카카드"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">KB국민 쏘카카드</h2>
-              <p class="card-subtitle">국민카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">첫 결제 시 3천 포인트</span>
-              <span class="card-tag">자동차 10% 할인</span>
-              <span class="card-tag">AUTO</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 여섯 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMGVmZmYiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+V09PUkk8L3RleHQ+PC9zdmc+"
-                alt="우리 카드의정석"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">우리 카드의정석</h2>
-              <p class="card-subtitle">우리카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">신규 발급 3만원 캐시백</span>
-              <span class="card-tag">쇼핑 5% 할인</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 일곱 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWYwZmYiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+SEFOQUJBSE5LPC90ZXh0Pjwvc3ZnPg=="
-                alt="하나 원더카드"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">하나 원더카드</h2>
-              <p class="card-subtitle">하나카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">매달 5% 캐시백</span>
-              <span class="card-tag">외식 10% 할인</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 여덟 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmMWU5ZDIiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+TkhOT05HSFlBUDwvdGV4dD48L3N2Zz4="
-                alt="농협 NH올원카드"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">농협 NH올원카드</h2>
-              <p class="card-subtitle">NH농협카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">첫 달 연회비 무료</span>
-              <span class="card-tag">마트 3% 할인</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 아홉 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNkZGYzZmYiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+U0FNU1VORzwvdGV4dD48L3N2Zz4="
-                alt="삼성카드 taptap O"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">삼성카드 taptap O</h2>
-              <p class="card-subtitle">삼성카드</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">포인트 더블 적립</span>
-              <span class="card-tag">대중교통 10% 할인</span>
-              <span class="card-tag">AUTO</span>
-            </div>
-          </div>
-        </div>
+        
+        
+        
       </div>
     </div>
     
@@ -248,36 +94,120 @@
     
     <!-- footer -->
 	<jsp:include page="/views/common/footer.jsp" />
-
-
+	
+	<script type="text/javascript">
+    	const userNo = <%= userNo %>;
+    	const path = '<%= path %>';
+    	const ajaxUrl = `${path}/ajax`;
+    </script>
 
     <script>
-      // 필터 태그 클릭 이벤트
-      document.querySelectorAll(".filter-tag").forEach((tag) => {
-        tag.addEventListener("click", function () {
-          this.classList.toggle("active");
-          // 추후에 이 이벤트에다 java에서 필터 조건 추가
-          // 예를 들어, 이디어시 직원/할인 태그를 클릭하면 필터 조건에 직원/할인이 추가되도록 함
-          // fetch 함수를 사용하여 클릭한 태그의 텍스트를 가져옴
-          // const getFilter = async() => {
-          //   const response = await fetch("filter.jsp", {
-          //     method: "POST",
-          //     body: JSON.stringify({ filter: tag.textContent }),
-          //   })
-          //     .then((response) => response.json())
-          //     .then((data) => console.log(data));
-          // };
-          // getFilter();
-          //const getList = async() => {
-          // const response = await fetch("xxx.jsp",{
-          //  method: "GET",
-          //  })
-          //  .then((response) => response.json())
-          //  .then((data) => console.log(data));
-          // };
-          // getList();
-        });
-      });
+    	document.addEventListener('DOMContentLoaded', () => {
+    		const filterContainer = document.querySelector('.filter-container');
+    		const cardListContainer = document.querySelector('.card-list');
+    		const filterTags = filterContainer.querySelectorAll('.filter-tag');
+    		
+    		filterTags.forEach(tag => {
+    			tag.addEventListener('click', async function() {
+    				// 모든 filter-tag에서 'active' 클래스 제거
+    				filterTags.forEach(t => t.classList.remove('active'));
+    				this.classList.add('active');
+    				
+    				const category = this.getAttribute('data-category');
+    				
+    				try {
+    					const response = await fetch(ajaxUrl, {
+    						method: "POST",
+    						body: new URLSearchParams({
+    							key: "card",
+    							methodName: "getCardsByCategory",
+    							category: category
+    						})
+    					});
+    					
+    					if (!response.ok) {
+    						throw new Error("서버 상태");
+    					}
+    					
+    					const cards = await response.json();
+    					console.log("cards: ", cards);
+    					displayCards(cards);
+    				} catch (error) {
+    					console.error("카드 정보 요청 실패: ", error);
+    					cardListContainer.innerHTML = '<p>카드 정보를 불러오는 데 실패했습니다.</p>';
+    				}
+    			});
+    		});
+    		
+    		// 초기 로딩 시 'active' 상태인 필터의 카드 정보를 불러오기
+    		const activeFilter = filterContainer.querySelector('.filter-tag.active');
+    		if (activeFilter) {
+    			activeFilter.click();
+    		}
+    		
+    		function displayCards(cards) {
+    			// 기본 카드 목록 비우기
+    			cardListContainer.innerHTML = "";
+    			
+    			if (cards && cards.length > 0) {
+    				cards.forEach(card => {
+    					const cardItem = document.createElement("div");
+    					cardItem.classList.add("card-item");
+
+    					const cardInfo = document.createElement("div");
+    					cardInfo.classList.add("card-info");
+    					cardItem.appendChild(cardInfo);
+
+    					const cardImageDiv = document.createElement("div");
+    					cardImageDiv.classList.add("card-image");
+    					const cardImage = document.createElement("img");
+    					cardImage.src = `${path}/static/images/cards/${card.cardImageUrl}`;
+    					cardImage.alt = card.cardName;
+    					cardImageDiv.appendChild(cardImage);
+    					cardInfo.appendChild(cardImageDiv);
+
+    					const cardTitleContainer = document.createElement("div");
+    					cardTitleContainer.classList.add("card-title-container");
+    					const cardTitle = document.createElement("h2");
+    					cardTitle.classList.add("card-title");
+    					cardTitle.textContent = card.cardName;
+    					const cardSubtitle = document.createElement("p");
+    					cardSubtitle.classList.add("card-subtitle");
+    					cardSubtitle.textContent = card.provider;
+    					cardTitleContainer.appendChild(cardTitle);
+    					cardTitleContainer.appendChild(cardSubtitle);
+    					cardInfo.appendChild(cardTitleContainer);
+
+    					const cardTagContainer = document.createElement("div");
+    					cardTagContainer.classList.add("card-tag-container");
+    					const benefitCategoryTag = document.createElement("span");
+    					benefitCategoryTag.classList.add("card-tag");
+    					benefitCategoryTag.textContent = card.cardBenefit ? card.cardBenefit.category : "";
+    					const benefitDescriptionTag = document.createElement("span");
+    					benefitDescriptionTag.classList.add("card-tag");
+    					benefitDescriptionTag.textContent = card.cardBenefit ? card.cardBenefit.description : "";
+    					cardTagContainer.appendChild(benefitCategoryTag);
+    					cardTagContainer.appendChild(benefitDescriptionTag);
+    					cardInfo.appendChild(cardTagContainer);
+
+    					const feeTagContainer = document.createElement("div");
+    					feeTagContainer.classList.add("card-tag-container");
+    					const feeTag = document.createElement("span");
+    					feeTag.classList.add("card-tag");
+    					feeTag.textContent = `연회비 ${card.fee}`;
+    					feeTagContainer.appendChild(feeTag);
+    					cardInfo.appendChild(feeTagContainer);
+
+    					cardListContainer.appendChild(cardItem);
+    					console.log("card: ", card);
+    				});
+    			} else {
+    				cardListContainer.innerHTML = '<p>해당 조건에 맞는 카드가 없습니다.</p>'; 
+    			}
+    			
+    		}
+    	})  
+    
     </script>
   </body>
 </html>
