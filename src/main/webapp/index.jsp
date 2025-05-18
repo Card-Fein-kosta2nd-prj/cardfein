@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +14,6 @@
     <!-- 공통 스크립트 -->
     <script src="${path}/static/js/index.js" defer></script>
     <!-- 페이지 전용 스크립트 -->
-    
 </head>
 <body>
     <header>
@@ -52,24 +51,23 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="nav-buttons">
                 <button class="nav-btn prev">&lt;</button>
                 <button class="nav-btn next">&gt;</button>
             </div>
-            
+
             <div class="indicator-container">
                 <div class="indicator active" data-index="0"></div>
                 <div class="indicator" data-index="1"></div>
                 <div class="indicator" data-index="2"></div>
             </div>
         </div>
-        
+
         <a href="${path}/main.jsp" class="skip-btn">
             <span>SKIP</span>
             <span class="skip-arrow">→</span>
         </a>
     </div>
-
 </body>
 </html>

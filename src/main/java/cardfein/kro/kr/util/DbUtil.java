@@ -60,11 +60,10 @@ public class DbUtil {
 		try {
 			if(st != null)st.close();
 			if(con!=null)con.close();
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
 }
 
 

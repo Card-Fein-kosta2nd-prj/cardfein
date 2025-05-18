@@ -10,7 +10,8 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/static/css/common.css">
 <!-- 페이지 전용 스타일 -->
-
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/css/mycard/mycard.css">
 
 <!-- 공통 스크립트 -->
 <script src="${pageContext.request.contextPath}/static/js/common.js"
@@ -20,46 +21,76 @@
 <body>
 	<!-- header -->
 	<jsp:include page="../../views/common/header.jsp" />
+
 	<!-- 메인 콘텐츠 -->
-	<main>
+	<main class="card-register-container">
+		<!-- <section class="search-section">
+			<div class="inner-wrapper">
+				<h2>💳 내 카드 등록하기</h2>
+				<p class="section-desc">등록할 카드명을 입력하세요. 존재하지 않는 카드는 1:1 문의를 통해
+					추가 요청할 수 있습니다.</p>
 
-		<h2>내 카드 등록하기</h2>
-
-		<div class="App">
-			<div class="Header"></div>
-			<form>
-				<div class="Editor"></div>
-			</form>
-
-			<div class="List">
-				<p>등록할 카드 검색</p>
-				<!--widow + .-->
-				<input type="text" placeholder='카드명을 입력해주세요.' id="keyword"
+				<input type="text" placeholder="카드명을 입력해주세요." id="keyword"
 					onkeyup="search(event)" />
 
-				<div class="card_list">
-					<!--여기에 화면 출력-->
-				</div>
+				<div class="card_list"></div>
+
 				<div class="inquiry-form" id="inquiryForm" style="display: none">
 					<h3>❓ 카드가 DB에 없습니다</h3>
 					<p>입력한 카드를 등록 요청하시겠어요? 아래 내용을 확인 후 1:1 문의를 남겨주세요.</p>
 					<textarea id="inquiryContent" rows="4">카드명: </textarea>
 					<button onclick="submitInquiry()">1:1 문의 등록</button>
 				</div>
-
-
 			</div>
-			<div class="chart">
+		</section> -->
+
+		<section class="my-cards-section">
+			<div class="inner-wrapper">
+				<div class="mycard-header">
+					<h2>📌 내 카드 목록</h2>
+					<button id="openModalBtn" class="register-toggle-btn">+ 내
+						카드 등록하기</button>
+				</div>
+				<div class="draw-cards"></div>
+			</div>
+		</section>
+		<section class="chart-section">
+			<div class="inner-wrapper">
 				<h2>📊 누적 소비 기반 카드 매칭율 변화</h2>
 				<canvas id="lineChart" height="100"></canvas>
 			</div>
-			<div class="my_cards">
-				<h2>📌 내 보유 카드 목록</h2>
-				<div class="draw-cards">
-				<!-- 여기에 보유카드 목록 출력 -->
+		</section>
+
+		<div id="tooltipImage"
+			style="position: absolute; display: none; z-index: 9999; border: 1px solid #ccc; background-color: white; padding: 4px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+			<img id="tooltipImageTag" src="" alt="카드 이미지"
+				style="width: 160px; height: auto;" />
+		</div>
+		
+
+		<!-- 모달 팝업 -->
+		<div id="searchModal" class="modal-overlay" style="display: none;">
+			<div class="modal-content">
+				<button class="modal-close" id="closeModalBtn">×</button>
+				<h2>💳 내 카드 등록하기</h2>
+				<p class="section-desc">등록할 카드명을 입력하세요. 존재하지 않는 카드는 1:1 문의를 통해
+					추가 요청할 수 있습니다.</p>
+
+				<input type="text" placeholder="카드명을 입력해주세요." id="keyword"
+					onkeyup="search(event)" />
+				<div class="card_list"></div>
+
+				<div class="inquiry-form" id="inquiryForm" style="display: none;">
+					<h3>❓ 카드가 DB에 없습니다</h3>
+					<p>입력한 카드를 등록 요청하시겠어요? 아래 내용을 확인 후 1:1 문의를 남겨주세요.</p>
+					<textarea id="inquiryContent" rows="4">카드명: </textarea>
+					<button onclick="submitInquiry()">1:1 문의 등록</button>
 				</div>
 			</div>
+		</div>
+
 	</main>
+
 	<!-- footer -->
 	<jsp:include page="../../views/common/footer.jsp" />
 
@@ -70,7 +101,13 @@
 	let input = document.querySelector("#keyword");
 	let matchChart = null;
 	let mycards = document.querySelector(".draw-cards");
-	
+	const openModalBtn = document.getElementById("openModalBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const searchModal = document.getElementById("searchModal");
+	const closeModal = () => {
+	  searchModal.style.display = "none";
+	  document.body.style.overflow = "auto";
+	};
 	const search = async(e)=>{
 		inquiryForm.style.display = 'none';
 		if(!e.target.value) { 
@@ -80,9 +117,8 @@
         printList.innerHTML=`
 		<table>
 			<thead>
-				<th>카드이미지</th>
-				<th>카드사</th>
 				<th>카드명</th>
+				<th>카드사</th>
 				<th></th>
 			</thead>
 			<tbody id="cards">
@@ -111,13 +147,12 @@
 	const printData=(cardList)=>{
 		let content = '';
 		cardList.forEach(card => {
-			content +=`<tr>
-				<td><img
-				src="${path}/views/recommend/삼성_2V4.png"
-				alt="카드 이미지"></td>
-				<td>\${card.provider}</td>
-				<td>\${card.cardName}</td>
-				<td><button id="\${card.cardNo}" onclick="register(this.id)">등록</button></td>
+			content += `<tr>
+				  <td class="card-name-cell" data-img="${path}/static/images/cards/\${card.cardImageUrl}">
+				    \${card.cardName}
+				  </td>
+				  <td>\${card.provider}</td>
+				  <td><button id="\${card.cardNo}" onclick="register(this.id)">등록</button></td>
 				</tr>`;
 		});
 		document.getElementById("cards").innerHTML=content;
@@ -135,6 +170,7 @@
 		if(result===1) {alert('카드가 등록 되었습니다.');
 		input.value= '';
 		printList.innerHTML='';
+		 closeModal();
 		drawTrend();
 		 printMyCards();
 		}
@@ -229,18 +265,20 @@
 				
 				lists+=`
 				<div class="card-box" id="card\${cardNo}">
-			      <img src="삼성_2V4.png" class="card-img" alt="카드 이미지" />
+				 <div class="card-top">
+				 <div class="card-img-box">
+			      <img src="${path}/static/images/cards/\${img}" class="card-img" alt="카드 이미지" />
+			    	  </div>  
 			      <div class="card-info">
-			        <h3 contenteditable="false">\${cardName}</h3>
-			        <div class="benefit" contenteditable="false">
-			        \${disList}
-			        </div>
-			        <div class="btn-group">
-			          <button class="btn-sm btn-detail" onclick="alert('상세 페이지로 이동합니다.')">상세 보기</button>
-			          <button class="btn-sm btn-compare" onclick="#">비교바구니담기</button>
-			          <button class="btn-sm btn-delete" onclick="deleteCard('\${cardNo}')">삭제</button>
-			        </div>
+			        <h3>\${cardName}</h3>
+			        <div class="benefit">\${disList}</div>
 			      </div>
+			      </div>
+			      <div class="btn-group">
+		          <button class="btn-sm btn-detail" onclick="alert('상세 페이지로 이동합니다.')">상세 보기</button>
+		          <button class="btn-sm btn-compare" onclick="#">비교바구니담기</button>
+		          <button class="btn-sm btn-delete" onclick="deleteCard('\${cardNo}')">삭제</button>
+		        </div>
 			    </div>
 			`;
 			
@@ -272,8 +310,53 @@
       }
     printMyCards();
     drawTrend();
+    document.addEventListener('DOMContentLoaded', () => {
+    	  const tooltip = document.getElementById('tooltipImage');
+    	  const tooltipImg = document.getElementById('tooltipImageTag');
+
+    	  document.addEventListener('mouseover', (e) => {
+    	    const cell = e.target.closest('.card-name-cell');
+    	    if (cell) {
+    	      const imgUrl = cell.getAttribute('data-img');
+    	      tooltipImg.src = imgUrl;
+    	      tooltip.style.opacity = 1;
+    	      tooltip.style.display = 'block';
+    	    }
+    	  });
+
+    	  document.addEventListener('mousemove', (e) => {
+    	    if (tooltip.style.display === 'block') {
+    	      tooltip.style.top = (e.pageY + 20) + 'px';
+    	      tooltip.style.left = (e.pageX + 20) + 'px';
+    	    }
+    	  });
+
+    	  document.addEventListener('mouseout', (e) => {
+    	    if (e.target.closest('.card-name-cell')) {
+    	      tooltip.style.opacity = 0;
+    	      setTimeout(() => tooltip.style.display = 'none', 500); // 부드럽게 사라짐
+    	    }
+    	  });
+    	});
     
-	
+
+    openModalBtn.addEventListener("click", () => {
+      searchModal.style.display = "flex";
+      document.body.style.overflow = "hidden"; // 스크롤 방지
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      searchModal.style.display = "none";
+      document.body.style.overflow = "auto";
+    });
+
+    // 바깥 영역 클릭 시 닫기
+    searchModal.addEventListener("click", (e) => {
+      if (e.target === searchModal) {
+        searchModal.style.display = "none";
+        document.body.style.overflow = "auto";
+      }
+    });
 	</script>
 </body>
 </html>

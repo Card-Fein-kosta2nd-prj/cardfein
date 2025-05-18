@@ -28,8 +28,8 @@ public class StatementServiceImpl implements StatementService {
 		return result;
 	}
 	@Override
-	public List<CardDto> selectRecommendCardList() throws SQLException {
-		List<CardDto> cardList =dao.selectRecommendCardList();
+	public List<CardDto> selectRecommendCardList(int userNo) throws SQLException {
+		List<CardDto> cardList =dao.selectRecommendCardList(userNo);
 		return cardList;
 	}
 }

@@ -142,9 +142,31 @@
       background: #e5e7eb;
       margin-left: 10px;
     }
+
+    .full-view-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #view-modal h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    #view-modal p {
+      font-size: 15px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
+
+  <script>
+    window.contextPath = "<%= request.getContextPath() %>";
+  </script>
+
   <div class="sidebar">
     <a href="#">대시보드</a>
     <a href="#">카드정보</a>
@@ -152,7 +174,6 @@
       <a href="#" class="submenu-toggle">게시판</a>
       <div class="submenu">
         <a href="#">공지사항</a>
-        <a href="#">리뷰</a>
         <a href="#">컨텐츠</a>
       </div>
     </div>
@@ -187,8 +208,28 @@
     </div>
   </div>
 
-  <!-- 모달 구성 요소 생략 시 추가 필요 -->
+  <!-- 글쓰기 모달 -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal" id="post-modal">
+    <input type="text" id="post-title" placeholder="제목" />
+    <input type="text" id="post-author" placeholder="작성자" />
+    <textarea id="post-content" rows="5" placeholder="내용"></textarea>
+    <div style="text-align: right;">
+      <button class="save-btn" id="save-post">저장</button>
+      <button class="cancel-btn" id="cancel-post">취소</button>
+    </div>
+  </div>
 
-  <script src="static/js/bulletin_board.js"></script>
+  <!-- 전체 내용 보기 모달 -->
+  <div class="modal-overlay" id="view-modal-overlay"></div>
+  <div class="modal" id="view-modal">
+    <h3>전체 내용</h3>
+    <p id="view-full-content"></p>
+    <div style="text-align: right; margin-top: 20px;">
+      <button class="cancel-btn" onclick="closeViewModal()">닫기</button>
+    </div>
+  </div>
+
+  <script src="<%= request.getContextPath() %>/static/js/bulletin_board.js"></script>
 </body>
 </html>

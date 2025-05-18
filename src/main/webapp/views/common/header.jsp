@@ -4,6 +4,36 @@
   String path = request.getContextPath();
   LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
 %>
+<style>
+header {
+  position: relative;  /* 또는 fixed/absolute */
+  z-index: 1000;
+}
+
+.dropdown {
+  position: relative;
+  z-index: 1000;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  min-width: 160px;
+  padding: 10px 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: none;
+
+  /* ✅ 확실하게 위로 올라오게 설정 */
+  z-index: 9999;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+</style>
 <header class="logo-header">
   <div class="header-container">
     <a href="<%= path %>/main.jsp">
@@ -32,8 +62,10 @@
           <a href="<%= path %>/views/cardMenu/fitCard.jsp" class="dropbtn">카드</a>
           <div class="dropdown-content">
             <a href="<%= path %>/views/cardMenu/fitCard.jsp">맞춤카드 검색</a>
-            <a href="#">카드추천 테스트</a>
-            <a href="#">명세서 맞춤추천</a>
+            <a href="<%= path %>/views/recommend/byBill.jsp">명세서 추천</a>
+              <% if (loginUser != null) { %>
+    <a href="<%= path %>/views/recommend/memberCardRecommend.jsp">누적기반 맞춤추천</a>
+  <% } %>
           </div>
         </li>
         <li class="dropdown">
@@ -43,8 +75,14 @@
             <a href="#">콘텐츠</a>
             <a href="#">공지사항</a>
           </div>
-        </li>
-        <li><a href="#">카드커버</a></li>
+        </li>      
+        <li class="dropdown">
+          <a href="#" class="dropbtn">커버</a>
+          <div class="dropdown-content">
+             <a href="<%= path %>/views/cardCover/cardmain.jsp">카드커버</a>
+             <a href="<%= path %>/views/cardCover/cardranking.jsp">커버순위</a>
+          </div>
+        </li>      
       </ul>
     </nav>
     <div class="user-actions" style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
@@ -56,7 +94,7 @@
         <a href="<%= path %>/views/card_login.jsp" class="login-btn">로그인</a>
       <% } else { %>
         <a href="<%= path %>/logout" class="login-btn">로그아웃</a>
-        <a href="<%= path %>/views/myinfo.jsp" class="login-btn">회원정보</a>
+        <a href="<%= path %>/views/mycard/mycard.jsp" class="login-btn">내지갑</a>
         <a href="<%= path %>/views/myinfo.jsp" class="profile">
           <img src="<%= path %>/static/images/icons/profile.png" alt="프로필" />
         </a>

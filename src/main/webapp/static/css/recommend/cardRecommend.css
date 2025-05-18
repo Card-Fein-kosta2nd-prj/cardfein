@@ -1,0 +1,167 @@
+/* ----------------------------- */
+/* 메인 추천 영역 */
+/* ----------------------------- */
+
+.recommend {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+/* 최근 소비 카테고리 메시지 */
+#recentCategory {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #111827;
+  font-weight: 600;
+  margin-bottom: 40px;
+  line-height: 1.5;
+}
+
+/* 추천 카드 박스 목록 */
+#personalizedCards {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* 카드 박스 */
+.card-match-box {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  align-items: center;
+}
+
+/* 카드 이미지 */
+.card-match-box img {
+  width: 80px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* 카드 정보 텍스트 */
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 카드 이름 */
+.card-info h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+/* 매칭률 텍스트 */
+.match-rate {
+  font-size: 0.95rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+/* 매칭률 시각적 막대 */
+.match-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.match-bar {
+  height: 100%;
+  background-color: #3b82f6;
+  transition: width 0.4s ease;
+}
+
+/* 할인 혜택 설명 */
+.reason {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+
+/* ----------------------------- */
+/* 명세서 없을 때 안내 영역 */
+/* ----------------------------- */
+
+.recommend > div {
+  text-align: center;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 40px 20px;
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.recommend > div button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #10b981;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.recommend > div button:hover {
+  background-color: #059669;
+}
+
+
+
+/* 버튼 그룹 가로 정렬 */
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* 비교 바구니 버튼 */
+.btn-sm {
+  padding: 8px 16px;
+  background-color: #0078d7;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-sm:hover {
+  background-color: #005fa3;
+}
+
+/* 자세히 보기 버튼 */
+.btn-detail {
+  padding: 8px 16px;
+  background-color: #6b7280;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-detail:hover {
+  background-color: #4b5563;
+}
