@@ -1,7 +1,11 @@
+<%@page import="cardfein.kro.kr.dto.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%
+  String path = request.getContextPath();
+  LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +28,8 @@
 	        </div>
         </div>
         <div class="login-content">
-            <button class="login-btn">로그인</button>
+        	<a href="<%= path %>/views/card_login.jsp" class="login-btn">로그인</a>
+            <!-- <button class="login-btn">로그인</button> -->
         </div>
     </header>
     <div class="container">
