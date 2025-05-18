@@ -220,6 +220,7 @@ body {
 }
 
 .login-btn {
+	display: inline-block; /* 버튼처럼 박스 형태로 보이게 */
 	background-color: white;
 	color: #1382F3;
 	border: solid 2px #1382F3;
@@ -228,7 +229,9 @@ body {
 	font-size: 16px;
 	font-weight: 500;
 	cursor: pointer;
-    transition: background-color 0.3s;
+	text-align: center; /* 글씨 가운데 정렬 */
+	text-decoration: none; /* 밑줄 제거 */
+	transition: background-color 0.3s;
 }
 
 .login-btn:hover {
