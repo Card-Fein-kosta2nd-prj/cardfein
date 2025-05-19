@@ -9,6 +9,8 @@ pageEncoding="UTF-8"%>
     
     <link rel="stylesheet" href="${path}/static/css/common.css">
     <link rel="stylesheet" href="${path}/static/css/popup.css">
+    <!-- 공통 스크립트 -->
+<script src="${path}/static/js/common.js" defer></script>
   </head>
   <body>
   

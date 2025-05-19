@@ -98,6 +98,7 @@
 		            const benefitsList = document.createElement('ul');
 		            cardDetail.cardBenefitList.forEach(benefit => {
 		                const listItem = document.createElement('li');
+		                listItem.classList.add('benefit-item-box');
 		                listItem.textContent = benefit.description;
 		                benefitsList.appendChild(listItem);
 		            });

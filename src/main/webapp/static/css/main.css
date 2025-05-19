@@ -190,7 +190,8 @@ flex: 0 0 260px;
 }
 
 .vote-ranking-section {
-  margin-top: 80px;
+  
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -204,10 +205,110 @@ flex: 0 0 260px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 40px;
-  height: 300px;
+  gap: 20px;
+  height: 350px;
   position: relative;
 }
+
+.ranked-card-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color:  #a3c7ff;
+	padding: 10px;
+	text-align : center;
+}
+
+.ranked-card-item:hover {
+    transform: translateY(-8px); /* 호버 시 살짝 위로 뜨는 효과 */
+}
+
+/* 랭킹별 높이 조정 (포디움 효과) */
+.ranked-card-item.first {
+    order: 2; /* 1위 카드를 중앙에 배치 (flex order) */
+    transform: translateY(-50px); /* 가장 높게 올림 */
+    /* background-color: #c0d9f7; 1위만 살짝 다른 색상 (선택 사항) */
+}
+
+.ranked-card-item.second {
+    order: 1; /* 2위 카드를 왼쪽에 배치 */
+    transform: translateY(-15px); /* 1위보다 낮게 올림 */
+}
+
+.ranked-card-item.third {
+    order: 3; /* 3위 카드를 오른쪽에 배치 */
+    transform: translateY(-0px); /* 바닥에 가깝게 유지 */
+}
+
+
+/* 이미지 컨테이너 (카드 이미지와 오버레이 포함) */
+.img-container {
+    position: relative; /* 오버레이 이미지의 absolute 위치 기준 */
+    width: 130px; /* 카드 이미지 너비 (ranked-card-item의 padding 고려) */
+    height: 130px; /* 카드 이미지 높이 */
+    margin-bottom: 10px; /* 이미지와 텍스트 사이 간격 */
+    background-color: white; /* 이미지 배경색 (흰색 또는 아주 연한 파랑) */
+    border-radius: 5px; /* 이미지 컨테이너 모서리 둥글게 */
+    overflow: hidden; /* 이미지가 컨테이너를 넘어가지 않도록 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
+/* 실제 카드 이미지 */
+.img-container .podium-img {
+    width: 100%; /* 컨테이너에 꽉 채움 */
+    height: 100%; /* 컨테이너에 꽉 채움 */
+    object-fit: contain; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+    /* border-radius: 5px; // 이미지 모서리 둥글게, 컨테이너에서 이미 처리 */
+}
+
+/* 오버레이 이미지 (small_top.png) - 수정된 부분 */
+.img-container .rank-overlay { /* 클래스명 'rank-overlay'로 수정 */
+    position: absolute; /* img-container 기준으로 위치 지정 */
+    top: 0; /* 이미지 컨테이너의 상단에 붙임 */
+    left: 0; /* 이미지 컨테이너의 좌측에 붙임 */
+    width: 100%; /* 이미지 컨테이너 너비에 꽉 채움 */
+    height: 100%; /* 이미지 컨테이너 높이에 꽉 채움 */
+    object-fit: cover; /* 오버레이 이미지가 컨테이너를 꽉 채우도록 */
+}
+
+
+/* 랭크 텍스트 (예: 1위⭐, 2위, 3위) */
+.podium-card .rank {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #4a4a4a; /* 진한 회색 */
+    margin-bottom: 5px;
+    width: 100%; /* 너비를 꽉 채워서 텍스트 정렬 용이하게 */
+}
+
+/* 1위 카드 랭크 텍스트에만 적용되는 별 스타일 */
+.podium-card .rank.star {
+    color: #ff4500; /* 1위 랭크 색상 (빨간색) */
+    font-size: 1.2em; /* 1위 랭크 폰트 크기 강조 */
+}
+
+/* 카드 이름 */
+.podium-card .card-name {
+    font-size: 1em;
+    font-weight: bold;
+    color: #2c3e50; /* 진한 남색 계열 */
+    margin-bottom: 5px;
+    white-space: nowrap; /* 카드 이름이 길 경우 한 줄로 유지 */
+    overflow: hidden;    /* 넘치면 숨김 */
+    text-overflow: ellipsis; /* 넘치면 ...으로 표시 */
+    max-width: 100%; /* 부모 너비에 맞게 */
+}
+
+/* 카드 제공사 */
+.podium-card .provider {
+    font-size: 0.85em;
+    color: #666; /* 연한 회색 */
+    margin-bottom: 5px;
+}
+
 
 .podium-card {
   width: 120px;
@@ -225,13 +326,15 @@ flex: 0 0 260px;
 .podium-card .rank {
   font-weight: bold;
   margin-bottom: 4px;
+  position: absolute;
+  top: -180px;
 }
 
 .podium-card .star {
   color: red;
   font-size: 1.1rem;
   position: absolute;
-  top: -24px;
+  top: -180px;
   left: 50%;
   transform: translateX(-50%);
 }

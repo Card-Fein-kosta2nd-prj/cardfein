@@ -11,9 +11,6 @@ body {
 }
 
 .top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
     background-color: #f754a3;
     color: white;
     padding: 10px 20px;
@@ -22,7 +19,7 @@ body {
 .logo {
     font-size: 24px;
     font-weight: bold;
-    margin-right: 40px;
+    margin-left: 38px;
 }
 
 .nav a {
@@ -42,11 +39,15 @@ body {
     padding: 20px;
     margin-top: 20px;
     border-radius: 10px;
+    
+    display: flex;
+    
 }
 
 .ranking-section h2 {
     font-size: 22px;
     margin-bottom: 20px;
+    margin-left: 38px;
 }
 
 .ranking-section .powered {

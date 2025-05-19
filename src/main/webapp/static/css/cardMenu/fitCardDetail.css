@@ -5,12 +5,14 @@
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 }
 
 .detail-img {
 	margin-top: 50px;
+	width: 50%;
+	height: auto;
+	
 }
 
 .card-header {
@@ -31,31 +33,61 @@
 	margin-bottom: 20px;
 }
 
-.card-description {
+.card-benefit-descriptions {
 	font-size: 16px;
 	line-height: 1.6;
 	color: #222;
+	margin-left: 200px;
+}
+.card-benefit-descriptions ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin: 0;
+	gap: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.benefit-item-box {
+	border: 1px solid #ddd;
+	padding: 10px 10px;
+	border-radius: 7%;
+	
+	margin: 5px;
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: auto;
+	min-width: 50px;
+	max-width: 80%;
+	
 }
 
 .card-note {
-  font-size: 14px;
+  font-size: 20px;
   color: #333;
   margin-bottom: 20px;
   line-height: 1.5;
 }
 
 .card-fee {
-	width: 200px;
-	height: 60px;
-  border: 1px solid #ccc;
+  width: 180px;
+  height: 85px;
+  border: 1px solid #f2f2f2;
   border-radius: 10%;
   padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  font-size: 15px;
-  background-color: #f9f9f9;
+  font-size: 13px;
+  box-shadow: 0 4px 8px gray;
+  margin-bottom: 20px;
+}
+
+.card-fee .domestic,
+.card-fee .overseas {
+	font-size: 17px;
+	margin-left: 60px;
 }
 
 .card-fee div:first-child {
@@ -70,8 +102,4 @@
 
 .card-fee div:first-child div:last-child {
   color: #666;
-}
-
-.card-fee div:last-child {
-  font-weight: bold;
 }
