@@ -225,7 +225,7 @@ main {
 			cardList.forEach(card => {
 				content += `<div class="card-item">
 					<div class="card-image-box">
-					<img src="static/images/cards/\${card.cardImageUrl}" alt="카드이미지">
+					<a onclick="showDetails(\${card.cardNo})"><img src="static/images/cards/\${card.cardImageUrl}" alt="카드이미지" onload="handleImageLoad(this)"></a>
 					</div>
 					<div class="card-name">\${card.cardName}</div>
 					<div class="card-brand">\${card.provider}</div>
@@ -267,7 +267,6 @@ main {
 				})
 			});
 			let result = await response.json();
-			console.log(result);
 			category.forEach((c,idx)=>{
 				let content='';
 				result.forEach((card)=>{
@@ -279,12 +278,31 @@ main {
 			});
 		}
 		
+		const showDetails=(cardNo)=>{
+			 window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+cardNo;
+		}
+		
 		document.addEventListener("DOMContentLoaded", () => {
 			  viewCardList();
 			  myCardList();
 			  popularList(); // ✅ DOM이 다 로드된 뒤에 실행되도록
 			 
 			});
+		const handleImageLoad=(img)=> {
+			  const ratio = img.naturalHeight / img.naturalWidth;
+			  if (ratio > 1.3) {
+			    img.classList.add('vertical');
+			  }
+			}
+		
+		document.addEventListener("DOMContentLoaded", () => {
+			  document.querySelectorAll(".card-image-box img").forEach(img => {
+			    if (img.complete) {
+			      handleImageLoad(img);
+			    }
+			  });
+			});
+		
 	</script>
 
 </body>

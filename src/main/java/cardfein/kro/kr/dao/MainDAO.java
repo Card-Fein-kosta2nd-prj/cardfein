@@ -51,7 +51,7 @@ public class MainDAO {
 //			int view
 //			)
 			while (rs.next()) {
-				CardDto card = new CardDto(0, rs.getString(1), rs.getString(2), sql, rs.getString(3), 0);
+				CardDto card = new CardDto(rs.getInt(1), rs.getString(2), rs.getString(3), "", rs.getString(4), 0);
 				list.add(card);
 			}
 		} finally {
@@ -75,7 +75,7 @@ public class MainDAO {
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				CardDto card = new CardDto(0, rs.getString(1), rs.getString(2), "", rs.getString(3), 0);
+				CardDto card = new CardDto(rs.getInt(1), rs.getString(2), rs.getString(3), "", rs.getString(4), 0);
 				list.add(card);
 			}
 		} finally {
