@@ -1,5 +1,12 @@
+<%@page import="cardfein.kro.kr.dto.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  String path = request.getContextPath();
+  LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
+  int userNo = (loginUser != null) ? loginUser.getUserNo() : -1;
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +15,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- 공통 스타일 -->
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/common.css">
+	href="${path}/static/css/common.css">
 	<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/recommend/cardRecommend.css">
+	href="${path}/static/css/recommend/cardRecommend.css">
 	<!-- 공통 스크립트 -->
-<script src="${pageContext.request.contextPath}/static/js/common.js"
+<script src="${path}/static/js/common.js"
 	defer></script>
 </head>
 <body>

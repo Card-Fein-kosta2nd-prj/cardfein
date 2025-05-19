@@ -2,7 +2,7 @@
  * cardranking.jsp
  */
 // 좋아요 추가, 삭제
-async function handleLikeClick(event) {
+/*async function handleLikeClick(event) {
   const likeBtn = event.currentTarget;
   if (userNo === -1) {
     alert("로그인 후 이용해주세요.");
@@ -192,4 +192,4 @@ window.addEventListener("DOMContentLoaded", () => {
   // 10분마다 커버 랭킹 업데이트
   setInterval(loadTopRankedCards, 600000);
   loadCards();
-});
+});*/

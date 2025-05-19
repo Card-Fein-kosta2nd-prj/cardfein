@@ -2,7 +2,7 @@
  * popup.js
  */
 
-document.addEventListener("DOMContentLoaded", function () {
+/*document.addEventListener("DOMContentLoaded", function () {
   const canvas = new fabric.Canvas("cardCanvas", {
     backgroundColor: "#f0f0f0",
   });
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const fileInput = document.createElement("input");
   fileInput.type = "file";
-  fileInput.accept = "image/*";
+  fileInput.accept = "image";
   fileInput.style.display = "none";
   document.body.appendChild(fileInput);
 
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
         canvas.renderAll();
       });
 
-      /* fetchTemplateOverlayImage(); */
+       fetchTemplateOverlayImage(); 
 
       popupOverlay.style.display = "flex";
       canvas.renderAll();
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     baseRectObj = null;
     overlayImageObj = null;
     templateOverlayObj = null;
-    /* clipZone = null; */
+     clipZone = null; 
     coverNameInput.value = "";
   });
 
@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 레이어 순서 재조정 함수 (재사용을 위해 별도 함수로 분리)
   function arrangeLayersInOrder() {
-    /* const objects = canvas.getObjects();
-        canvas.clear(); // 캔버스 초기화 */
+     const objects = canvas.getObjects();
+        canvas.clear(); // 캔버스 초기화 
     canvas.remove(...canvas.getObjects());
 
     // 순서대로 객체 추가
@@ -269,4 +269,4 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("카드 저장 중 오류가 발생했습니다.");
     }
   });
-});
+});*/

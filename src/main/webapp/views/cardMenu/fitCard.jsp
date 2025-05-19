@@ -55,32 +55,7 @@
 
       <div class="card-list">
         <!-- 첫 번째 카드 아이템 -->
-        <div class="card-item">
-          <div class="card-info">
-            <div class="card-image">
-              <img
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI2MCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OSI+QU1FUklDQU4gRVhQUkVTUzwvdGV4dD48L3N2Zz4="
-                alt="American Express Card"
-              />
-            </div>
-            <div class="card-title-container">
-              <h2 class="card-title">American Express The Platinum Card® Edition2</h2>
-              <p class="card-subtitle">아메리칸 익스프레스</p>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag highlight">이디어시 직원/할인</span>
-              <span class="card-tag">해외</span>
-              <span class="card-tag">마일리지/공항라운지</span>
-            </div>
-            <div class="card-tag-container">
-              <span class="card-tag">특급호텔/발레파킹</span>
-              <span class="card-tag">연회비 1,000,000원</span>
-            </div>
-          </div>
-        </div>
-        
-        
-        
+      
       </div>
     </div>
     
@@ -148,8 +123,34 @@
     					const cardItem = document.createElement("div");
     					cardItem.classList.add("card-item");
     					cardItem.style.cursor = "pointer";
-    					cardItem.addEventListener("click", () => {
-    						window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+card.cardNo;
+    					cardItem.addEventListener("click", async () => {
+    						// 서버에 cardNo를 보내서 view 카운트 증가 요청
+    						try {
+    							const viewResponse = await fetch(ajaxUrl, {
+    								method: "POST",
+    								body: new URLSearchParams({
+    									key: "card",
+    									methodName: "incrementCardView",
+    									cardNo: card.cardNo
+    								})
+    							});
+    							if (!viewResponse.ok) {
+    								const errorText = await response.text();
+    								throw new Error("서버 오류", errorText);
+    							}
+    							
+    							const data = await viewResponse.json();
+    							console.log("view 증가 성공 여부: ", data);
+    							
+    							if (data) {
+    								window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+card.cardNo;
+    							} else {
+    								console.error("조회수 증가 실패");
+    							}
+    							
+    						} catch (error) {
+    							console.error(error);
+    						}
     					})
 
     					const cardInfo = document.createElement("div");
