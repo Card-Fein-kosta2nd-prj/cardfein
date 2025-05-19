@@ -1,3 +1,5 @@
+// bulletin_board.js
+
 document.addEventListener("DOMContentLoaded", () => {
   const boardBody = document.getElementById("board-body");
   const btnWrite = document.getElementById("btn-write");
@@ -11,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let editId = null;
   const contextPath = window.contextPath || "";
+  const userRole = window.currentUserRole || "guest";
 
   function fetchPosts() {
     fetch(`${contextPath}/board`)
@@ -30,6 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
         ? `<button class="full-view-btn" onclick="showFullContent(${post.boardId})">🔍</button>`
         : "";
 
+      const isAdmin = userRole === "admin";
+      const manageBtns = isAdmin ? `
+        <button class="edit-btn" data-id="${post.boardId}">수정</button>
+        <button class="delete-btn" data-id="${post.boardId}">삭제</button>
+      ` : "";
+
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${post.boardId}</td>
@@ -38,30 +47,31 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${truncatedContent} ${fullContentBtn}</td>
         <td>${post.regDate}</td>
         <td>${post.views}</td>
-        <td>
-          <button class="edit-btn" data-id="${post.boardId}">수정</button>
-          <button class="delete-btn" data-id="${post.boardId}">삭제</button>
-        </td>
+        <td>${manageBtns}</td>
       `;
       boardBody.appendChild(row);
     });
 
-    document.querySelectorAll(".edit-btn").forEach((btn) => {
-      btn.addEventListener("click", () => loadPost(btn.dataset.id));
-    });
-    document.querySelectorAll(".delete-btn").forEach((btn) => {
-      btn.addEventListener("click", () => deletePost(btn.dataset.id));
-    });
+    if (userRole === "admin") {
+      document.querySelectorAll(".edit-btn").forEach((btn) => {
+        btn.addEventListener("click", () => loadPost(btn.dataset.id));
+      });
+      document.querySelectorAll(".delete-btn").forEach((btn) => {
+        btn.addEventListener("click", () => deletePost(btn.dataset.id));
+      });
+    }
   }
 
-  btnWrite.addEventListener("click", () => {
-    editId = null;
-    postTitle.value = "";
-    postAuthor.value = "";
-    postContent.value = "";
-    postModal.style.display = "block";
-    modalOverlay.style.display = "block";
-  });
+  if (btnWrite) {
+    btnWrite.addEventListener("click", () => {
+      editId = null;
+      postTitle.value = "";
+      postAuthor.value = "";
+      postContent.value = "";
+      postModal.style.display = "block";
+      modalOverlay.style.display = "block";
+    });
+  }
 
   cancelPostButton.addEventListener("click", closeModal);
 
