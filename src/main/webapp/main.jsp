@@ -36,6 +36,16 @@ main {
 	position: relative;
 	z-index: 1; /* ↓ header보다 낮게 유지 */
 }
+.btn-more {
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	background-color: black;
+	color: white;
+	padding: 12px 0;
+	border-radius: 8px;
+	margin-top: 10px;
+}
 </style>
 </head>
 <body>
@@ -114,18 +124,15 @@ main {
 		<section class="popular-chart-section">
 			<h2>혜택별 인기 차트</h2>
 
-
 			<!-- 탭 콘텐츠 영역 -->
 			<div class="chart-tab-contents">
 				<div class="chart-content">
 					<div class="chart-box" id="문화/여가">
 						<h3>문화/여가 TOP10</h3>
-						<ol id="category-0">
-
-						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<ol id="category-0"></ol>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=문화/여가" class="btn-more">차트 더보기</a>
 					</div>
-
+					
 					<div class="chart-box" id="쇼핑">
 						<h3>쇼핑 TOP10</h3>
 						<ol id="category-1">
@@ -137,9 +144,10 @@ main {
 								My WE:SH</li>
 							<li>LOCA 365 카드</li>
 						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=쇼핑" class="btn-more">차트 더보기</a>
 					</div>
-					<div class="chart-box" id="통신">
+					
+					<div class="chart-box" id="통신/디지털">
 						<h3>통신/디지털 TOP10</h3>
 						<ol id="category-2">
 							<li><img src="static/images/cards/redcard.png"> 신한카드
@@ -150,8 +158,9 @@ main {
 								My WE:SH</li>
 							<li>LOCA 365 카드</li>
 						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=통신/디지털" class="btn-more">차트 더보기</a>
 					</div>
+					
 					<div class="chart-box" id="외식">
 						<h3>외식 TOP10</h3>
 						<ol id="category-3">
@@ -163,12 +172,12 @@ main {
 								My WE:SH</li>
 							<li>LOCA 365 카드</li>
 						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=외식" class="btn-more">차트 더보기</a>
 					</div>
 				</div>
 			</div>
 		</section>
-
+		
 		<!-- 카드 투표 -->
 		<section class="vote-ranking-section">
 			<h2>🎖️ 당신의 카드에 투표하세요</h2>
@@ -199,6 +208,7 @@ main {
 				clickable : true,
 			},
 		});
+
 		const printData=(cardList)=>{
 			let content = '';
 			cardList.forEach(card => {
@@ -363,6 +373,5 @@ main {
 			});
 		
 	</script>
-
 </body>
 </html>
