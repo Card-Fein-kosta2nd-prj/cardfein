@@ -75,10 +75,10 @@ header {
 
         <!-- 커뮤니티 -->
         <li class="dropdown">
-          <a href="<%= path %>/views/bulletinboard/card_bulletin_board.jsp" class="dropbtn">커뮤니티</a>
+          <a href="#">커뮤니티</a>
           <div class="dropdown-content">
             <!-- ✅ 모든 사용자에게 항상 표시 -->
-            <a href="<%= path %>/views/bulletinboard/card_bulletin_board.jsp">게시판</a>
+            <a href="#">게시판</a>
             <a href="#">콘텐츠</a>
             <a href="#">공지사항</a>
 
