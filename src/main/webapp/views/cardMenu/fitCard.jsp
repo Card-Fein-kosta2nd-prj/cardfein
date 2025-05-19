@@ -35,15 +35,10 @@
         <h1>맞춤카드 검색</h1>
 
         <div class="filter-container">
-          <div class="filter-tag active" data-category="온라인 쇼핑">온라인 쇼핑</div>
-          <div class="filter-tag" data-category="통신/디지털">통신/디지털</div>
+          <div class="filter-tag active" data-category="통신/디지털">통신/디지털</div>
           <div class="filter-tag" data-category="주유">주유</div>
-          <div class="filter-tag" data-category="온라인 쇼핑">온라인 쇼핑</div>
-          <div class="filter-tag" data-category="렌탈">렌탈</div>
           <div class="filter-tag" data-category="병원/약국">병원/약국</div>
-          <div class="filter-tag" data-category="배달 앱">배달 앱</div>
-          <div class="filter-tag" data-category="오프라인 쇼핑">오프라인 쇼핑</div>
-          <div class="filter-tag" data-category="마일리지/공항라운지">항공/여행</div>
+          <div class="filter-tag" data-category="항공/여행">항공/여행</div>
           <div class="filter-tag" data-category="커피">커피</div>
           <div class="filter-tag" data-category="편의점/마트">편의점/마트</div>
           <div class="filter-tag" data-category="문화/여가">문화/여가</div>
