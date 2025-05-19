@@ -4,9 +4,10 @@
   String path = request.getContextPath();
   LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
 %>
+
 <style>
 header {
-  position: relative;  /* 또는 fixed/absolute */
+  position: relative;
   z-index: 1000;
 }
 
@@ -24,16 +25,14 @@ header {
   padding: 10px 0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   display: none;
-
-  /* ✅ 확실하게 위로 올라오게 설정 */
   z-index: 9999;
 }
 
 .dropdown:hover .dropdown-content {
   display: block;
 }
-
 </style>
+
 <header class="logo-header">
   <div class="header-container">
     <a href="<%= path %>/main.jsp">
@@ -41,6 +40,7 @@ header {
     </a>
   </div>
 </header>
+
 <div class="card-nav" id="sticky-nav">
   <div class="header-container" style="display: flex; justify-content: space-between; align-items: center;">
     <div class="card-nav-logo">
@@ -48,41 +48,62 @@ header {
         <img src="<%= path %>/static/images/icons/logo.png" alt="로고" class="nav-logo-img">
       </a>
     </div>
+
     <nav class="card-nav-menu">
       <ul>
+        <!-- 랭킹 -->
         <li class="dropdown">
           <a href="#" class="dropbtn">랭킹</a>
           <div class="dropdown-content">
             <a href="#">실시간</a>
             <a href="#">카드사별</a>
-            <a href="#">혜택별</a>
+            <a href="<%= path %>/views/ranking/benefit_rank.jsp">혜택별</a>
           </div>
         </li>
+
+        <!-- 카드 -->
         <li class="dropdown">
           <a href="<%= path %>/views/cardMenu/fitCard.jsp" class="dropbtn">카드</a>
           <div class="dropdown-content">
             <a href="<%= path %>/views/cardMenu/fitCard.jsp">맞춤카드 검색</a>
             <a href="<%= path %>/views/recommend/byBill.jsp">명세서 추천</a>
-              <% if (loginUser != null) { %>
-    <a href="<%= path %>/views/recommend/memberCardRecommend.jsp">누적기반 맞춤추천</a>
-  <% } %>
+            <% if (loginUser != null) { %>
+              <a href="<%= path %>/views/recommend/memberCardRecommend.jsp">누적기반 맞춤추천</a>
+            <% } %>
           </div>
         </li>
+
+        <!-- 커뮤니티 -->
+        <li>
+  			<a href="<%= path %>/views/community/community.jsp">커뮤니티</a>
+		</li>
+        
+        <!-- 
         <li class="dropdown">
-          <a href="<%= path %>/views/community/community.jsp" class="dropbtn">커뮤니티</a>
+          <a href="<%= path %>/views/community/community.jsp">커뮤니티</a>
           <div class="dropdown-content">
             <a href="<%= path %>/views/community/community.jsp">카드리뷰</a>
             <a href="#">콘텐츠</a>
             <a href="#">공지사항</a>
+            -->
+		
+            <!-- 관리자만 대시보드 표시 -->
+            <!--
+            <% if (loginUser != null && "admin".equals(loginUser.getRole())) { %>
+              <a href="<%= path %>/views/adminpage.jsp">대시보드</a>
+            <% } %>
           </div>
-        </li>      
+        </li>
+         -->
+
+        <!-- 커버 -->
         <li class="dropdown">
           <a href="#" class="dropbtn">커버</a>
           <div class="dropdown-content">
-             <a href="<%= path %>/views/cardCover/cardmain.jsp">카드커버</a>
-             <a href="<%= path %>/views/cardCover/cardranking.jsp">커버순위</a>
+            <a href="<%= path %>/views/cardCover/cardmain.jsp">카드커버</a>
+            <a href="<%= path %>/views/cardCover/cardranking.jsp">커버순위</a>
           </div>
-        </li>      
+        </li>
       </ul>
     </nav>
     
@@ -113,6 +134,7 @@ header {
 
 	  <% } %>
 	</div>
+
 
   </div>
 </div>

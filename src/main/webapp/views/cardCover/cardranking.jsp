@@ -51,11 +51,11 @@ pageEncoding="UTF-8"%>
     </div>
 
     <jsp:include page="/views/common/footer.jsp" />
-    
+  
     <script type="text/javascript">
-    const userNo = <%= userNo %>;
-	const path = '<%= path %>';
-	const ajaxUrl = `${path}/ajax`;
+    	const userNo = <%= userNo %>;
+    	const path = '<%= path %>';
+    	const ajaxUrl = `${path}/ajax`;
     </script>
     <script src="${path}/static/js/cardCover/cardranking.js"></script>
   </body>

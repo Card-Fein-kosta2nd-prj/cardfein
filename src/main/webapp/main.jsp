@@ -138,7 +138,7 @@ main {
 						</ol>
 						<button class="btn-more">차트 더보기</button>
 					</div>
-					<div class="chart-box" id="통신/디지털">
+					<div class="chart-box" id="통신">
 						<h3>통신 TOP10</h3>
 						<ol id="category-2">
 							<li><img src="static/images/cards/redcard.png"> 신한카드
@@ -256,7 +256,7 @@ main {
 			let result = await response.json();
 			document.querySelector(".my-card-list").innerHTML=printData(result);
 		}	
-		const category=['문화/여가','쇼핑','통신/디지털','외식'];
+		const category=['문화/여가','쇼핑','병원/약국','외식'];
 		//인기차트
 		const popularList = async()=>{
 			response = await fetch("${path}/ajax",{

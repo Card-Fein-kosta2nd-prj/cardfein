@@ -1,69 +1,70 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="cardfein.kro.kr.dto.LoginDto" %>
+<c:set var="path" value="${pageContext.request.contextPath}" />
+<%
+  Object loginUserObj = session.getAttribute("loginUser");
+  String role = "guest";
+  if (loginUserObj instanceof LoginDto) {
+    role = ((LoginDto) loginUserObj).getRole();
+  }
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <title>Card:Fein 관리자 게시판</title>
+  <link rel="stylesheet" href="${path}/static/css/common.css" />
+  <link rel="stylesheet" href="${path}/static/css/main.css" />
+  <script>
+    window.contextPath = "${path}";
+    window.currentUserRole = "<%= role %>";
+  </script>
   <style>
     body {
       margin: 0;
       font-family: "Noto Sans KR", sans-serif;
       background-color: #f3f4f6;
-      height: 100vh;
-      display: flex;
     }
-
+    .header-wrapper { width: 100%; margin: 0; padding: 0; }
     .sidebar {
-      width: 200px;
+      width: 119px;
       background: white;
       padding: 20px;
-      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+      border-right: 1.5px solid #d1d5db;
+      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.08);
+      position: fixed;
+      top: 175px;
+      height: 300px;
+      left: 0;
+      z-index: 998;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
     }
-
     .sidebar a {
       display: block;
       padding: 10px;
       color: #374151;
       text-decoration: none;
+      font-size: 14px;
     }
-
-    .sidebar a:hover {
-      background: #e5e7eb;
-    }
-
-    .menu-item {
-      position: relative;
-    }
-
+    .sidebar a:hover { background: #e5e7eb; }
+    .menu-item { position: relative; }
     .submenu {
       display: none;
       flex-direction: column;
       padding-left: 10px;
     }
-
-    .menu-item:hover .submenu {
-      display: flex;
-    }
-
+    .menu-item:hover .submenu { display: flex; }
     .main-content {
+      margin-left: 160px;
       flex: 1;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
     }
-
-    header {
-      background: #3b82f6;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-    }
-
-    .container {
-      padding: 40px;
-    }
-
+    .container { padding: 40px; flex-grow: 1; }
     .btn-write {
       background: #3b82f6;
       color: white;
@@ -72,7 +73,6 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -81,34 +81,27 @@
       border-radius: 12px;
       overflow: hidden;
     }
-
     th, td {
       padding: 12px;
       border-bottom: 1px solid #e5e7eb;
       text-align: center;
     }
-
     th {
       background-color: #f9fafb;
       color: #374151;
     }
-
     .modal-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 999;
     }
-
     .modal {
       display: none;
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       background: white;
       padding: 24px;
@@ -117,80 +110,61 @@
       z-index: 1000;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
-
     .modal input, .modal textarea {
-      width: 100%;
-      margin-bottom: 12px;
+      width: 100%; margin-bottom: 12px;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-
     .modal button {
       padding: 10px 20px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
-
     .modal .save-btn {
-      background: #3b82f6;
-      color: white;
+      background: #3b82f6; color: white;
     }
-
     .modal .cancel-btn {
-      background: #e5e7eb;
-      margin-left: 10px;
+      background: #e5e7eb; margin-left: 10px;
     }
-
     .full-view-btn {
       background: none;
       border: none;
       cursor: pointer;
       font-size: 16px;
     }
-
-    #view-modal h3 {
-      margin: 0;
-      font-size: 18px;
-    }
-
+    #view-modal h3 { margin: 0; font-size: 18px; }
     #view-modal p {
       font-size: 15px;
       white-space: pre-wrap;
     }
+    .footer-full { width: 100%; margin: 0; padding: 0; }
   </style>
 </head>
 <body>
-
-  <script>
-    window.contextPath = "<%= request.getContextPath() %>";
-  </script>
+  <div class="header-wrapper">
+    <jsp:include page="/views/common/header.jsp" />
+  </div>
 
   <div class="sidebar">
-    <a href="#">대시보드</a>
-    <a href="#">카드정보</a>
+    <a href="${path}/views/adminpage.jsp">대시보드</a>
     <div class="menu-item">
-      <a href="#" class="submenu-toggle">게시판</a>
+      <a href="#">게시판</a>
       <div class="submenu">
         <a href="#">공지사항</a>
-        <a href="#">컨텐츠</a>
+        <a href="#">콘텐츠</a>
       </div>
     </div>
   </div>
 
   <div class="main-content">
-    <header>
-      <div><strong>📄 Card:Fein</strong> 관리자 게시판</div>
-      <nav>
-        <a href="#" style="color:white;">홈</a>
-        <a href="#" style="color:white;">로그인</a>
-      </nav>
-    </header>
-
     <div class="container">
       <h2>공지사항</h2>
-      <button class="btn-write" id="btn-write">글쓰기</button>
+      <% if ("admin".equals(role)) { %>
+        <button class="btn-write" id="btn-write">글쓰기</button>
+      <% } %>
+
       <table>
         <thead>
           <tr>
@@ -208,7 +182,10 @@
     </div>
   </div>
 
-  <!-- 글쓰기 모달 -->
+  <div class="footer-full">
+    <jsp:include page="/views/common/footer.jsp" />
+  </div>
+
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="modal" id="post-modal">
     <input type="text" id="post-title" placeholder="제목" />
@@ -220,7 +197,6 @@
     </div>
   </div>
 
-  <!-- 전체 내용 보기 모달 -->
   <div class="modal-overlay" id="view-modal-overlay"></div>
   <div class="modal" id="view-modal">
     <h3>전체 내용</h3>
@@ -230,6 +206,6 @@
     </div>
   </div>
 
-  <script src="<%= request.getContextPath() %>/static/js/bulletin_board.js"></script>
+  <script src="${path}/static/js/bulletin_board.js"></script>
 </body>
 </html>
