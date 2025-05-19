@@ -14,6 +14,8 @@ pageEncoding="UTF-8"%>
     <title>Insert title here</title>
     <link rel="stylesheet" href="${path}/static/css/common.css" />
     <link rel="stylesheet" href="${path}/static/css/cardranking.css" />
+     <!-- 공통 스크립트 -->
+<script src="${path}/static/js/common.js" defer></script>
   </head>
   <body>
     <jsp:include page="/views/common/header.jsp" />
