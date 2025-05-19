@@ -101,6 +101,8 @@
 <script>
 let currentSlot = 0;
 const selectedCards = [{}, {}, {}];
+//[1] 선택된 카드사 상태를 저장하는 전역 변수
+let selectedProvider = "";
 
 function openCardModal(slotIndex) {
   currentSlot = slotIndex;
@@ -125,12 +127,36 @@ function updateCartCount() {
 	  }
 	}
 
+//[4] 카드 리스트 로드 함수 수정 - 선택된 카드사까지 고려
 async function loadCardList(keyword = "") {
-  const params = new URLSearchParams({ key: "cart", methodName: "selectAll" });
+	  console.log("현재 selectedProvider:", selectedProvider);
+	  console.log("현재 keyword:", keyword);
+	
+	
+	let methodName = "selectAll";
+
+	if (keyword && keyword.trim() !== "") {
+		  if (selectedProvider) {
+		    methodName = "selectByProviderAndKeyword";
+		  } else {
+		    methodName = "selectByKeyword";
+		  }
+		} else if (selectedProvider) {
+		  methodName = "selectByProvider";
+		} else {
+		  methodName = "selectAll";
+		}
+	  
+  const params = new URLSearchParams({
+    key: "cart",
+    methodName: methodName
+  });
+
+  if (selectedProvider) params.append("provider", selectedProvider);
   if (keyword) params.append("keyword", keyword);
 
   try {
-    const response = await fetch(`${path}/ajax?${"${params.toString()}"}`);
+    const response = await fetch(`${path}/ajax?${'${params.toString()}'}`);
     if (!response.ok) throw new Error("서버 오류");
     const cards = await response.json();
     renderCardList(cards);
@@ -168,7 +194,7 @@ async function loadCardByProvider(provider) {
   });
 
   try {
-    const response = await fetch(`${path}/ajax?${"${params.toString()}"}`);
+    const response = await fetch(`${path}/ajax?${'${params.toString()}'}`);
     if (!response.ok) throw new Error("서버 오류");
     const cards = await response.json();
     renderCardList(cards);
@@ -177,18 +203,33 @@ async function loadCardByProvider(provider) {
   }
 }
 
+
+
+// [2] 카드사 버튼 클릭 이벤트 수정
 document.querySelectorAll(".provider-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".provider-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    loadCardByProvider(btn.dataset.provider);
+    const isActive = btn.classList.contains("active");
+
+    // 이미 선택된 상태였다면 해제 (전체 보기로)
+    if (isActive) {
+      btn.classList.remove("active");
+      selectedProvider = "";
+      loadCardList(); // 전체 리스트 불러오기
+    } else {
+      document.querySelectorAll(".provider-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedProvider = btn.dataset.provider;
+      loadCardList(document.querySelector(".search-input").value.trim()); // 현재 입력된 키워드로 필터링
+    }
   });
 });
 
+//[3] 검색어 입력 이벤트 수정 (선택된 카드사와 함께 검색)
 document.querySelector(".search-input").addEventListener("input", (e) => {
   const keyword = e.target.value.trim();
-  loadCardList(keyword);
+  loadCardList(keyword); // 선택된 카드사 상태를 기반으로 검색
 });
+
 
 window.onclick = function(event) {
   const modal = document.getElementById('cardModal');

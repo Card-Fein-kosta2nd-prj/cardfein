@@ -138,8 +138,6 @@ public class CartDAOImpl implements CartDAO {
 	                    rs.getString("fee"),
 	                    rs.getString("card_image_url")
 	                );
-	                System.out.println("카드 이름: " + rs.getString("card_name"));
-	                System.out.println("혜택 카테고리: " + rs.getString("category"));
 
 	            }
 
@@ -160,6 +158,37 @@ public class CartDAOImpl implements CartDAO {
 	    }
 
 	    return card;
+	}
+
+	public List<CardDto> selectByProviderAndKeyword(String provider, String keyword) throws SQLException {
+	    Connection con = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+	    List<CardDto> list = new ArrayList<>();
+
+	    String sql = proFile.getProperty("query.selectByProviderAndKeyword");
+
+	    try {
+	        con = DbUtil.getConnection();
+	        ps = con.prepareStatement(sql);
+	        ps.setString(1, provider);
+	        ps.setString(2, "%" + keyword + "%");
+	        rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            CardDto dto = new CardDto(
+	                rs.getInt("card_no"),
+	                rs.getString("card_name"),
+	                rs.getString("provider"),
+	                rs.getString("card_image_url")
+	            );
+	            list.add(dto);
+	        }
+	    } finally {
+	        DbUtil.dbClose(con, ps, rs);
+	    }
+
+	    return list;
 	}
 
 

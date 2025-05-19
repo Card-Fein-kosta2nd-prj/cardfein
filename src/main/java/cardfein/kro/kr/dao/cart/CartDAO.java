@@ -37,4 +37,13 @@ public interface CartDAO {
 	 * @throws SQLException
 	 */
 	CardDto selectByCardNo(int cardNo) throws SQLException;
+	
+	/**
+	 * 카드사 선택 후 키워드로 검색
+	 * @param provider
+	 * @param keyword
+	 * @return 카드 리스트
+	 * @throws SQLException
+	 */
+	List<CardDto> selectByProviderAndKeyword(String provider, String keyword) throws SQLException;
 }
