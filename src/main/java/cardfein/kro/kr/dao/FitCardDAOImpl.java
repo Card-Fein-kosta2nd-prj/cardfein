@@ -144,4 +144,25 @@ public class FitCardDAOImpl implements FitCardDAO{
         }
         return cardDetail; // List가 아닌 단일 CardDto 객체 반환
     }
+	
+	@Override
+	public boolean incrementCardView(int cardNo) throws SQLException {
+		String sql = "update cards set view = view + 1 where card_no = ?";
+		boolean success = false;
+		
+		try(Connection con = DbUtil.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql)) {
+			
+			ps.setInt(1, cardNo);
+			int rows = ps.executeUpdate();
+			
+			if (rows > 0) {
+				success = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return success;
+	}
 }

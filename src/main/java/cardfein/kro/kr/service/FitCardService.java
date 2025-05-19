@@ -9,4 +9,6 @@ public interface FitCardService {
 	List<CardDto> getCardsByCategory(String category) throws Exception;
 	
 	CardDto getCardsDetail(int cardNo);
+	
+	boolean incrementCardView(int cardNo) throws Exception;
 }

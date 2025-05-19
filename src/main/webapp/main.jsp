@@ -1,16 +1,17 @@
+<%@page import="cardfein.kro.kr.dto.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%-- contextPath 변수 설정 --%>
-<c:set var="path" value="${pageContext.request.contextPath}" />
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  String path = request.getContextPath();
+  LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Card:fein - 내 손안의 카드비서</title>
+	<meta charset="UTF-8" />
+	<title>Card:fein - 내 손안의 카드비서</title>
 
 <!-- 공통 스타일 -->
 <link rel="stylesheet" href="${path}/static/css/common.css" />
@@ -51,7 +52,7 @@ main {
 					<div class="swiper-slide">
 						<div class="carousel-item-horizontal">
 							<img
-								src="${pageContext.request.contextPath}/static/images/main/slide_chart.png"
+								src="${path}/static/images/main/slide_chart.png"
 								alt="카드 랭킹" class="carousel-img">
 							<div class="carousel-text-box">
 								<p class="carousel-text">
@@ -64,7 +65,7 @@ main {
 					<div class="swiper-slide">
 						<div class="carousel-item-horizontal">
 							<img
-								src="${pageContext.request.contextPath}/static/images/main/slide_ocr.png"
+								src="${path}/static/images/main/slide_ocr.png"
 								alt="명세서 추천" class="carousel-img">
 							<div class="carousel-text-box">
 								<p class="carousel-text">
@@ -77,7 +78,7 @@ main {
 					<div class="swiper-slide">
 						<div class="carousel-item-horizontal">
 							<img
-								src="${pageContext.request.contextPath}/static/images/main/slide_customcover.png"
+								src="${path}/static/images/main/slide_customcover.png"
 								alt="커스텀 카드" class="carousel-img">
 							<div class="carousel-text-box">
 								<p class="carousel-text">
@@ -172,33 +173,11 @@ main {
 		<section class="vote-ranking-section">
 			<h2>🎖️ 당신의 카드에 투표하세요</h2>
 			<div class="podium-wrapper">
-				<!-- 2위 카드 -->
-				<div class="podium-card second">
-					<img src="static/images/cards/card2.png" alt="2위카드" />
-					<div class="rank">2위</div>
-					<div class="card-name">녹색카드</div>
-					<div class="provider">신한카드</div>
-				</div>
-
-				<!-- 1위 카드 -->
-				<div class="podium-card first">
-					<img src="static/images/cards/card1.png" alt="1위카드" />
-					<div class="rank star">1위⭐</div>
-					<div class="card-name">아메리카카드</div>
-					<div class="provider">카드사</div>
-				</div>
-
-				<!-- 3위 카드 -->
-				<div class="podium-card third">
-					<img src="static/images/cards/card3.png" alt="3위카드" />
-					<div class="rank">3위</div>
-					<div class="card-name">노란카드</div>
-					<div class="provider">현대카드</div>
-				</div>
+				
 			</div>
 
 			<!-- ✅ 투표하러 가기 버튼 -->
-			<a href="\${path}/views/vote/vote.jsp" class="vote-btn">투표하러 가기</a>
+			<a href="${path}/views/cardCover/cardranking.jsp" class="vote-btn">투표하러 가기</a>
 		</section>
 	</main>
 
@@ -277,6 +256,85 @@ main {
 				document.getElementById(`category-\${idx}`).innerHTML=content;
 			});
 		}
+		async function loadTopRankedCards() {
+  		  try {
+  		    const fetchResponse = await fetch("${path}/ajax", {
+  		      method: "POST",
+  		      body: new URLSearchParams({
+  		        key: "rank",
+  		        methodName: "getTopCardCovers",
+  		      }),
+  		    });
+
+  		    if (!fetchResponse.ok) {
+  		      throw new Error("서버 응답 오류");
+  		    }
+
+  		    const topCards = await fetchResponse.json();
+  		    console.log("topCards : ", topCards);
+  		    const podiumWrapper = document.querySelector(".podium-wrapper");
+  		    podiumWrapper.innerHTML = "";
+	  		const rankClassMap = {
+		    		1: 'first',
+		    		2: 'second',
+		    		3: 'third'
+		    };
+	  		
+	  		const top3Cards = topCards.slice(0, 3);
+
+  		    top3Cards.forEach((card) => {
+  		      const rankedCardItem = document.createElement('div');
+  		      rankedCardItem.classList.add('ranked-card-item');
+  		      
+  		      const rankClass = rankClassMap[card.cardRank];
+		        if (rankClass) {
+		    	    rankedCardItem.classList.add(rankClass);
+		        }
+  		      
+  		      const imgContainer = document.createElement("div");
+  		      imgContainer.classList.add("img-container");
+  		      
+	  		  const podiumImg = document.createElement("img");
+	  		  podiumImg.src = card.finalCardUrl;
+	  		  podiumImg.classList.add("podium-img");
+
+		      const overlayImg = document.createElement("img");
+		      overlayImg.src = `${path}/static/images/small_top.png`;
+		      overlayImg.alt = "Overlay";
+		      overlayImg.classList.add("rank-overlay");
+		      
+		      imgContainer.appendChild(podiumImg);
+		      imgContainer.appendChild(overlayImg);
+		      rankedCardItem.appendChild(imgContainer);
+		      
+		      // 카드 생성 및 랭킹에 따른 추가 클래스 부여
+		      const podiumCard = document.createElement("div");
+		      podiumCard.classList.add('podium-card');
+		      
+		      // 랭크 표시
+			  const rankDiv = document.createElement('div');
+			  rankDiv.classList.add('rank');
+			  if (card.cardRank === 1) {
+				  rankDiv.classList.add('star');
+				  rankDiv.textContent = card.cardRank+"위⭐";
+			  } else {
+				  rankDiv.textContent = card.cardRank+"위";
+			  }
+			  podiumCard.appendChild(rankDiv);
+			  
+			  const cardNameDiv = document.createElement('div');
+			  cardNameDiv.classList.add('card-name');
+			  cardNameDiv.textContent = card.title;
+			  podiumCard.appendChild(cardNameDiv);
+			  
+			  rankedCardItem.appendChild(podiumCard);
+			  podiumWrapper.appendChild(rankedCardItem);
+			  		      
+  		    });
+  		  } catch (error) {
+  		    console.error("인기 카드 로드 실패:", error);
+  		  }
+  		}
 		
 		const showDetails=(cardNo)=>{
 			 window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+cardNo;
@@ -286,6 +344,7 @@ main {
 			  viewCardList();
 			  myCardList();
 			  popularList(); // ✅ DOM이 다 로드된 뒤에 실행되도록
+			  loadTopRankedCards();
 			 
 			});
 		const handleImageLoad=(img)=> {

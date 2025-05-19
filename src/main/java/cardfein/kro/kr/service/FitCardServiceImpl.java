@@ -21,4 +21,10 @@ public class FitCardServiceImpl implements FitCardService{
 		
 		return dao.getCardsDetail(cardNo);
 	}
+	
+	@Override
+	public boolean incrementCardView(int cardNo) throws Exception {
+		
+		return dao.incrementCardView(cardNo);
+	}
 }
