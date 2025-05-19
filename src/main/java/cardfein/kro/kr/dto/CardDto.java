@@ -39,6 +39,14 @@ public class CardDto {
         this(cardNo, cardName, provider, fee, cardImageUrl, view);
         this.cardBenefit = cardBenefit;
     }
+	
+	// 맞춤카드 검색 시 사용
+	public CardDto(int cardNo, String cardName, String provider, String fee, String cardImageUrl, CardBenefitDto cardBenefit) {
+		this(cardNo, cardName, cardImageUrl);
+		this.provider = provider;
+		this.fee = fee;
+		this.cardBenefit = cardBenefit;
+	}
     
 
 	//보유카드 검색시 사용할 생성자
