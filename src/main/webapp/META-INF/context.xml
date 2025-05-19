@@ -34,7 +34,7 @@
           driverClassName="com.mysql.cj.jdbc.Driver"
           url="jdbc:mysql://localhost:3306/card_fein"
           username="root" 
-          password="1234" 
+          password="admin" 
           maxTotal="20" 
           maxIdle="10"
           maxWaitMillis="-1"/> -->
