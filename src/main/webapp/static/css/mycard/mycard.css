@@ -1,4 +1,6 @@
-
+* {
+  box-sizing: border-box;
+}
 /* ======================= */
 /* 전체 컨테이너 */
 /* ======================= */
@@ -136,21 +138,17 @@
 
 .draw-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* ✅ 한 줄에 3개 */
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+  align-items: stretch; /* ✅ 모든 카드박스를 같은 높이로 맞춤 */
 }
 
 /* 카드 전체 박스 */
 .card-box {
-  width: 100%;          /* ✅ grid에서 column 너비에 맞게 자동 조절 */
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  background-color: #fff;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  justify-content: space-between; /* ✅ 상단 내용과 버튼 간 여백 자동 정렬 */
+  height: 100%; /* ✅ 높이 균일하게 */
 }
 
 /* 카드 이미지 + 카드 정보 상단 묶음 */
@@ -240,15 +238,17 @@
 }
 
 .btn-sm {
-  padding: 10px 0;
-  font-size: 0.9rem;
+  padding: 6px 0;
+  font-size: 0.85rem;
   font-weight: 500;
-  border: none;             /* ✅ 테두리 제거 */
+  border: none;
   border-radius: 6px;
   cursor: pointer;
   text-align: center;
   white-space: nowrap;
-  width: 100%;              /* ✅ 각 버튼이 동일 너비 갖도록 */
+  width: 100%;
+  line-height: 1.2;
+  transition: all 0.2s ease;
 }
 
 .btn-detail { background-color: #6b7280; color: white; }
