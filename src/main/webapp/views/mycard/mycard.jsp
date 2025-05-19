@@ -1,6 +1,14 @@
+<%@page import="cardfein.kro.kr.dto.LoginDto"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  String path = request.getContextPath();
+  LoginDto loginUser = (LoginDto) session.getAttribute("loginUser");
+  int userNo = (loginUser != null) ? loginUser.getUserNo() : -1;
+%>
 <!DOCTYPE html>
 <html lang="ko">
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <head>
 <meta charset="UTF-8">
 <title>Card:fein - 내카드 등록하기</title>
@@ -8,13 +16,13 @@
 
 <!-- 공통 스타일 -->
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/common.css">
+	href="${path}/static/css/common.css">
 <!-- 페이지 전용 스타일 -->
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/css/mycard/mycard.css">
+	href="${path}/static/css/mycard/mycard.css">
 
 <!-- 공통 스크립트 -->
-<script src="${pageContext.request.contextPath}/static/js/common.js"
+<script src="${path}/static/js/common.js"
 	defer></script>
 <!-- 페이지 전용 스크립트 -->
 </head>
@@ -24,26 +32,6 @@
 
 	<!-- 메인 콘텐츠 -->
 	<main class="card-register-container">
-		<!-- <section class="search-section">
-			<div class="inner-wrapper">
-				<h2>💳 내 카드 등록하기</h2>
-				<p class="section-desc">등록할 카드명을 입력하세요. 존재하지 않는 카드는 1:1 문의를 통해
-					추가 요청할 수 있습니다.</p>
-
-				<input type="text" placeholder="카드명을 입력해주세요." id="keyword"
-					onkeyup="search(event)" />
-
-				<div class="card_list"></div>
-
-				<div class="inquiry-form" id="inquiryForm" style="display: none">
-					<h3>❓ 카드가 DB에 없습니다</h3>
-					<p>입력한 카드를 등록 요청하시겠어요? 아래 내용을 확인 후 1:1 문의를 남겨주세요.</p>
-					<textarea id="inquiryContent" rows="4">카드명: </textarea>
-					<button onclick="submitInquiry()">1:1 문의 등록</button>
-				</div>
-			</div>
-		</section> -->
-
 		<section class="my-cards-section">
 			<div class="inner-wrapper">
 				<div class="mycard-header">
@@ -275,8 +263,8 @@
 			      </div>
 			      </div>
 			      <div class="btn-group">
-		          <button class="btn-sm btn-detail" onclick="alert('상세 페이지로 이동합니다.')">상세 보기</button>
-		          <button class="btn-sm btn-compare" onclick="#">비교바구니담기</button>
+		          <button class="btn-sm btn-detail" onclick="showDetail(\${cardNo})">상세 보기</button>
+		          <button class="btn-sm btn-compare" onclick="addToCart(\${cardNo})">비교바구니담기</button>
 		          <button class="btn-sm btn-delete" onclick="deleteCard('\${cardNo}')">삭제</button>
 		        </div>
 			    </div>
@@ -357,6 +345,40 @@
         document.body.style.overflow = "auto";
       }
     });
+    
+    const showDetail =(cardNo)=>{
+  	  window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+cardNo;
+    }
+    
+    document.addEventListener("DOMContentLoaded", () => {
+    	  const addToCart = async(cardNo)=>{
+    		  let saved = JSON.parse(localStorage.getItem("cartCards") || "[{}, {}, {}]");
+
+    		  // 이미 들어있는지 확인
+    		  const alreadyAdded = saved.some(item => item.cardNo === cardNo);
+    		  if (alreadyAdded) {
+    		    alert("이미 장바구니에 담긴 카드입니다!");
+    		    return;
+    		  }
+
+    		  // 빈 슬롯 찾기
+    		  const emptyIndex = saved.findIndex(item => !item.cardNo);
+    		  if (emptyIndex === -1) {
+    		    alert("장바구니에는 최대 3개의 카드만 담을 수 있습니다!");
+    		    return;
+    		  }
+
+    		  // 새 카드 추가
+    		  saved[emptyIndex] = { cardNo };
+
+    		  // 저장
+    		  localStorage.setItem("cartCards", JSON.stringify(saved));
+    		  alert("카드가 비교 바구니에 담겼습니다!");
+    		  
+    		  updateCartCnt();
+    	  }
+    	  window.addToCart = addToCart;
+    	  });
 	</script>
 </body>
 </html>

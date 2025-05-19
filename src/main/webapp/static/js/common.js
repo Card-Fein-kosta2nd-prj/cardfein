@@ -62,5 +62,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	    }
 	}
 	
-	
 });
+window.updateCartCnt = ()=> {
+    const cartCountEl = document.querySelector(".cart-count");
+    if (cartCountEl) {
+        const saved = localStorage.getItem("cartCards");
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                const count = parsed.filter(c => c && c.cardNo).length;
+                cartCountEl.textContent = count;
+            } catch (e) {
+                cartCountEl.textContent = 0;
+            }
+        } else {
+            cartCountEl.textContent = 0;
+        }
+    }
+};

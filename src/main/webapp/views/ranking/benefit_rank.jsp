@@ -47,8 +47,9 @@
     }
 
     .card-item {
+      position: relative;
       width: calc(20% - 20px); /* 5개씩 배치 (100% / 5 - gap) */
-      height: 260px;
+      height: 280px; /* 높이를 약간 늘려서 카드명이 잘리지 않도록 함 */
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -69,9 +70,57 @@
       background-color: #f9fafb;
     }
 
+    /* 순위 표시 */
+    .card-rank {
+      position: absolute;
+      color: white;
+      padding: 4px 8px;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 6px;
+      z-index: 1;
+      top: 10px; /* 이미지 좌측 상단에 위치하도록 top 속성 수정 */
+      left: 10px; /* 이미지 좌측 상단에 위치하도록 left 속성 수정 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 1위 - 금색 왕관 */
+    .rank-1 {
+      background-color: gold;
+      background-image: url('${path}/static/images/gold-crown.png');
+      background-size: cover;
+    }
+
+    /* 2위 - 은색 왕관 */
+    .rank-2 {
+      background-color: silver;
+      background-image: url('${path}/static/images/silver-crown.png');
+      background-size: cover;
+    }
+
+    /* 3위 - 동색 왕관 */
+    .rank-3 {
+      background-color: #cd7f32;
+      background-image: url('${path}/static/images/bronze-crown.png');
+      background-size: cover;
+    }
+
+    /* 4위 이후는 기존 스타일 유지 */
+    .top-rank, .bottom-rank {
+      background-color: #2563eb;
+    }
+
     .card-name {
       font-weight: bold;
       margin-top: 12px;
+      margin-bottom: 12px;  /* 카드명과 이미지 간의 여백 추가 */
+      text-align: center;   /* 카드명을 중앙 정렬 */
+      font-size: 14px;  /* 글자 크기를 줄여서 여백을 확보 */
+      white-space: normal;  /* 긴 카드명이 잘리지 않게 자동으로 줄바꿈 */
+      word-wrap: break-word; /* 긴 텍스트가 한 줄로 끝나지 않고 줄 바꿈이 가능하도록 함 */
+      line-height: 1.2em; /* 줄 간격 조정 */
     }
 
     .card-brand {
@@ -95,6 +144,11 @@
       <button class="category-tab" data-category="외식">외식</button>
       <button class="category-tab" data-category="병원/약국">병원/약국</button>
       <button class="category-tab" data-category="문화/여가">문화/여가</button>
+      <button class="category-tab" data-category="카페/커피">카페/커피</button>
+      <button class="category-tab" data-category="편의점/마트">편의점/마트</button>
+      <button class="category-tab" data-category="통신/디지털">통신/디지털</button>
+      <button class="category-tab" data-category="항공/여행">항공/여행</button>
+      <button class="category-tab" data-category="주유">주유</button>
     </div>
 
     <div class="card-view-list" id="cardList">
@@ -110,6 +164,7 @@
     const tabs = document.querySelectorAll('.category-tab');
     const cardList = document.getElementById('cardList');
 
+    // loadCards 함수는 여기 안에 위치합니다.
     const loadCards = async (category) => {
       cardList.innerHTML = '<p>불러오는 중...</p>';
 
@@ -129,19 +184,27 @@
           return;
         }
 
-        cardList.innerHTML = result.map(card => {
+        cardList.innerHTML = result.map((card, index) => {
           const safeImage = card.cardImageUrl && card.cardImageUrl.trim() !== "" 
               ? card.cardImageUrl 
               : 'default-card.png';
 
+          // 1위, 2위, 3위 순위에 왕관 이미지 적용
+          const rankClass = index === 0 ? "rank-1" : 
+                           index === 1 ? "rank-2" : 
+                           index === 2 ? "rank-3" : 
+                           index < 5 ? "top-rank" : "bottom-rank";
+          const rankNumber = index + 1;  // 순위 번호 (1부터 시작)
+
           return `
             <div class="card-item">
+              <div class="card-rank \${rankClass}">\${rankNumber}위</div>  <!-- 순위 숫자와 "위" 표시 -->
               <img 
-                src="${path}/static/images/cards/\${safeImage}" //오류가 나서 ${safeImage}에서 $앞에 \ 붙였습니다.
-                alt="${card.cardName}" 
+                src="${path}/static/images/cards/\${safeImage}"
+                alt="\${card.cardName}" 
                 onerror="this.src='${path}/static/images/default-card.png';">
-              <div class="card-name">${card.cardName}</div>
-              <div class="card-brand">${card.provider}</div>
+              <div class="card-name">\${card.cardName}</div> <!-- 카드명을 중앙에 표시 -->
+              <div class="card-brand">\${card.provider}</div>
             </div>
           `;
         }).join('');

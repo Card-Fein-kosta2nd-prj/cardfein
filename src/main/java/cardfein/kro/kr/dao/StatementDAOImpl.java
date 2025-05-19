@@ -46,6 +46,7 @@ public class StatementDAOImpl implements StatementDAO {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, category[0]);
 			ps.setString(2, category[1]);
+			System.out.println(category[0]+category[1]);
 
 			rs = ps.executeQuery();
 			// CardDto(int cardNo, String cardName, String provider, String fee, String
@@ -72,8 +73,10 @@ public class StatementDAOImpl implements StatementDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<CardBenefitDto> list = new ArrayList<CardBenefitDto>();
+		System.out.println(cardNoList.toString());
 
-		String sql = proFile.getProperty("query.selectByCardNo");// select category,card_no, discount_rate
+		String sql = proFile.getProperty("query.selectByCardNumber");// select category,card_no, discount_rate
+		System.out.println(sql);
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
