@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -34,6 +33,16 @@ main {
 .banner-section, .swiper-container {
 	position: relative;
 	z-index: 1; /* ↓ header보다 낮게 유지 */
+}
+.btn-more {
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	background-color: black;
+	color: white;
+	padding: 12px 0;
+	border-radius: 8px;
+	margin-top: 10px;
 }
 </style>
 </head>
@@ -113,18 +122,15 @@ main {
 		<section class="popular-chart-section">
 			<h2>혜택별 인기 차트</h2>
 
-
 			<!-- 탭 콘텐츠 영역 -->
 			<div class="chart-tab-contents">
 				<div class="chart-content">
 					<div class="chart-box" id="문화/여가">
 						<h3>문화/여가 TOP10</h3>
-						<ol id="category-0">
-
-						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<ol id="category-0"></ol>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=문화/여가" class="btn-more">차트 더보기</a>
 					</div>
-
+					
 					<div class="chart-box" id="쇼핑">
 						<h3>쇼핑 TOP10</h3>
 						<ol id="category-1">
@@ -136,9 +142,10 @@ main {
 								My WE:SH</li>
 							<li>LOCA 365 카드</li>
 						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=쇼핑" class="btn-more">차트 더보기</a>
 					</div>
-					<div class="chart-box" id="통신">
+					
+					<div class="chart-box" id="통신/디지털">
 						<h3>통신/디지털 TOP10</h3>
 						<ol id="category-2">
 							<li><img src="static/images/cards/redcard.png"> 신한카드
@@ -149,8 +156,9 @@ main {
 								My WE:SH</li>
 							<li>LOCA 365 카드</li>
 						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=통신/디지털" class="btn-more">차트 더보기</a>
 					</div>
+					
 					<div class="chart-box" id="외식">
 						<h3>외식 TOP10</h3>
 						<ol id="category-3">
@@ -162,33 +170,28 @@ main {
 								My WE:SH</li>
 							<li>LOCA 365 카드</li>
 						</ol>
-						<button class="btn-more">차트 더보기</button>
+						<a href="${path}/views/ranking/benefit_rank.jsp?category=외식" class="btn-more">차트 더보기</a>
 					</div>
 				</div>
 			</div>
 		</section>
-
+		
 		<!-- 카드 투표 -->
 		<section class="vote-ranking-section">
 			<h2>🎖️ 당신의 카드에 투표하세요</h2>
 			<div class="podium-wrapper">
-				<!-- 2위 카드 -->
 				<div class="podium-card second">
 					<img src="static/images/cards/card2.png" alt="2위카드" />
 					<div class="rank">2위</div>
 					<div class="card-name">녹색카드</div>
 					<div class="provider">신한카드</div>
 				</div>
-
-				<!-- 1위 카드 -->
 				<div class="podium-card first">
 					<img src="static/images/cards/card1.png" alt="1위카드" />
 					<div class="rank star">1위⭐</div>
 					<div class="card-name">아메리카카드</div>
 					<div class="provider">카드사</div>
 				</div>
-
-				<!-- 3위 카드 -->
 				<div class="podium-card third">
 					<img src="static/images/cards/card3.png" alt="3위카드" />
 					<div class="rank">3위</div>
@@ -196,9 +199,7 @@ main {
 					<div class="provider">현대카드</div>
 				</div>
 			</div>
-
-			<!-- ✅ 투표하러 가기 버튼 -->
-			<a href="\${path}/views/vote/vote.jsp" class="vote-btn">투표하러 가기</a>
+			<a href="${path}/views/vote/vote.jsp" class="vote-btn">투표하러 가기</a>
 		</section>
 	</main>
 
@@ -220,90 +221,6 @@ main {
 				clickable : true,
 			},
 		});
-		const printData=(cardList)=>{
-			let content = '';
-			cardList.forEach(card => {
-				content += `<div class="card-item">
-					<div class="card-image-box">
-					<a onclick="showDetails(\${card.cardNo})"><img src="static/images/cards/\${card.cardImageUrl}" alt="카드이미지" onload="handleImageLoad(this)"></a>
-					</div>
-					<div class="card-name">\${card.cardName}</div>
-					<div class="card-brand">\${card.provider}</div>
-				</div>`;
-			});
-			return content;
-		};
-		const viewCardList = async()=>{
-			let response = await fetch("${path}/ajax",{
-				 method: "POST",
-		         body: new URLSearchParams({
-		           key: "main",
-		           methodName: "selectViewList"
-				})
-			});
-			let result = await response.json();
-			
-			document.querySelector(".card-view-list").innerHTML=printData(result);
-		}
-		const myCardList = async()=>{
-			let response = await fetch("${path}/ajax",{
-				 method: "POST",
-		         body: new URLSearchParams({
-		           key: "main",
-		           methodName: "selectMyCardList"
-				})
-			});
-			let result = await response.json();
-			document.querySelector(".my-card-list").innerHTML=printData(result);
-		}	
-		const category=['문화/여가','쇼핑','통신/디지털','외식'];
-		//인기차트
-		const popularList = async()=>{
-			response = await fetch("${path}/ajax",{
-				 method: "POST",
-		         body: new URLSearchParams({
-		           key: "main",
-		           methodName: "selectPopularList"
-				})
-			});
-			let result = await response.json();
-			category.forEach((c,idx)=>{
-				let content='';
-				result.forEach((card)=>{
-					if(c===card.cardBenefit.category){
-						content+=`<li><img src="static/images/cards/\${card.cardImageUrl}">\${card.cardNo} \${card.cardName}</li>`;
-					}
-				});
-				document.getElementById(`category-\${idx}`).innerHTML=content;
-			});
-		}
-		
-		const showDetails=(cardNo)=>{
-			 window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+cardNo;
-		}
-		
-		document.addEventListener("DOMContentLoaded", () => {
-			  viewCardList();
-			  myCardList();
-			  popularList(); // ✅ DOM이 다 로드된 뒤에 실행되도록
-			 
-			});
-		const handleImageLoad=(img)=> {
-			  const ratio = img.naturalHeight / img.naturalWidth;
-			  if (ratio > 1.3) {
-			    img.classList.add('vertical');
-			  }
-			}
-		
-		document.addEventListener("DOMContentLoaded", () => {
-			  document.querySelectorAll(".card-image-box img").forEach(img => {
-			    if (img.complete) {
-			      handleImageLoad(img);
-			    }
-			  });
-			});
-		
 	</script>
-
 </body>
 </html>
