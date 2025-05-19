@@ -69,9 +69,9 @@
   document.getElementById('recentCategory').innerHTML = message;
     
     
-    console.log(result);
     const container = document.getElementById('personalizedCards');
     result.forEach((card, idx) => {
+    	console.log(card);
       const box = document.createElement('div');
       box.className = 'card-match-box';
       box.innerHTML = `
@@ -92,7 +92,7 @@
                   : ''}
             </div>
             <div class="button-group">
-            <a class="btn-sm" href="#">비교 바구니 담기</a>
+            <a class="btn-sm" href="#" onclick="addToCart(\${card.cardNo})">비교 바구니 담기</a>
             <a class="btn-detail" href="#">자세히 보기</a>
           </div>
         </div>
@@ -102,7 +102,35 @@
   
   };
   recommendCards();
-  
+  document.addEventListener("DOMContentLoaded", () => {
+  const addToCart = async(cardNo)=>{
+	  let saved = JSON.parse(localStorage.getItem("cartCards") || "[{}, {}, {}]");
+
+	  // 이미 들어있는지 확인
+	  const alreadyAdded = saved.some(item => item.cardNo === cardNo);
+	  if (alreadyAdded) {
+	    alert("이미 장바구니에 담긴 카드입니다!");
+	    return;
+	  }
+
+	  // 빈 슬롯 찾기
+	  const emptyIndex = saved.findIndex(item => !item.cardNo);
+	  if (emptyIndex === -1) {
+	    alert("장바구니에는 최대 3개의 카드만 담을 수 있습니다!");
+	    return;
+	  }
+
+	  // 새 카드 추가
+	  saved[emptyIndex] = { cardNo };
+
+	  // 저장
+	  localStorage.setItem("cartCards", JSON.stringify(saved));
+	  alert("카드가 비교 바구니에 담겼습니다!");
+	  
+	  updateCartCnt();
+  }
+  window.addToCart = addToCart;
+  });
   
   
   
