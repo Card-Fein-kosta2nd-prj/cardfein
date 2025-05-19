@@ -35,13 +35,12 @@ public class CartAjaxController implements RestController{
 	public Object selectByProvider(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 	    String provider = request.getParameter("provider");
 
-	    System.out.println("선택된 카드사: " + provider);
-
 	    List<CardDto> result = service.selectByProvider(provider);
 
 	    return result;
 	}
 	
+	//선택된 카드 정보 상세 조회
 	public Object selectByCardNo(HttpServletRequest request, HttpServletResponse response) throws SQLException {
 	    
 		String cardNoStr = request.getParameter("cardNo");
@@ -56,7 +55,30 @@ public class CartAjaxController implements RestController{
 
 	    return card;
 	}
-
-
 	
+	// 키워드만으로 검색 (카드사 X)
+	public Object selectByKeyword(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+	    String keyword = request.getParameter("keyword");
+
+	    if (keyword == null || keyword.trim().isEmpty()) {
+	        return List.of(); // 빈 리스트 반환
+	    }
+
+	    return service.selectByKeyword(keyword);
+	}
+	
+	// 카드사 + 키워드 검색
+	public Object selectByProviderAndKeyword(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+	    System.out.println("카트 여기오니?");
+		
+		String provider = request.getParameter("provider");
+	    String keyword = request.getParameter("keyword");
+
+	    if(provider == null || keyword == null || provider.trim().isEmpty() || keyword.trim().isEmpty()) {
+	        return List.of(); // 빈 리스트 반환
+	    }
+
+	    return service.selectByProviderAndKeyword(provider, keyword);
+	}
+
 }

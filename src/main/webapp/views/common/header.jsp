@@ -85,20 +85,34 @@ header {
         </li>      
       </ul>
     </nav>
-    <div class="user-actions" style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
-      <a href="<%= path %>/views/cart/cart.jsp" class="cart">
-        <img src="<%= path %>/static/images/icons/cart.png" alt="장바구니">
-        <span class="cart-count">0</span>
-      </a>
-      <% if (loginUser == null) { %>
-        <a href="<%= path %>/views/card_login.jsp" class="login-btn">로그인</a>
-      <% } else { %>
-        <a href="<%= path %>/logout" class="login-btn">로그아웃</a>
-        <a href="<%= path %>/views/mycard/mycard.jsp" class="login-btn">내지갑</a>
-        <a href="<%= path %>/views/myinfo.jsp" class="profile">
-          <img src="<%= path %>/static/images/icons/profile.png" alt="프로필" />
-        </a>
-      <% } %>
-    </div>
+    
+	<div class="user-actions" style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+	  <a href="<%= path %>/views/cart/cart.jsp" class="cart">
+	    <img src="<%= path %>/static/images/icons/cart.png" alt="장바구니">
+	    <span class="cart-count">0</span>
+	  </a>
+	
+	  <% if (loginUser == null) { %>
+	    <a href="<%= path %>/views/card_login.jsp" class="login-btn">로그인</a>
+	  <% } else { %>
+	    <!-- 프로필 드롭다운 -->
+		<div class="profile-dropdown">
+		  <div class="profile-hover-area">
+		    <img src="<%= path %>/static/images/icons/profile.png" alt="프로필" class="profile-img" />
+		    <div class="profile-bubble">
+		      <a href="<%= path %>/views/mycard/mycard.jsp">내 지갑</a>
+		      <a href="<%= path %>/logout">로그아웃</a>
+		    </div>
+		  </div>
+		</div>
+
+
+
+
+
+
+	  <% } %>
+	</div>
+
   </div>
 </div>

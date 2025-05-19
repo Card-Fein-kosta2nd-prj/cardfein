@@ -31,20 +31,24 @@ h1 {
 .comparison-container {
   background-color: #fff;
   border-radius: 16px;
-  padding: 40px;
+  padding: 40px 0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   width: 100%;
+  overflow-x: auto;
 }
 
 .card-slots {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 32px;
   flex-wrap: nowrap;
+  padding: 0 40px; /* 좌우 여백을 여기로 이동 */
+  box-sizing: content-box; /* 스크롤 영역 안 잘리게 */
+  min-width: max-content;  /* 내부 카드의 전체 너비만큼만 차지 */
 }
 
 .card-slot {
-	width: 32%;
+	width: 320px;
   flex: 0 0 32%;
   min-height: 340px;
   border: 2px dashed #ccc;
@@ -166,6 +170,7 @@ h1 {
 	font-size: 20px;
   font-weight: 600;
   color: #222;
+  white-space: nowrap;
 }
 
 .detail-value {
@@ -173,6 +178,7 @@ h1 {
   color: #555;
   text-align: right;
   font-size: 16px;
+  white-space: nowrap;
 }
 
 .benefit-section {

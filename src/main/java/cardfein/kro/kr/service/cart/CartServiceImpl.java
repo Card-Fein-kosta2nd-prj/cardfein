@@ -58,5 +58,16 @@ public class CartServiceImpl implements CartService {
 		
 		return result;
 	}
+
+	@Override
+	public List<CardDto> selectByProviderAndKeyword(String provider, String keyword) throws SQLException {
+		List<CardDto> result = dao.selectByProviderAndKeyword(provider, keyword);
+		
+		if(result == null) {
+			throw new SQLException("카드사 선택 후 키워드 검색으로 카드 리스트를 불러오지 못했습니다.");
+		}
+		
+		return result;
+	}
 	
 }
