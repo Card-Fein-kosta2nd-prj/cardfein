@@ -56,6 +56,8 @@ footer {
     justify-content: space-between; /* 좌우 정렬 */
     height: 100%; /* 부모 높이 전체 사용 */
     width: 100%; /* 부모의 너비 전체 사용 */
+    position: relative; /* 반드시 있어야 .user-actions absolute 기준 됨 */
+	overflow: visible;
 }
 
 /* 작은 로고 (스크롤 전) */
@@ -219,11 +221,15 @@ footer {
 /* 사용자 액션 버튼 (장바구니, 프로필) */
 /* ---------------------------------- */
 .user-actions {
-    display: flex; /* 가로 배치 */
-    align-items: center; /* 수직 중앙 정렬 */
-    gap: 5px; /* 요소 간 간격 */
-    margin-left: auto; /* 로그인 버튼을 오른쪽으로 밀어냄 */
-    padding-right: 10px; /* 오른쪽 여백 주기 (스크롤 전에도 적용됨) */
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+  z-index: 1000;
 }
 
 /* 스크롤 후 로그인 버튼 위치 */
@@ -295,8 +301,8 @@ footer {
 /* 장바구니 알림 숫자 (뱃지) */
 .cart-count {
     position: absolute;
-    top: -8px;
-    right: -1px;
+  top: 10px;       /* ✅ 기존 -8px → 더 아래로 */
+  right: -2px;     /* ✅ 약간 안쪽으로 */
     background-color: #0078d7; /* 파란 배경 */
     color: #fff; /* 흰 글씨 */
     border-radius: 50%; /* 원형 */
@@ -310,6 +316,84 @@ footer {
     text-align: center;  /* 텍스트 가로 정렬 */
     line-height: 18px;  /* 텍스트 세로 정렬 */
 }
+
+
+
+
+/* 프로필 드롭다운 전용 */
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1001;
+}
+
+/* hover 영역: 이미지와 말풍선 포함 */
+.profile-hover-area {
+  position: relative;
+  display: inline-block;
+}
+
+/* 프로필 이미지 */
+.profile-img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: block;
+}
+
+/* 드롭다운 말풍선 */
+.profile-bubble {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  transform: translateX(5%);
+  background: linear-gradient(145deg, #4d84e2, #3a6ad6);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 0; /* 좌우 padding은 a 태그로 이동 */
+  font-size: 14px;
+  text-align: left;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  display: none;
+  z-index: 2000;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  min-width: 100px;
+  width: auto;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+/* hover 시 표시 - 수정 */
+.profile-dropdown:hover .profile-bubble {
+  display: block;
+}
+
+/* 내부 링크 */
+.profile-bubble a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px; /* 내부 여백은 여기에서 설정 */
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-bubble a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+
+
+
+
+
+
 
 /* ------------------ */
 /* 푸터 영역 스타일 */
