@@ -71,9 +71,10 @@
     
     const container = document.getElementById('personalizedCards');
     result.forEach((card, idx) => {
-    	console.log(card);
       const box = document.createElement('div');
       box.className = 'card-match-box';
+      
+    	console.log(card.cardNo);
       box.innerHTML = `
         <img src="${path}/static/images/cards/\${card.cardImageUrl}" alt="카드 이미지" style="width:10%" />
         <div class="card-info">
@@ -93,7 +94,7 @@
             </div>
             <div class="button-group">
             <a class="btn-sm" href="#" onclick="addToCart(\${card.cardNo})">비교 바구니 담기</a>
-            <a class="btn-detail" href="#">자세히 보기</a>
+            <a class="btn-detail" href="#"onclick="showDetail(\${card.cardNo})">자세히 보기</a>
           </div>
         </div>
       `;
@@ -132,7 +133,9 @@
   window.addToCart = addToCart;
   });
   
-  
+  const showDetail =(cardNo)=>{
+	  window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+cardNo;
+  }
   
    
 

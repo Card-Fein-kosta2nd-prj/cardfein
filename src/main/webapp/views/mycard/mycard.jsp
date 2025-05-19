@@ -255,7 +255,7 @@
 			      </div>
 			      </div>
 			      <div class="btn-group">
-		          <button class="btn-sm btn-detail" onclick="alert('상세 페이지로 이동합니다.')">상세 보기</button>
+		          <button class="btn-sm btn-detail" onclick="showDetail(\${cardNo})">상세 보기</button>
 		          <button class="btn-sm btn-compare" onclick="addToCart(\${cardNo})">비교바구니담기</button>
 		          <button class="btn-sm btn-delete" onclick="deleteCard('\${cardNo}')">삭제</button>
 		        </div>
@@ -338,6 +338,9 @@
       }
     });
     
+    const showDetail =(cardNo)=>{
+  	  window.location.href = "${path}/views/cardMenu/fitCardDetail.jsp?cardNo="+cardNo;
+    }
     
     document.addEventListener("DOMContentLoaded", () => {
     	  const addToCart = async(cardNo)=>{
