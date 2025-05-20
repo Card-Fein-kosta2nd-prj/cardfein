@@ -98,14 +98,16 @@ header {
     <nav class="card-nav-menu">
       <ul>
         <!-- 랭킹 -->
+        <!-- 
         <li class="dropdown">
-          <a href="#" class="dropbtn">랭킹</a>
+          <a href="#" class="dropbtn">혜택별 랭킹</a>
           <div class="dropdown-content">
             <a href="#">실시간</a>
             <a href="#">카드사별</a>
             <a href="<%= path %>/views/ranking/benefit_rank.jsp">혜택별</a>
           </div>
         </li>
+         -->
 
         <!-- 카드 -->
         <li class="dropdown">
@@ -117,6 +119,10 @@ header {
               <a href="<%= path %>/views/recommend/memberCardRecommend.jsp">누적기반 맞춤추천</a>
             <% } %>
           </div>
+        </li>
+        
+        <li>
+        	<a href="<%= path %>/views/ranking/benefit_rank.jsp">혜택별</a>
         </li>
 
         <!-- 커뮤니티 -->

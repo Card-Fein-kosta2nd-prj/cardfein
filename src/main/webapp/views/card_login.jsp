@@ -138,5 +138,9 @@
       <a href="<%= request.getContextPath() %>/views/find_pw.jsp">비밀번호 찾기</a>
     </div>
   </div>
+
+</body>
+  
+  
 </body>
 </html>

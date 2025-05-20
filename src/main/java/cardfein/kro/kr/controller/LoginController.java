@@ -36,6 +36,7 @@ public class LoginController extends HttpServlet {
             } else {
                 // ✅ 일반 사용자 → main.jsp (주의: 루트 위치)
                 System.out.println("▶ 일반 사용자 계정 → main.jsp 이동");
+                session.setAttribute("justLoggedIn", true);
                 response.sendRedirect(request.getContextPath() + "/main.jsp");
             }
         } else {

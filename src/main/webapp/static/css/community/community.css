@@ -67,6 +67,12 @@ body {
   font-size: 13px;           /* 글자 크기 ↓ */
 }
 
+.search-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
 .search-button {
   padding: 6px 14px;         /* 버튼 크기 ↓ */
   background-color: #4263eb;
@@ -220,30 +226,41 @@ body {
 
 /* 페이지네이션 스타일 */
 .pagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 30px;
-	gap: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .page-number {
-	width: 32px;
-	height: 32px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 4px;
-	color: #666;
-	text-decoration: none;
-	font-size: 14px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: #f1f5f9;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page-number:hover {
+  background-color: #e0ecff;
+  color: #2563eb;
 }
 
 .page-number.active {
-	background-color: #4263eb;
-	color: white;
-	font-weight: 500;
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
 }
+
 
 .prev-page, .next-page {
 	width: 32px;
