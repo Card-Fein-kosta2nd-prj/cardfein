@@ -85,7 +85,7 @@
 
     <!-- 키워드 검색창 -->
     <div class="search-container">
-      <input type="text" class="search-input" placeholder="카드명을 입력하세요">
+      <input type="text" class="cart-search-input" placeholder="카드명을 입력하세요">
     </div>
 
     <!-- 카드 리스트 -->
@@ -219,13 +219,13 @@ document.querySelectorAll(".provider-btn").forEach(btn => {
       document.querySelectorAll(".provider-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       selectedProvider = btn.dataset.provider;
-      loadCardList(document.querySelector(".search-input").value.trim()); // 현재 입력된 키워드로 필터링
+      loadCardList(document.querySelector(".cart-search-input").value.trim()); // 현재 입력된 키워드로 필터링
     }
   });
 });
 
 //[3] 검색어 입력 이벤트 수정 (선택된 카드사와 함께 검색)
-document.querySelector(".search-input").addEventListener("input", (e) => {
+document.querySelector(".cart-search-input").addEventListener("input", (e) => {
   const keyword = e.target.value.trim();
   loadCardList(keyword); // 선택된 카드사 상태를 기반으로 검색
 });

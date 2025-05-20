@@ -221,7 +221,7 @@ h1 {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
-  z-index: 1000;
+  z-index: 2500;
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -284,7 +284,7 @@ h1 {
   margin-bottom: 15px;
 }
 
-.search-input {
+.cart-search-input {
   width: 80%;
   padding: 10px 14px;
   border: 1px solid #ccc;
