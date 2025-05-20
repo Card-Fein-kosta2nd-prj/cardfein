@@ -158,8 +158,8 @@
 		        templateOverlayObj.set({
 		          left: (canvas.width - img.width) / 2,
 		          top: (canvas.height - img.height) / 2,
-		          selectable: false,
-		          evented: false,
+		          selectable: true,
+		          evented: true,
 		        });
 		        if (img.width > canvas.width || img.height > canvas.height) {
 		          img.scaleToWidth(canvas.width);
