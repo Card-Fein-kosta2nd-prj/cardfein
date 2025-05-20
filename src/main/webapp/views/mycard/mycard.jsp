@@ -35,7 +35,7 @@ pageEncoding="UTF-8"%>
 		<section class="my-cards-section">
 			<div class="inner-wrapper">
 				<div class="mycard-header">
-					<h2>📌 내 카드 목록</h2>
+					<h2>📌내 카드 목록</h2>
 					<button id="openModalBtn" class="register-toggle-btn">+ 내
 						카드 등록하기</button>
 				</div>

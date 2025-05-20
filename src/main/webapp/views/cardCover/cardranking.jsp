@@ -11,7 +11,7 @@ pageEncoding="UTF-8"%>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Insert title here</title>
+    <title>Card:fein - 카드커버 순위</title>
     <link rel="stylesheet" href="${path}/static/css/common.css" />
     <link rel="stylesheet" href="${path}/static/css/cardranking.css" />
      <!-- 공통 스크립트 -->
@@ -20,14 +20,10 @@ pageEncoding="UTF-8"%>
   <body>
     <jsp:include page="/views/common/header.jsp" />
     <div class="container">
-      <!-- 로고 및 상단 네비게이션 -->
-      <div class="top-bar">
-        <div class="logo">카드커버</div>
-      </div>
 
       <!-- TOP100 랭킹 -->
       <div class="ranking-section">
-        <h2>카드커버 TOP100 <span class="powered"></span></h2>
+        <h2>카드 커버 TOP 100 <span class="powered"></span></h2>
         <div class="ranking-list">
           
         </div>
