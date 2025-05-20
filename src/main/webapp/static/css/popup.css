@@ -189,9 +189,9 @@
   align-items: center;
 }
 
-#cardCanvas {
+/* #cardCanvas {
   background-color: #fff;
-}
+} */
 
 .base-image {
   position: absolute; 
@@ -200,6 +200,8 @@
   width: 100%;
   object-fit: cover; 
   z-index: 1;
+  
+  pointer-events: none;
 }
 
 .overlay-image {
@@ -207,7 +209,9 @@
   cursor: grab; 
   z-index: 2;
 /*   border: 2px dashed #ff69b4; */
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  
+  pointer-events: none; 
 }
 
 .cover-title {
