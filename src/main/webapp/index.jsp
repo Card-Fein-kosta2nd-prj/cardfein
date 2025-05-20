@@ -40,17 +40,24 @@
                         <div class="carousel-item active">
                             <img src="${path}/static/images/index/index_img1.png" alt="ZERO 카드" class="card-img">
                             <p class="card-desc">내 라이프스타일에 맞춘 카드 생활</p>
-                            <button class="action-btn">분석하러 가기</button>
+								<button class="action-btn" onclick="location.href='${path}/views/recommend/byBill.jsp'">
+								  <span>분석하러 가기</span>
+								</button>
+
                         </div>
                         <div class="carousel-item">
                             <img src="${path}/static/images/index/index_img2.png" alt="카드 2" class="card-img">
                             <p class="card-desc">다양한 혜택을 한눈에</p>
-                            <button class="action-btn">카드 랭킹 확인</button>
+                            	<button class="action-btn" onclick="location.href='${path}/views/ranking/benefit_rank.jsp'">
+								  <span>카드 랭킹 확인</span>
+								</button>
                         </div>
                         <div class="carousel-item">
                             <img src="${path}/static/images/index/index_img3.png" alt="카드 3" class="card-img">
                             <p class="card-desc">맞춤형 카드 추천</p>
-                            <button class="action-btn">맞춤 카드 찾기</button>
+                            <button class="action-btn" onclick="location.href='${path}/views/cardMenu/fitCard.jsp'">
+								  <span>맞춤카드 찾기</span>
+							</button>
                         </div>
                     </div>
                 </div>

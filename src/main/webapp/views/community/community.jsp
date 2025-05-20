@@ -78,7 +78,7 @@
 	let keywordInput = "";
 	let debounceTimer = null;
 
-	document.querySelector('.search-input').addEventListener('keyup', (e) => {
+	document.querySelector('.content-wrapper .search-input').addEventListener('keyup', (e) => {
 	  keywordInput = e.target.value.trim();
 	  currentPage = 1;
 

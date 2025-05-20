@@ -47,139 +47,111 @@ main {
 	<main class="main-container">
 		<!-- 카드 추천 테스트 배너 -->
 		<section class="banner-section">
-			<div class="swiper-container">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide">
-						<div class="carousel-item-horizontal">
-							<img
-								src="${path}/static/images/main/slide_chart.png"
-								alt="카드 랭킹" class="carousel-img">
-							<div class="carousel-text-box">
-								<p class="carousel-text">
-									실시간 인기카드부터<br> 카드사별, 혜택별 순위까지!<br> <br> 필요한 카드
-									정보를 한눈에 확인하세요.
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="carousel-item-horizontal">
-							<img
-								src="${path}/static/images/main/slide_ocr.png"
-								alt="명세서 추천" class="carousel-img">
-							<div class="carousel-text-box">
-								<p class="carousel-text">
-									내 소비 패턴을 분석해주는<br> 명세서 기반 카드 추천<br> <br> 한 장의
-									명세서로 꼭 맞는 카드 찾기!
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="swiper-slide">
-						<div class="carousel-item-horizontal">
-							<img
-								src="${path}/static/images/main/slide_customcover.png"
-								alt="커스텀 카드" class="carousel-img">
-							<div class="carousel-text-box">
-								<p class="carousel-text">
-									나만의 감성을 담은<br> 카드 커버 만들기<br> <br> 직접 꾸미고, 좋아요
-									순위도 확인해보세요!
-								</p>
-							</div>
-						</div>
-					</div>
-					<!-- 추가 슬라이드 -->
-				</div>
-				<!-- 네비게이션 버튼 -->
-				<div class="swiper-button-next"></div>
-				<div class="swiper-button-prev"></div>
-				<!-- 페이지네이션 -->
-				<div class="swiper-pagination"></div>
-			</div>
+		  <div class="swiper-container">
+		    <div class="swiper-wrapper">
+		
+		      <div class="swiper-slide">
+		        <div class="carousel-item-horizontal">
+		          <img
+		            src="${path}/static/images/main/slide_chart.png"
+		            alt="카드 랭킹" class="carousel-img">
+		          <div class="carousel-text-box">
+		            <h3 class="carousel-heading">실시간 인기카드부터</h3>
+		            <p class="carousel-subtext">카드사별, 혜택별 순위까지!</p>
+		            <p class="carousel-desc">필요한 카드 정보를<br>한눈에 확인하세요.</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		      <div class="swiper-slide">
+		        <div class="carousel-item-horizontal">
+		          <img
+		            src="${path}/static/images/main/slide_ocr.png"
+		            alt="명세서 추천" class="carousel-img">
+		          <div class="carousel-text-box">
+		            <h3 class="carousel-heading">내 소비 패턴을 분석해주는</h3>
+		            <p class="carousel-subtext">명세서 기반 카드 추천</p>
+		            <p class="carousel-desc">한 장의 명세서로<br>꼭 맞는 카드 찾기!</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		      <div class="swiper-slide">
+		        <div class="carousel-item-horizontal">
+		          <img
+		            src="${path}/static/images/main/slide_customcover.png"
+		            alt="커스텀 카드" class="carousel-img">
+		          <div class="carousel-text-box">
+		            <h3 class="carousel-heading">나만의 감성을 담은</h3>
+		            <p class="carousel-subtext">카드 커버 만들기</p>
+		            <p class="carousel-desc">직접 꾸미고, 좋아요<br>순위도 확인해보세요!</p>
+		          </div>
+		        </div>
+		      </div>
+		
+		    </div>
+		    <!-- 네비게이션/페이지네이션은 그대로 유지 -->
+		    <div class="swiper-button-next"></div>
+		    <div class="swiper-button-prev"></div>
+		    <div class="swiper-pagination"></div>
+		  </div>
 		</section>
 
 		<!-- 사람들이 많이 살펴본 카드 -->
 		<section class="card-section">
-			<h2>🔎 사람들이 많이 살펴본 카드!</h2>
+			<h2>사람들이 많이 살펴본 카드!</h2>
 			<div class="card-view-list list"></div>
 		</section>
 
 		<!-- 사람들이 많이 가진 카드 -->
-		<section class="card-section">
-			<h2>💳 지금, 지갑에 가장 많이 지니고 있는 카드는?</h2>
+		<section class="card-section card-own">
+		  <div class="inner-wrapper">
+		    <h2>지금, 지갑에 가장 많이 지니고 있는 카드는?</h2>
 			<div class="my-card-list list"></div>
+		  </div>
 		</section>
 
 		<!-- 인기차트 -->
 		<section class="popular-chart-section">
-			<h2>혜택별 인기 차트</h2>
-
-
-			<!-- 탭 콘텐츠 영역 -->
-			<div class="chart-tab-contents">
-				<div class="chart-content">
-					<div class="chart-box" id="문화/여가">
-						<h3>문화/여가 TOP10</h3>
-						<ol id="category-0">
-
-						</ol>
-						<button class="btn-more">차트 더보기</button>
-					</div>
-
-					<div class="chart-box" id="쇼핑">
-						<h3>쇼핑 TOP10</h3>
-						<ol id="category-1">
-							<li><img src="static/images/cards/redcard.png"> 신한카드
-								Mr.Life</li>
-							<li><img src="static/images/cards/pinkcard.png"> 삼성카드
-								taptap O</li>
-							<li><img src="static/images/cards/blackcard.png"> KB국민
-								My WE:SH</li>
-							<li>LOCA 365 카드</li>
-						</ol>
-						<button class="btn-more">차트 더보기</button>
-					</div>
-					<div class="chart-box" id="통신">
-						<h3>통신/디지털 TOP10</h3>
-						<ol id="category-2">
-							<li><img src="static/images/cards/redcard.png"> 신한카드
-								Mr.Life</li>
-							<li><img src="static/images/cards/pinkcard.png"> 삼성카드
-								taptap O</li>
-							<li><img src="static/images/cards/blackcard.png"> KB국민
-								My WE:SH</li>
-							<li>LOCA 365 카드</li>
-						</ol>
-						<button class="btn-more">차트 더보기</button>
-					</div>
-					<div class="chart-box" id="외식">
-						<h3>외식 TOP10</h3>
-						<ol id="category-3">
-							<li><img src="static/images/cards/redcard.png"> 신한카드
-								Mr.Life</li>
-							<li><img src="static/images/cards/pinkcard.png"> 삼성카드
-								taptap O</li>
-							<li><img src="static/images/cards/blackcard.png"> KB국민
-								My WE:SH</li>
-							<li>LOCA 365 카드</li>
-						</ol>
-						<button class="btn-more">차트 더보기</button>
-					</div>
-				</div>
-			</div>
+		  <h2>혜택별 인기 차트</h2>
+		  <div class="chart-grid">
+		    <div class="chart-box" id="문화/여가">
+		      <h3>문화/여가 TOP10</h3>
+		      <ol id="category-0"></ol>
+		      <button class="btn-more" onclick="window.location.href='${path}/views/ranking/benefit_rank.jsp'">차트 더보기</button>
+		    </div>
+		    <div class="chart-box" id="쇼핑">
+		      <h3>쇼핑 TOP10</h3>
+		      <ol id="category-1"></ol>
+		      <button class="btn-more" onclick="window.location.href='${path}/views/ranking/benefit_rank.jsp'">차트 더보기</button>
+		    </div>
+		    <div class="chart-box" id="통신">
+		      <h3>통신/디지털 TOP10</h3>
+		      <ol id="category-2"></ol>
+		      <button class="btn-more" onclick="window.location.href='${path}/views/ranking/benefit_rank.jsp'">차트 더보기</button>
+		    </div>
+		    <div class="chart-box" id="외식">
+		      <h3>외식 TOP10</h3>
+		      <ol id="category-3"></ol>
+		      <button class="btn-more" onclick="window.location.href='${path}/views/ranking/benefit_rank.jsp'">차트 더보기</button>
+		    </div>
+		  </div>
 		</section>
 
-		<!-- 카드 투표 -->
+
+	</main>
+	
+			<!-- 카드 투표 -->
 		<section class="vote-ranking-section">
-			<h2>🎖️ 당신의 카드에 투표하세요</h2>
+			<h2>당신의 카드에 투표하세요</h2>
+			<p>베스트 커스텀 카드를 뽑아주세요!</p>
+			<a href="${path}/views/cardCover/cardranking.jsp" class="vote-btn">투표하러 가기</a>
 			<div class="podium-wrapper">
 				
 			</div>
 
 			<!-- ✅ 투표하러 가기 버튼 -->
-			<a href="${path}/views/cardCover/cardranking.jsp" class="vote-btn">투표하러 가기</a>
 		</section>
-	</main>
 
 	<!-- ✅ 공통 footer 포함 -->
 	<jsp:include page="/views/common/footer.jsp" />
@@ -362,7 +334,48 @@ main {
 			  });
 			});
 		
+		// JS 예시 (적용 시)
+		document.querySelectorAll('.card-item').forEach(card => {
+		  const inner = card.querySelector('.card-image-box-inner');
+		  card.addEventListener('mousemove', (e) => {
+		    const rect = card.getBoundingClientRect();
+		    const x = (e.clientX - rect.left) / rect.width - 0.5;
+		    const y = (e.clientY - rect.top) / rect.height - 0.5;
+		    inner.style.transform = `rotateX(${y * 10}deg) rotateY(${x * 10}deg)`;
+		  });
+		  card.addEventListener('mouseleave', () => {
+		    inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+		  });
+		});
+
+		
 	</script>
+	
+	  <!-- 로그인/로그아웃 후 장바구니 초기화 -->
+	<% if (session.getAttribute("justLoggedIn") != null) {
+	     session.removeAttribute("justLoggedIn");
+	%>
+	<script>
+	  document.addEventListener("DOMContentLoaded", function() {
+	    localStorage.removeItem("cartCards");
+	    console.log("로그인 후 localStorage 초기화됨");
+	  });
+	</script>
+	<% } %>
+	
+	<% if (session.getAttribute("justLoggedOut") != null) {
+	     session.removeAttribute("justLoggedOut");
+	%>
+	<script>
+	  document.addEventListener("DOMContentLoaded", function() {
+	    localStorage.removeItem("cartCards");
+	    console.log("로그아웃 후 localStorage 초기화됨");
+	  });
+	</script>
+	<% } %>
+
+
+
 
 </body>
 </html>
