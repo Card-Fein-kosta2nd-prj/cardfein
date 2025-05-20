@@ -36,6 +36,16 @@ main {
 	position: relative;
 	z-index: 1; /* ↓ header보다 낮게 유지 */
 }
+.btn-more {
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	background-color: black;
+	color: white;
+	padding: 12px 0;
+	border-radius: 8px;
+	margin-top: 10px;
+}
 </style>
 </head>
 <body>
@@ -171,6 +181,7 @@ main {
 				clickable : true,
 			},
 		});
+
 		const printData=(cardList)=>{
 			let content = '';
 			cardList.forEach(card => {

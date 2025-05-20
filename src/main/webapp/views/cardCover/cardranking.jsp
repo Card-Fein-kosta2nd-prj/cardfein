@@ -14,6 +14,8 @@ pageEncoding="UTF-8"%>
     <title>Insert title here</title>
     <link rel="stylesheet" href="${path}/static/css/common.css" />
     <link rel="stylesheet" href="${path}/static/css/cardranking.css" />
+     <!-- 공통 스크립트 -->
+<script src="${path}/static/js/common.js" defer></script>
   </head>
   <body>
     <jsp:include page="/views/common/header.jsp" />
@@ -21,20 +23,11 @@ pageEncoding="UTF-8"%>
       <!-- 로고 및 상단 네비게이션 -->
       <div class="top-bar">
         <div class="logo">카드커버</div>
-        <div class="nav">
-          <a href="#">베스트</a>
-          <a href="#">카드커버</a>
-          <a href="#">DIY카드</a>
-          <a href="#">스티커제작소</a>
-          <a href="#">스티커샵</a>
-          <a href="#">쇼룸</a>
-          <a href="#">뉴스룸</a>
-        </div>
       </div>
 
       <!-- TOP100 랭킹 -->
       <div class="ranking-section">
-        <h2>카드커버 TOP100 <span class="powered">Powered by @gif</span></h2>
+        <h2>카드커버 TOP100 <span class="powered"></span></h2>
         <div class="ranking-list">
           
         </div>
