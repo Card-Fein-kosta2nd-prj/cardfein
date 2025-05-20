@@ -135,9 +135,9 @@
   align-items: center;
 }
 
-#cardCanvas {
+/* #cardCanvas {
   background-color: #fff;
-}
+} */
 
 .base-image {
   position: absolute; 
