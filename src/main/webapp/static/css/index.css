@@ -1,0 +1,392 @@
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px;
+	gap: 10px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 10;
+}
+
+.header-content {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+	min-height: 100vh;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.carousel-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.circle-bg {
+	position: absolute;
+	width: 95vw;
+	height: 95vw;
+	max-width: 900px;
+	max-height: 900px;
+	border-radius: 50%;
+	background-color: rgba(245, 245, 245, 0.5);
+}
+
+.white-circle {
+	position: absolute;
+	width: 80vw;
+	height: 80vw;
+	max-width: 800px;
+	max-height: 800px;
+	border-radius: 50%;
+	background-color: white;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.carousel-wrapper {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.carousel {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	  width: 100%;
+  height: 100%;
+}
+
+.carousel-item {
+  position: relative;   /* ✅ 너가 말한 ①번 */
+  display: none;        /* 기본은 숨김 */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  pointer-events: none; /* 비활성화 */
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.carousel-item.active {
+  display: flex;
+  pointer-events: auto;   /* ✅ 너가 말한 ③번 */
+  opacity: 1;
+}
+
+.card-img {
+  width: 360px;                 /* 기존 320px → 더 큼 */
+  height: auto;
+  z-index: 5;                   /* 상위 배치 */
+  position: relative;          /* z-index 적용을 위한 설정 */
+  transition: transform 0.3s ease;
+}
+
+.card-img:hover {
+  transform: scale(1.03);      /* 살짝 확대 효과 */
+}
+
+
+.card-desc {
+  text-align: center;
+  font-size: 24px;               /* 기존보다 조금 더 크게 */
+  font-weight: 600;              /* 강조 */
+  color: #1e293b;                /* 더 선명한 텍스트 색상 */
+  margin-top: 20px;
+  margin-bottom: 30px;
+  line-height: 1.6;              /* 줄 간격 넉넉하게 */
+  word-break: keep-all;         /* 단어 중간 끊김 방지 */
+  white-space: normal;          /* 줄바꿈 허용 */
+  max-width: 420px;             /* 한 줄 길이 제한 */
+}
+
+
+
+/* 작은 로고 이미지 스타일 */
+.nav-logo-img {
+    max-height: 40px; /* 네비게이션 바 높이에 맞춤 */
+    width: auto; /* 가로 비율 유지 */
+    margin: 0; /* auto 제거하고 0으로 설정 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+.nav-buttons {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	z-index: 3;
+	max-width: 1100px;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0 20px;
+}
+
+.nav-btn {
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+	background-color: white;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	color: #4169e1;
+	font-size: 32px;
+	font-weight: bold;
+	margin: 0 10px;
+}
+
+.action-btn {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(to right, #1382F3, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 52px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(19, 130, 243, 0.25);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.action-btn::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #ffffff, #1382F3, #2563eb, #ffffff);
+  background-size: 300% 300%;
+  animation: flowingBorder 4s linear infinite;
+}
+
+@keyframes flowingBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.action-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(19, 130, 243, 0.4);
+}
+
+
+
+.skip-btn {
+	position: absolute;
+	bottom: 30px;
+	right: 30px;
+	color: #1382F3;
+	text-decoration: none;
+	font-size: 16px;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	padding: 12px 24px;
+	animation: floatUpDown 1.5s ease-in-out infinite;
+	transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.skip-btn:hover {
+	transform: translateY(-5px);
+}
+
+.skip-btn span {
+	margin-right: 8px;
+}
+
+.skip-arrow {
+	display: inline-block;
+	margin-left: 5px;
+	animation: arrowBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes arrowBounce {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+/* 로그인 버튼 스타일 */
+.login-btn {
+  padding: 10px 22px;
+  background: linear-gradient(to right, #1382F3, #2563eb);  /* 사이트 메인 컬러 기준 */
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(19, 130, 243, 0.3);  /* 자연스러운 파란 그림자 */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.login-btn:hover {
+  background: #1d4ed8;  /* hover 시 더 진한 파랑 */
+  transform: translateY(-2px);
+}
+
+.indicator-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+	z-index: 3;
+	position: absolute;
+	bottom: 10%;
+}
+
+.indicator {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: #ddd;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
+.indicator.active {
+	background-color: #4169e1;
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 768px) {
+	.circle-bg, .white-circle {
+		display: none;
+	}
+	.carousel-container {
+		padding: 0 20px;
+	}
+	.carousel-wrapper {
+		position: static;
+		background-color: white;
+		padding: 20px;
+		border-radius: 15px;
+		width: 100%;
+		max-width: 350px;
+	}
+	.carousel {
+		position: static;
+		height: auto;
+		margin-bottom: 50px;
+	}
+	.carousel-item {
+		position: relative;
+		height: auto;
+	}
+	.carousel-item:not(.active) {
+		display: none;
+	}
+	.card-img {
+		width: 260px;
+	}
+	.nav-btn {
+		width: 50px;
+		height: 50px;
+		font-size: 24px;
+	}
+	.action-btn {
+		padding: 15px 40px;
+		font-size: 18px;
+	}
+	.card-desc {
+		font-size: 18px;
+	}
+	.indicator-container {
+		bottom: 5%;
+		position: relative;
+		margin-top: 30px;
+	}
+	.skip-btn {
+		bottom: 20px;
+		right: 20px;
+		padding: 10px 20px;
+		font-size: 14px;
+	}
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.carousel-item.active {
+	pointer-events: auto;
+  animation: fadeSlideUp 0.6s ease-out;
+}

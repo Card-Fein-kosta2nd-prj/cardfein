@@ -1,0 +1,678 @@
+body {
+  overflow-x: hidden;
+}
+
+.main-container {
+    width: 100%;
+    padding: 40px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 배너 섹션 관련 */
+.banner-section {
+  background: radial-gradient(circle at top left, #eaf2ff, #ffffff);
+  padding: 20px 16px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  margin-bottom: 60px; /* 하단 간격도 약간 축소 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.swiper-container {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+   background: radial-gradient(circle at top left, #eaf2ff, #ffffff); /* container도 보완 */
+}
+
+.carousel-item-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  background: radial-gradient(circle at top left, #eaf2ff, #ffffff);
+  border-radius: 16px;
+  transition: opacity 0.8s ease-in-out, transform 0.6s ease;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;/* 캐러셀 이동 시 자연스러운 배경 변화 */
+  padding: 24px 60px 24px 100px; /* 왼쪽 패딩을 크게 조정 */
+  gap: 36px; /* 이미지와 텍스트 사이도 여유있게 */
+}
+
+.swiper-slide {
+  background: radial-gradient(circle at top left, #eaf2ff, #ffffff); /* banner-section과 일치 */
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.swiper-wrapper {
+  background: radial-gradient(circle at top left, #eaf2ff, #ffffff); /* 일체감 유지 */
+}
+
+.swiper-slide-active .carousel-item-horizontal {
+  opacity: 1;
+  position: relative;
+  pointer-events: all;
+}
+
+.carousel-img {
+  flex: 1 1 320px;
+  max-width: 400px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.carousel-text-box {
+  flex: 1 1 400px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;  /* ✅ 광고처럼 왼쪽 정렬 */
+  margin-right: 100px;
+}
+
+.carousel-heading {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 10px;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.carousel-subtext {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 14px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.carousel-desc {
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: #666;
+  line-height: 1.7;
+  white-space: pre-line;
+  text-align: left;
+}
+
+/* 기본 캐러셀 이미지 */
+.carousel-item img {
+  width:130px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+
+
+/* 카드 현황 섹션 */
+.card-section {
+  margin-top: 60px;
+  padding: 0 20px;
+}
+
+.card-section.card-own {
+   width: 100vw;                           /* 배경은 전체 화면 */
+  margin-left: -50vw;                    /* 왼쪽으로 절반 밀기 */
+  left: 50%;
+  position: relative;
+  padding: 80px 0;                       /* 내부 여백만 주기 */
+  background: radial-gradient(circle at center, #f9fafe 0%, #f2f5fa 100%);
+}
+
+
+.card-section.card-own .inner-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;                       /* 일반 섹션처럼 padding */
+  box-sizing: border-box;
+}
+
+.card-section.card-own > * {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px 48px;
+  justify-content: center;
+}
+
+.card-item {
+  width: 140px;
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 이미지 박스를 정사각형 or 고정비율로 */
+.card-image-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    inset 0 0 0.5px rgba(255, 255, 255, 0.2),
+    0 4px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 빛 반사 효과 */
+.card-image-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 이미지는 박스 내 중앙 정렬 + 최대 크기 제한 */
+.card-image-box img {
+  max-height: 88%;
+  max-width: 88%;
+  object-fit: contain;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.card-image-box img.vertical {
+  height: auto !important;
+  max-height: 85% !important;
+  transform: scale(0.85);
+  transition: transform 0.2s ease;
+}
+.card-image-box a {
+  cursor: pointer;
+}
+
+/* ✅ 텍스트 통일감 있게 정렬 */
+.card-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 12px;
+  line-height: 1.3;
+  height: 2.6em;  /* 두 줄까지 정렬 유지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-brand {
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  height: 1.2em; /* 줄맞춤 위해 고정 */
+}
+
+
+.card-item:hover {
+  transform: translateY(-4px);
+  transition: 0.2s ease;
+}
+
+.card-item:hover .card-image-box {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+    inset 0 0 0.5px rgba(255, 255, 255, 0.25),
+    0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+.card-item:hover .card-image-box img {
+  transform: scale(1.03);
+}
+
+.card-section h2,
+.card-section.card-own h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111;
+  text-align: left;
+  margin: 0 0 32px 0;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+}
+
+.card-section.card-own h2 {
+  margin-left: 40px; /* 또는 10px, 12px 등 조정 가능 */
+}
+
+.card-section.card-own > * {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;       /* ✅ 일반 섹션과 구조 맞춤 */
+  box-sizing: border-box;
+}
+
+
+.card-section.card-own .list {
+  margin-top: 48px;    /* ✅ 리스트와 제목 간 충분한 여백 */
+}
+
+.card-name {
+  font-size: 1.1rem;       /* ✅ 살짝 축소 */
+  font-weight: 600;
+  margin-top: 14px;
+  line-height: 1.4;
+  color: #111;
+  text-align: center;
+
+  white-space: normal;      /* ✅ 줄바꿈 허용 */
+  word-break: keep-all;     /* ✅ 단어 중간 자르지 않음 */
+  overflow-wrap: break-word;/* ✅ 필요한 경우 줄바꿈 */
+  max-height: 2.8em;        /* ✅ 딱 두 줄까지만 보이게 (1.4 x 2) */
+  overflow: hidden;         /* ✅ 그 이상은 잘림 (말줄임 없이) */
+}
+
+.card-brand {
+  font-size: 0.9rem;      /* ✅ 강조도 줄이고 색상도 다운 */
+  color: #999;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+
+
+
+
+.popular-chart-section {
+  padding: 60px 20px;
+  max-width: 1400px;  /* ✅ 전체 가로 넓이 확장 */
+  margin: 0 auto;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  max-width: 1400px;
+  gap: 36px;
+  margin-top: 36px;
+}
+
+/* 공통 박스 스타일 */
+.chart-box {
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid transparent;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.7); /* 기본 흰 배경을 살짝 투명하게 */
+  backdrop-filter: blur(8px); /* 유리 느낌 유지 */
+  color: #222;           /* 텍스트 컬러는 어둡게 */
+  font-weight: 500;
+}
+
+/* Hover 시 떠오르는 효과 */
+.chart-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 각 카테고리 별 그라데이션 배경 */
+.chart-box#문화\/여가 {
+  background: linear-gradient(135deg, rgba(208, 232, 255, 0.5), rgba(144, 196, 255, 0.4));
+  border: 1px solid #a2c9ff;
+  box-shadow: 0 8px 20px rgba(0, 110, 255, 0.1);
+}
+
+.chart-box#쇼핑 {
+  background: linear-gradient(135deg, rgba(255, 243, 224, 0.6), rgba(255, 225, 190, 0.5));
+  border: 1px solid #ffd9a0;
+  box-shadow: 0 8px 20px rgba(0, 110, 255, 0.1);
+}
+
+.chart-box#통신 {
+  background: linear-gradient(135deg, rgba(214, 255, 241, 0.5), rgba(170, 245, 221, 0.4));
+  border: 1px solid #a0f0d0;
+  box-shadow: 0 8px 20px rgba(0, 110, 255, 0.1);
+}
+
+.chart-box#외식 {
+  background: linear-gradient(135deg, rgba(255, 228, 231, 0.5), rgba(255, 204, 213, 0.5));
+  border: 1px solid #ffb5c0;
+  box-shadow: 0 8px 20px rgba(0, 110, 255, 0.1);
+}
+
+.chart-box h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+.chart-box ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.chart-box ol li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 0.95rem;
+  color: #444;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.chart-box ol li img {
+  width: 34px;
+  height: 42px;
+  object-fit: contain;
+  padding: 2px;
+}
+
+/* 버튼 스타일 */
+.btn-more {
+  display: block;
+  width: 90px;                    /* ✅ 작고 귀엽게 */
+  margin: 16px auto 0;            /* ✅ 위 여백 + 가운데 정렬 */
+  text-align: center;
+  background: #f8f9ff;            /* ✅ 아주 밝은 톤 배경 */
+  color: #3b3b3b;
+  font-weight: 500;
+  font-size: 0.75rem;             /* ✅ 작고 귀여운 텍스트 */
+  padding: 4px 0;                 /* ✅ 전체 높이 ↓ */
+  border-radius: 30px;            /* ✅ 완전 동글동글하게 */
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+/* 버튼 색상 개별 지정 */
+.chart-box#문화\/여가 .btn-more {
+  background: #2979ff;
+}
+.chart-box#쇼핑 .btn-more {
+  background: #f2994a;
+}
+.chart-box#통신 .btn-more {
+  background: #00b894;
+}
+.chart-box#외식 .btn-more {
+  background: #ff6b81;
+}
+
+.chart-box .btn-more:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+}
+
+
+
+
+
+
+
+
+
+.vote-ranking-section {
+  background: radial-gradient(circle at center, #f9fafe 0%, #f2f5fa 100%);
+  padding: 100px 40px 80px; /* 좌우 패딩만 유지 */
+  text-align: center;
+  width: 100vw;
+  margin: 0 auto;                  /* ✅ 추가: 중앙 정렬 */
+  box-sizing: border-box;          /* ✅ 추가: padding 포함하여 정확한 100vw로 만듦 */
+  overflow-x: hidden;              /* ✅ 추가: 스크롤 방지 */
+}
+
+.vote-ranking-section h2 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #1e293b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.vote-ranking-section p {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 40px;
+  color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.podium-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: row;    /* ✅ 가로 방향으로 정렬 */
+  flex-wrap: nowrap;      /* ✅ 줄바꿈 방지 */
+  gap: 40px;
+  padding-bottom: 20px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+  margin-top: 90px;
+  
+  max-width: 1000px;           /* ✅ 고정 너비 설정 */
+  width: 100%;
+}
+
+
+/* ranked-card-item에만 UI 변화 */
+.ranked-card-item {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 100px 20px 20px; /* ✅ 위 여백 확보: 이미지와 겹치지 않게 */
+  width: 200px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding-top: 40px; /* 기존 100px에서 줄여서 전체 길이 조정 */
+  margin-top: 120px; /* 카드 이미지와의 넓은 간격 확보 */
+}
+
+/* 랭킹별 높이 조정 (포디움 효과) */
+/* 포디움 순위별 색상 구분 (배경색만 변경) */
+.ranked-card-item.first {
+  background: linear-gradient(145deg, #dbeeff, #a4ceff);
+   height: 280px; /* ✅ 가장 높게 */
+}
+
+.ranked-card-item.second {
+  background: linear-gradient(145deg, #fff0d3, #ffd196);
+  height: 240px; /* ✅ 중간 */
+}
+
+.ranked-card-item.third {
+  background: linear-gradient(145deg, #ffe1ea, #ffb8cd);
+  height: 200px; /* ✅ 가장 낮게 */
+}
+
+
+/* 이미지 컨테이너 (카드 이미지와 오버레이 포함) */
+.img-container {
+  position: absolute;
+  top: -145px; /* ✅ 포디움보다 위로 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 130px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  border-radius: 10px;
+  margin-bottom: 80px;
+}
+
+/* 실제 카드 이미지 */
+.img-container .podium-img {
+    width: 100%; /* 컨테이너에 꽉 채움 */
+    height: 100%; /* 컨테이너에 꽉 채움 */
+    object-fit: contain; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+    /* border-radius: 5px; // 이미지 모서리 둥글게, 컨테이너에서 이미 처리 */
+}
+
+/* 오버레이 이미지 (small_top.png) - 수정된 부분 */
+.img-container .rank-overlay { /* 클래스명 'rank-overlay'로 수정 */
+    position: absolute; /* img-container 기준으로 위치 지정 */
+    top: 0; /* 이미지 컨테이너의 상단에 붙임 */
+    left: 0; /* 이미지 컨테이너의 좌측에 붙임 */
+    width: 100%; /* 이미지 컨테이너 너비에 꽉 채움 */
+    height: 100%; /* 이미지 컨테이너 높이에 꽉 채움 */
+    object-fit: cover; /* 오버레이 이미지가 컨테이너를 꽉 채우도록 */
+}
+
+
+/* 랭크 텍스트 (예: 1위⭐, 2위, 3위) */
+.podium-card .rank {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #4a4a4a;
+  text-align: center;
+  margin-bottom: 6px;       /* ✅ 더 좁은 간격 */
+  z-index: 1;
+  position: relative;
+}
+
+/* 1위 카드 랭크 텍스트에만 적용되는 별 스타일 */
+.podium-card .rank.star {
+    color: #ff4500; /* 1위 랭크 색상 (빨간색) */
+    font-size: 1.5em; /* 1위 랭크 폰트 크기 강조 */
+}
+
+/* 카드 이름 */
+.podium-card .card-name {
+  font-size: 1em;
+  font-weight: bold;
+  color: #2c3e50;
+  text-align: center;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 1;
+  position: relative;
+}
+
+/* 카드 제공사 */
+.podium-card .provider {
+    font-size: 0.85em;
+    color: #666; /* 연한 회색 */
+    margin-bottom: 5px;
+}
+
+
+.podium-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.podium-card img {
+  width: 100%;
+  max-height: 140px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.podium-card .star {
+  color: red;
+  font-size: 1.1rem;
+  position: absolute;
+  top: -180px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.podium-card .card-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.podium-card .provider {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* podium 높이 차이 */
+.podium-card.first {
+  height: 180px;
+  padding-top: 40px;
+  background: #a3c7ff;
+  border-radius: 8px 8px 0 0;
+}
+
+.podium-card.second {
+  height: 140px;
+  padding-top: 40px;
+  background: #a3c7ff;
+  border-radius: 8px 8px 0 0;
+}
+
+.podium-card.third {
+  height: 120px;
+  padding-top: 40px;
+  background: #a3c7ff;
+  border-radius: 8px 8px 0 0;
+}
+.vote-btn {
+  margin-top: 30px;
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+
+.vote-btn:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+}
