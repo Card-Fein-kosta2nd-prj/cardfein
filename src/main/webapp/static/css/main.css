@@ -401,17 +401,21 @@ body {
 
 /* 버튼 스타일 */
 .btn-more {
-  margin-top: 24px;
-  align-self: center;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 10px;
+  display: block;
+  width: 90px;                    /* ✅ 작고 귀엽게 */
+  margin: 16px auto 0;            /* ✅ 위 여백 + 가운데 정렬 */
+  text-align: center;
+  background: #f8f9ff;            /* ✅ 아주 밝은 톤 배경 */
+  color: #3b3b3b;
+  font-weight: 500;
+  font-size: 0.75rem;             /* ✅ 작고 귀여운 텍스트 */
+  padding: 4px 0;                 /* ✅ 전체 높이 ↓ */
+  border-radius: 30px;            /* ✅ 완전 동글동글하게 */
   border: none;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  line-height: 1.2;
 }
 
 /* 버튼 색상 개별 지정 */

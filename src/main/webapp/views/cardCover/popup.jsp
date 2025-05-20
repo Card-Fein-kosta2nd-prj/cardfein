@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="cover-title">
-                    <p>생성 커버 이름 :</p>
+                    <p>생성 커버 이름</p>
                     <input type="text" />
                 </div>
                 <div class="BtnContainer">

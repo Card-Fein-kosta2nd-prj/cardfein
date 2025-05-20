@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Insert title here</title>
+    <title>Card:fein - 카드커버 만들기</title>
     
     <link rel="stylesheet" href="${path}/static/css/common.css">
     <link rel="stylesheet" href="${path}/static/css/popup.css">
@@ -15,7 +15,7 @@ pageEncoding="UTF-8"%>
   <body>
   
 	<jsp:include page="/views/common/header.jsp" />
-    <div class="container">
+    <div class="popup-container">
       <h1 class="title">Create Your Own Card</h1>
       <p class="subtitle">
         내가 원하는 사진으로 자유롭게!<br />나만의 커스텀 커버를 만들어보자.

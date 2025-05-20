@@ -5,105 +5,135 @@
   <meta charset="UTF-8" />
   <title>Card:Fein 로그인</title>
   <style>
-    body {
-      font-family: "Arial", sans-serif;
-      background-color: #3b82f6;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa); /* ✅ 세련된 파란 그라데이션 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-    .logo {
-      font-size: 40px;
-      font-weight: bold;
-      color: white;
-      margin-bottom: 30px;
-    }
+/* ✅ 로고 - 정확히 중앙 정렬 */
+.logo {
+  font-size: 36px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 24px;
+  text-align: center;
+}
 
-    .login-container {
-      width: 360px;
-      background-color: white;
-      padding: 40px;
-      padding-bottom: 80px; /* 아래 여백 확보 */
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      position: relative;
-    }
+/* ✅ 로그인 카드 */
+.login-container {
+  width: 340px;
+  background: white;
+  border-radius: 20px;
+  padding: 40px 30px 60px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center; /* 내부 요소 가운데 정렬 */
+  position: relative;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12); /* ✅ 그림자 강조 */
+}
 
-    .login-container h1 {
-      font-size: 2em;
-      font-weight: bold;
-      color: black;
-      margin-bottom: 24px;
-    }
+/* ✅ 제목 */
+.login-container h1 {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 24px;
+}
 
-    .login-container input[type="text"],
-    .login-container input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      border: 2px solid #2563eb;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+/* ✅ 입력창: 가운데 배치, 내부 글자는 왼쪽 정렬 */
+.login-container input[type="text"],
+.login-container input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border: 1.5px solid #60a5fa;
+  border-radius: 12px;
+  font-size: 14px;
+  background-color: #f9fafb;
+  text-align: left;
 
-    .login-container button {
-      width: 50%;
-      padding: 12px;
-      background-color: #2563eb;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+  box-sizing: border-box;  /* ✅ 내부 padding 포함 계산 */
+}
 
-    .signup-link {
-      margin-top: 14px;
-      font-size: 12px;
-      color: #6b7280;
-      cursor: pointer;
-      background: none;
-      border: none;
-    }
 
-    .signup-link:hover {
-      text-decoration: underline;
-      color: #374151;
-    }
+.login-container input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  background-color: #fff;
+}
 
-    /* ✅ 카드 하단 고정 위치 스타일 */
-    .find-links {
-      position: absolute;
-      bottom: 20px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      font-size: 13px;
-      color: #6b7280;
-    }
+/* ✅ 버튼 */
+.login-container button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
 
-    .find-links a {
-      color: #6b7280;
-      text-decoration: none;
-      margin: 0 4px;
-    }
+.login-container button[type="submit"]:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-    .find-links a:hover {
-      text-decoration: underline;
-    }
+/* ✅ 회원가입 버튼 */
+.signup-link {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #6b7280;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 
-    .message {
-      color: red;
-      font-size: 14px;
-      margin-bottom: 16px;
-    }
+.signup-link:hover {
+  color: #374151;
+  text-decoration: underline;
+}
+
+/* ✅ 메시지 (예: 로그인 실패 안내) */
+.message {
+  color: #ef4444;
+  font-size: 13px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* ✅ 하단 링크들 */
+.find-links {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.find-links a {
+  color: #6b7280;
+  text-decoration: none;
+  margin: 0 6px;
+}
+
+.find-links a:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
   </style>
 </head>
 <body>

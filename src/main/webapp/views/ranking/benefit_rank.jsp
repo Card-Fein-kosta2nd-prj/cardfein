@@ -12,105 +12,153 @@
   <link rel="stylesheet" href="${path}/static/css/common.css" />
   <link rel="stylesheet" href="${path}/static/css/main.css" />
 
-  <style>
-    .category-tab-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 30px;
-    }
-    .category-tab {
-      background-color: #f3f4f6;
-      color: #374151;
-      border: none;
-      padding: 10px 20px;
-      font-size: 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .category-tab.active {
-      background-color: #2563eb;
-      color: white;
-    }
-    .card-view-list {
-      margin-top: 40px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: flex-start;
-      padding: 0 20px;
-    }
-    .card-item {
-      position: relative;
-      width: calc(20% - 20px);
-      height: 280px;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      text-align: center;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      box-sizing: border-box;
-    }
-    .card-item img {
-      width: 100%;
-      height: 180px;
-      object-fit: contain;
-      border-radius: 6px;
-      background-color: #f9fafb;
-    }
-    .card-rank {
-      position: absolute;
-      color: white;
-      padding: 4px 8px;
-      font-size: 13px;
-      font-weight: bold;
-      border-radius: 6px;
-      z-index: 1;
-      top: 10px;
-      left: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .rank-1 {
-      background-color: gold;
-      background-image: url('${path}/static/images/gold-crown.png');
-      background-size: cover;
-    }
-    .rank-2 {
-      background-color: silver;
-      background-image: url('${path}/static/images/silver-crown.png');
-      background-size: cover;
-    }
-    .rank-3 {
-      background-color: #cd7f32;
-      background-image: url('${path}/static/images/bronze-crown.png');
-      background-size: cover;
-    }
-    .top-rank, .bottom-rank {
-      background-color: #2563eb;
-    }
-    .card-name {
-      font-weight: bold;
-      margin-top: 12px;
-      margin-bottom: 12px;
-      text-align: center;
-      font-size: 14px;
-      white-space: normal;
-      word-wrap: break-word;
-      line-height: 1.2em;
-    }
-    .card-brand {
-      font-size: 14px;
-      color: #6b7280;
-    }
-  </style>
+<style>
+body {
+	background: linear-gradient(to bottom, #f8fbff, #eef3f8);
+}
+
+main h2 {
+	font-size: 2.0rem;
+	font-weight: 800;
+	color: #0f172a;
+	text-align: center;
+	margin: 50px 0 70px; /* ✅ 위아래 넉넉하게 */
+	letter-spacing: -0.3px;
+	line-height: 1.5;
+	position: relative;
+}
+
+main h2::after {
+	content: "";
+	position: absolute;
+	bottom: -14px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 60px;
+	height: 4px;
+	background-color: #2563eb;
+	border-radius: 999px;
+}
+
+.category-tab-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 12px 16px;
+	margin: 50px auto 30px;
+	padding: 0 12px;
+	max-width: 960px;
+}
+
+.category-tab {
+	min-width: 110px;
+	padding: 10px 22px;
+	font-size: 15px;
+	font-weight: 500;
+	border: none;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.7);
+	backdrop-filter: blur(8px);
+	color: #1f2937;
+	cursor: pointer;
+	transition: all 0.25s ease;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	position: relative;
+	overflow: hidden;
+}
+
+.category-tab:hover {
+	background-color: #e0edff;
+	color: #2563eb;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.category-tab.active {
+	background: linear-gradient(90deg, #3b82f6, #2563eb);
+	color: white;
+	font-weight: 600;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-view-list {
+	margin: 80px auto;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	max-width: 1400px;
+	padding: 0 16px;
+}
+
+.card-item {
+	width: 180px; /* ✅ 더 많은 카드가 한 줄에 보이도록 */
+	height: auto;
+	background-color: white;
+	border-radius: 14px;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+	padding: 16px 12px 20px;
+	position: relative;
+	text-align: center;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-item:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-item img {
+	width: 100%;
+	height: 140px;
+	object-fit: contain;
+	border-radius: 10px;
+	margin-bottom: 12px;
+}
+
+.card-rank {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	font-size: 12px;
+	font-weight: 700;
+	color: white;
+	padding: 6px 10px;
+	border-radius: 20px;
+	z-index: 2;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	background-color: #2563eb; /* 기본 등수 배경 */
+	backdrop-filter: blur(4px);
+}
+
+.card-name {
+	font-weight: 600;
+	font-size: 15px;
+	color: #111827;
+	margin-bottom: 6px;
+}
+
+.card-brand {
+	font-size: 13px;
+	color: #6b7280;
+}
+
+/* 1~3위 강조 */
+.rank-1 {
+	background: linear-gradient(135deg, #ffe259, #ffa751); /* 금색 느낌 */
+	color: #111;
+}
+
+.rank-2 {
+	background: linear-gradient(135deg, #d9d9d9, #bcbcbc); /* 은색 느낌 */
+	color: #111;
+}
+
+.rank-3 {
+	background: linear-gradient(135deg, #d7a56c, #b97b46); /* 동색 느낌 */
+	color: #fff;
+}
+</style>
 </head>
 <body>
   <jsp:include page="/views/common/header.jsp" />

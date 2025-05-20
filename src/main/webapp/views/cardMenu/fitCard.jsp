@@ -176,7 +176,7 @@
     					cardTagContainer.classList.add("card-tag-container");
     					
     					const benefitCategoryTag = document.createElement("span");
-    					benefitCategoryTag.classList.add("card-tag");
+    					benefitCategoryTag.classList.add("card-tag", "highlight"); // 🔥 강조 클래스 추가
     					benefitCategoryTag.textContent = card.cardBenefit ? card.cardBenefit.category : "";
     					
     					const benefitDescriptionTag = document.createElement("span");
