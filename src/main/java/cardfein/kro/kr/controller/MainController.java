@@ -6,12 +6,13 @@ import java.util.List;
 
 import cardfein.kro.kr.dto.CardDto;
 import cardfein.kro.kr.service.MainService;
+import cardfein.kro.kr.service.MainServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class MainController implements RestController {
-	MainService service = new MainService();
+	MainService service = new MainServiceImpl();
 	public MainController() {
 	}
 	
