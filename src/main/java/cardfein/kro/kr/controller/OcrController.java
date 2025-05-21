@@ -28,6 +28,7 @@ import cardfein.kro.kr.dto.CardDto;
 import cardfein.kro.kr.dto.LoginDto;
 import cardfein.kro.kr.service.StatementService;
 import cardfein.kro.kr.service.StatementServiceImpl;
+import cardfein.kro.kr.util.ConfigLoader;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,8 +54,8 @@ public class OcrController implements RestController {
 	public Object recognize(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		StringBuilder ocrResult = new StringBuilder();
-		String apiUrl = "https://wpowaclttw.apigw.ntruss.com/custom/v1/41289/3d95171c4ef12bef25ccd28b47c4be4e3ceaf6a913911f0959fdc24765c790ed/general";
-		String secretKey = "aGNyVGRzVkxLSndmVkpNUHNybkh0YUdScGhmbEVaQWs="; // Naver Cloud에서 발급받은 Secret Key
+		String apiUrl = ConfigLoader.getProperty("ocr.api.url");
+		String secretKey = ConfigLoader.getProperty("ocr.secret.key");
 
 		// 이미지 파일 추출
 		Part filePart = request.getPart("image");
